@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import HeroImage from "../assets/Landing frame.png";
 import DonateButton from "../components/DonateButton";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Map from "../assets/map.png";
@@ -11,16 +10,35 @@ import Banner from "../assets/banner.png";
 import Profile from "../assets/profile.png";
 import Integrity from "../assets/integrity.png";
 import { motion } from "motion/react";
+import { FaArrowCircleUp } from "react-icons/fa";
+
 export default function LandingPage() {
-  const settings = {
-    dots: true,
-    fade: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    waitForAnimate: false,
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        // Adjust the scroll position as needed
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
+
   const fadeInUp = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,6 +50,7 @@ export default function LandingPage() {
       },
     },
   };
+
   return (
     <div>
       <motion.div
@@ -148,6 +167,15 @@ export default function LandingPage() {
         </div>
       </main>
       <Footer />
+
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+        >
+          <FaArrowCircleUp size={30} />
+        </button>
+      )}
     </div>
   );
 }
