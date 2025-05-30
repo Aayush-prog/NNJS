@@ -5,7 +5,7 @@ import DonateButton from "./DonateButton";
 export default function Nav() {
   return (
     <div>
-      <div className="flex flex-col gap-3 px-20 py-5">
+      <div className="flex flex-col gap-3 px-30 py-5">
         {/* Top section: Logo and Donate button */}
         <div className="flex place-content-between items-center">
           <div className="flex text-primary items-center">
@@ -22,7 +22,7 @@ export default function Nav() {
           <DonateButton />
         </div>
       </div>
-      <div className="flex justify-center gap-31 text-white font-secondary p-2 bg-primary ">
+      <div className="flex items-center place-content-between px-30 py-5 text-white font-secondary p-2 bg-primary ">
         <a href="#who-we-are" className="">
           Who We Are
         </a>

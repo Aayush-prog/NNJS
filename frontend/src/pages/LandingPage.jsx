@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 export default function LandingPage() {
   return (
     <div>
-      {/* <Nav /> */}
+      <Nav />
       <Footer />
     </div>
   );
