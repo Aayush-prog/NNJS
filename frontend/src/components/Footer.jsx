@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="text-center space-y-10">
         <h1 className="text-3xl font-secondary mb-4">तमसोमा ज्योतिर्गमय</h1>
         <DonateButton />
-        <div className="flex justify-center mt-8 space-x-40">
+        <div className="flex justify-center mt-8 space-x-40 text-left font-primary">
           <div className="space-y-3">
             <p className="font-bold mb-2">QUICK LINKS</p>
             <div className="space-y-1">
@@ -41,7 +41,7 @@ export default function Footer() {
           </div>
           <div className="space-y-3">
             <p className="font-bold mb-2">TALK TO US</p>
-            <div className="space-y-1">
+            <div className="space-y-1 ">
               <p>nnjs@mos.com.np</p>
               <p>Contact Us</p>
               <p>Facebook</p>

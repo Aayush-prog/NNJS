@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "motion": "^12.15.0",
+    "react-slick": "^0.30.3"
+  }
+}
