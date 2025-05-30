@@ -1,0 +1,28 @@
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Donate from "./pages/Donate";
+import Contact from "./pages/Contact";
+import Mission from "./pages/Mission";
+import Partners from "./pages/Partners";
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        {/* Public Routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/mission" element={<Mission />} />
+        <Route path="/partners" element={<Partners />} />
+      </Route>
+    )
+  );
+  return <RouterProvider router={router} />;
+}
+
+export default App;
