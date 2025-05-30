@@ -5,6 +5,8 @@ import MissionSection from "../components/MissionSection";
 import ObjectivesSection from "../components/ObjectivesSection";
 import SpecificObjectives from "../components/SpecificObjectives";
 import CoreValues from "../components/CoreValues";
+import Footer from "../components/Footer";
+import Commitments from "../components/Commitments";
 
 export default function Mission() {
   return (
@@ -50,7 +52,9 @@ export default function Mission() {
       </div>
       <ObjectivesSection />
       <SpecificObjectives />
-      <CoreValues/>
+      <CoreValues />
+      <Commitments />
+      <Footer />
     </div>
   );
 }
