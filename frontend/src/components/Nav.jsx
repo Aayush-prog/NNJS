@@ -13,7 +13,7 @@ export default function Nav() {
     <div>
       <div className="flex flex-col gap-3 px-30 py-5">
         <div className="flex place-content-between items-center">
-          <div className="flex text-primary items-center">
+          <Link to="/" className="flex text-primary items-center">
             <img src={Logo} alt="Logo" className="w-16 h-16 mr-4" />
             <div>
               <h1 className="font-semibold text-4xl font-secondary">
@@ -23,7 +23,7 @@ export default function Nav() {
                 National Society for Comprehensive Eye Care
               </p>
             </div>
-          </div>
+          </Link>
           <DonateButton />
         </div>
       </div>
