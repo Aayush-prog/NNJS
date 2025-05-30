@@ -1,28 +1,74 @@
-import React from "react";
-import donate from "../assets/donate.jpg";
+import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
+import donate from "../assets/donate.png";
 import Footer from "../components/Footer";
+import { motion } from "motion/react";
 
+import { FaArrowCircleUp } from "react-icons/fa";
 export default function Donate() {
+  const [showButton, setShowButton] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
   return (
     <div>
       <Nav />
-      <div className="relative w-full h-[450px]">
-        <img
-          src={donate}
-          alt="Donate Us"
-          className="w-full h-full object-cover"
-        />
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-white text-4xl font-bold font-secondary">
-            Donate
-          </h1>
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        style={{ backgroundImage: `url(${donate})` }}
+      >
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative z-10 text-white text-center space-y-10">
+          <h1 className="text-6xl font-bold font-secondary ">Donate</h1>
         </div>
+      </motion.div>
+      <div className="h-screen bg-primary flex">
+        <div></div>
       </div>
-     
-     
       <Footer />
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+        >
+          <FaArrowCircleUp size={30} />
+        </button>
+      )}
     </div>
-  )
+  );
 }

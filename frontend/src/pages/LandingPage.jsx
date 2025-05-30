@@ -3,8 +3,6 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import HeroImage from "../assets/Landing frame.png";
 import DonateButton from "../components/DonateButton";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Map from "../assets/map.png";
 import Banner from "../assets/banner.png";
 import Profile from "../assets/profile.png";
@@ -17,8 +15,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        // Adjust the scroll position as needed
+      if (window.scrollY > 200) {
         setShowButton(true);
       } else {
         setShowButton(false);

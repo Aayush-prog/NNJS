@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import mission from "../assets/mission.jpg";
 import MissionSection from "../components/MissionSection";
@@ -7,25 +7,63 @@ import SpecificObjectives from "../components/SpecificObjectives";
 import CoreValues from "../components/CoreValues";
 import Footer from "../components/Footer";
 import Commitments from "../components/Commitments";
+import { motion } from "motion/react";
 
 export default function Mission() {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
   return (
     <div>
       <Nav />
-
-      <div className="relative w-full h-[450px]">
-        <img
-          src={mission}
-          alt="Our Mission"
-          className="w-full h-full object-cover"
-        />
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-white text-4xl font-bold font-secondary">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        style={{ backgroundImage: `url(${mission})` }}
+      >
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative z-10 text-white text-center space-y-10">
+          <h1 className="text-6xl font-bold font-secondary ">
             Our Mission & Objectives
           </h1>
         </div>
-      </div>
+      </motion.div>
       <div className="items-center justify-center flex flex-col text-center mb-12">
         <h1 className="font-secondary text-4xl text-primary font-bold p-5 mt-10">
           One Vision At a Time
