@@ -3,13 +3,13 @@ import eye from "../assets/eye.jpg";
 
 export default function MissionSection() {
   return (
-    <section className="bg-primary py-10 px-4  font-secondary">
+    <section className="bg-primary py-12 px-4  font-secondary">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-center text-4xl font-bold text-white mb-8">
+        <h2 className="text-center text-4xl font-bold text-white mb-10">
           Our Mission
         </h2>
 
-        <div className="bg-white rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-xl">
+        <div className="bg-white rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-xl mb-16">
           <div className="lg:w-1/2 w-full flex-shrink-0">
             <img
               src={eye}
