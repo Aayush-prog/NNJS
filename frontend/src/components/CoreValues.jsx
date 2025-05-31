@@ -46,7 +46,6 @@ export default function CoreValues() {
         className="mySwiper"
         style={{ width: "75%" }}
       >
-        {/* Slide 1 - Integrity */}
         <SwiperSlide>
           <SlideContent
             title="Integrity"
@@ -56,7 +55,6 @@ export default function CoreValues() {
           />
         </SwiperSlide>
 
-        {/* Slide 2 - Togetherness */}
         <SwiperSlide>
           <SlideContent
             title="Togetherness"
@@ -66,7 +64,6 @@ export default function CoreValues() {
           />
         </SwiperSlide>
 
-        {/* Slide 3 - Transparency */}
         <SwiperSlide>
           <SlideContent
             title="Transparency"
@@ -76,7 +73,6 @@ export default function CoreValues() {
           />
         </SwiperSlide>
 
-        {/* Slide 4 - Excellence */}
         <SwiperSlide>
           <SlideContent
             title="Excellence"
@@ -86,7 +82,6 @@ export default function CoreValues() {
           />
         </SwiperSlide>
 
-        {/* Slide 5 - Governance */}
         <SwiperSlide>
           <SlideContent
             title="Governance"
