@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import Mission from "./pages/Mission";
 import Partners from "./pages/Partners";
 import History from "./pages/History";
+import Team from "./pages/Team";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,6 +22,7 @@ function App() {
         <Route path="/mission" element={<Mission />} />
         <Route path="/partners" element={<Partners />} />
         <Route path="/history" element={<History />} />
+        <Route path="/team" element={<Team />} />
       </Route>
     )
   );

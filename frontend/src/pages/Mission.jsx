@@ -68,18 +68,18 @@ export default function Mission() {
         <h1 className="font-secondary text-4xl text-primary font-bold p-5">
           One Vision At a Time
         </h1>
-        <p className="text-lg font-secondary">
+        <p className="text-lg font-primary">
           Our vision is a Nepal where no one is blind from avoidable causes, and
           everyone can access the eye care they need to live a full and
           dignified life.
         </p>
       </div>
       <MissionSection />
-      <div className="flex flex-col items-center mb-8 py-36">
+      <div className="flex flex-col items-center mb-8 py-30">
         <h1 className="font-secondary text-4xl text-primary font-bold p-5">
           About NNJS
         </h1>
-        <p className="text-lg font-secondary px-24 text-center">
+        <p className="text-lg font-primary px-24 text-center">
           The Nepal Netra Jyoti Sangh (NNJS) is the central coordinating body
           for eye care in Nepal. It liaises with eye hospitals, the Government
           of Nepal, and national and international organizations to support eye
