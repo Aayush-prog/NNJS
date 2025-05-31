@@ -9,7 +9,7 @@ export default function DonateButton() {
   return (
     <button
       className="bg-accent rounded-sm text-center p-2 font-secondary
-    font-semibold text-l text-white"
+    font-semibold text-l text-white hover:"
       onClick={handleClick}
     >
       Donate Now

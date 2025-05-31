@@ -48,7 +48,6 @@ export default function Donate() {
 
       <div className="bg-primary py-16 px-4 md:px-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 font-primary">
-          {/* Left Section */}
           <div className="bg-white rounded-2xl p-8 flex-1 space-y-5">
             <div className="flex justify-center">
               <FaHeart className="text-red-600 text-4xl" />

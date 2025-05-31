@@ -3,15 +3,29 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/LOGO.png";
 import DonateButton from "./DonateButton";
 import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+
+const dropdownVariants = {
+  initial: { opacity: 0, y: -10 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.2, ease: "easeInOut" },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: { duration: 0.2, ease: "easeInOut" },
+  },
+};
 
 export default function Nav() {
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null); //Ref for outside click detection
-  const dropdownButtonRef = useRef(null); //Ref for focusing button on close
+  const dropdownRef = useRef(null);
+  const dropdownButtonRef = useRef(null);
 
   const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -31,12 +45,11 @@ export default function Nav() {
     };
   }, [dropdownRef, dropdownButtonRef]);
 
-  //Accessibility improvements: Close dropdown on Escape key press
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === "Escape" && showDropdown) {
         setShowDropdown(false);
-        dropdownButtonRef.current?.focus(); // Return focus to the button
+        dropdownButtonRef.current?.focus();
       }
     };
 
@@ -49,8 +62,6 @@ export default function Nav() {
 
   return (
     <nav>
-      {" "}
-      {/* Changed div to semantic <nav> element */}
       <div className="flex flex-col gap-3 px-30 py-5">
         <div className="flex place-content-between items-center">
           <Link
@@ -58,14 +69,11 @@ export default function Nav() {
             className="flex text-primary items-center"
             aria-label="Navigate to homepage"
           >
-            {" "}
-            {/* Added aria-label */}
             <img
               src={Logo}
               alt="Nepal Netra Jyoti Sangh Logo"
               className="w-16 h-16 mr-4"
-            />{" "}
-            {/* Added descriptive alt text */}
+            />
             <div>
               <h1 className="font-semibold text-4xl font-secondary">
                 Nepal Netra Jyoti Sangh
@@ -88,46 +96,49 @@ export default function Nav() {
             ref={dropdownButtonRef}
           >
             Who We Are
-            <ChevronDown aria-hidden="true" />{" "}
-            {/*Added aria-hidden to chevron*/}
+            <ChevronDown aria-hidden="true" />
           </button>
 
-          {showDropdown && (
-            <div
-              className="absolute mt-2 w-48 bg-white text-black rounded shadow-lg z-50"
-              ref={dropdownRef}
-              role="menu"
-              aria-label="Who We Are Navigation"
-            >
-              {/*Added role and aria-label for the dropdown menu*/}
-              <Link
-                to="/mission"
-                className="block px-4 py-2 hover:bg-gray-100"
-                onClick={() => setShowDropdown(false)}
-                role="menuitem" //Role for menu item
+          <AnimatePresence>
+            {showDropdown && (
+              <motion.div
+                className="absolute mt-2 w-48 bg-white text-black rounded shadow-lg z-50"
+                ref={dropdownRef}
+                role="menu"
+                aria-label="Who We Are Navigation"
+                variants={dropdownVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
               >
-                Our Mission
-              </Link>
-              <Link
-                to="/history"
-                className="block px-4 py-2 hover:bg-gray-100"
-                onClick={() => setShowDropdown(false)}
-                role="menuitem" //Role for menu item
-              >
-                History & Timeline
-              </Link>
-              <Link
-                to="/team"
-                className="block px-4 py-2 hover:bg-gray-100"
-                onClick={() => setShowDropdown(false)}
-                role="menuitem" //Role for menu item
-              >
-                Our Team
-              </Link>
-            </div>
-          )}
+                <Link
+                  to="/mission"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => setShowDropdown(false)}
+                  role="menuitem"
+                >
+                  Our Mission
+                </Link>
+                <Link
+                  to="/history"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => setShowDropdown(false)}
+                  role="menuitem"
+                >
+                  History & Timeline
+                </Link>
+                <Link
+                  to="/team"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => setShowDropdown(false)}
+                  role="menuitem"
+                >
+                  Our Team
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-
         <Link to="/what-we-do">What We Do</Link>
         <Link to="/partners">Partners</Link>
         <Link to="/resources">Resources</Link>
