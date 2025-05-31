@@ -9,6 +9,7 @@ import Donate from "./pages/Donate";
 import Contact from "./pages/Contact";
 import Mission from "./pages/Mission";
 import Partners from "./pages/Partners";
+import Locations from "./pages/Locations";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,6 +20,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/mission" element={<Mission />} />
         <Route path="/partners" element={<Partners />} />
+        <Route path="/what_we_do" element={<Locations />} />
       </Route>
     )
   );

@@ -139,7 +139,7 @@ export default function Nav() {
             )}
           </AnimatePresence>
         </div>
-        <Link to="/what-we-do">What We Do</Link>
+        <Link to="/what_we_do">What We Do</Link>
         <Link to="/partners">Partners</Link>
         <Link to="/resources">Resources</Link>
         <Link to="/press">Press/Media</Link>
