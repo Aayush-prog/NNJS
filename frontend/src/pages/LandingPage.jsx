@@ -49,9 +49,7 @@ export default function LandingPage() {
 
   return (
     <div>
-      <div>
-        <Nav />
-      </div>
+      <Nav />
 
       <main>
         <div
@@ -356,8 +354,9 @@ export default function LandingPage() {
               />
             </div>
             <div className="w-full text-center md:text-left mt-6 md:mt-0">
-              <blockquote className="text-2xl font-semibold text-gray-800 font-italic">
-                "Vision is the art of seeing what is invisible to others."
+              <blockquote className="text-2xl italic font-semibold text-gray-800 font-italic">
+                “I’m thankful for this glass- it’s allowing me to perceive the
+                world in an entirely different way. Thank You.”
               </blockquote>
               <cite className="block mt-4 text-gray-500">— Bishal Dhami</cite>
             </div>
