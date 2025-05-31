@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import HeroImage from "../assets/Landing frame.png";
 import DonateButton from "../components/DonateButton";
-import Map from "../assets/map.png";
-import Banner from "../assets/banner.png";
-import Profile from "../assets/profile.png";
-import Integrity from "../assets/integrity.png";
 import { motion } from "motion/react";
 import { FaArrowCircleUp } from "react-icons/fa";
+import { FaUserInjured, FaProcedures, FaHospital, FaEye } from "react-icons/fa";
+
+// Import images with descriptive alt text
+import heroImage from "../assets/Landing frame.png";
+import mapImage from "../assets/map.png";
+import integrityImage from "../assets/integrity.png";
+import profileImage from "../assets/profile.png";
 
 export default function LandingPage() {
   const [showButton, setShowButton] = useState(false);
@@ -66,7 +68,8 @@ export default function LandingPage() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${HeroImage})` }}
+          style={{ backgroundImage: `url(${heroImage})` }}
+          aria-label="Hero Image of people receiving eye care"
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 text-white text-center space-y-10">
@@ -112,8 +115,8 @@ export default function LandingPage() {
 
               <div className="md:w-1/2 flex justify-center">
                 <img
-                  src={Integrity}
-                  alt="Integrity"
+                  src={integrityImage}
+                  alt="Illustration representing integrity"
                   className="w-100 h-100 object-cover "
                 />
               </div>
@@ -124,23 +127,36 @@ export default function LandingPage() {
           <h1 className="text-6xl font-bold text-primary font-secondary">
             Our Services
           </h1>
-          <img src={Map} className="h-[75vh]" />
+          <img
+            src={mapImage}
+            className="h-[75vh]"
+            alt="Map of services offered"
+          />
         </div>
-        <div className="h-screen flex flex-col items-center space-y-10">
-          <h1 className="text-6xl font-bold text-primary font-secondary">
-            Our Impacts
-          </h1>
+        <div className="flex flex-col items-center justify-center space-y-10 bg-primary text-white p-20">
+          <h1 className="text-6xl font-bold  font-secondary">Our Impacts</h1>
           <div className="flex justify-evenly w-full">
-            <div className="font-secondary text-primary text-4xl font-bold text-center">
+            <div className="font-secondary  text-4xl font-bold text-center">
+              <FaUserInjured className="mb-2 text-support inline-block" />
               <h1>46,868,060</h1>
               <h2>OPD Visits</h2>
             </div>
-            <div className="font-secondary text-primary text-4xl font-bold text-center">
+            <div className="font-secondary  text-4xl font-bold text-center">
+              <FaProcedures className="mb-2 text-support inline-block" />
               <h1>5,392,224</h1>
               <h2>Surgeries</h2>
             </div>
+            <div className="font-secondary  text-4xl font-bold text-center">
+              <FaHospital className="mb-2 text-support inline-block" />
+              <h1>150+</h1>
+              <h2>Hospitals</h2>
+            </div>
+            <div className="font-secondary  text-4xl font-bold text-center">
+              <FaEye className="mb-2 text-support inline-block" />
+              <h1>300+</h1>
+              <h2>Eye Care Centers</h2>
+            </div>
           </div>
-          <img src={Banner} className="h-[50vh]" />
         </div>
         <div className="h-screen flex flex-col items-center space-y-10 justify-center">
           <h1 className="text-6xl font-bold text-primary font-secondary">
@@ -149,8 +165,8 @@ export default function LandingPage() {
           <section className="flex flex-col md:flex-row items-center w-3/4 justify-between px-6 py-12 bg-grey rounded-md">
             <div className="md:w-1/2 flex justify-center">
               <img
-                src={Profile}
-                alt="Profile"
+                src={profileImage}
+                alt="Profile of Bishal Dhami"
                 className="w-48 h-48 rounded-full object-cover shadow-lg"
               />
             </div>
@@ -169,6 +185,7 @@ export default function LandingPage() {
         <button
           onClick={scrollToTop}
           className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+          aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={30} />
         </button>
