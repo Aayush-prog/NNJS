@@ -48,7 +48,7 @@ const objectives = [
 
 export default function ObjectivesSection() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-18 px-4 sm:px-6 lg:px-8 bg-blue-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-4 font-secondary">Our Strategic Objectives</h2>
