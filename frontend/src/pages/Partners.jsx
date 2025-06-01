@@ -15,6 +15,14 @@ import restoring from "../assets/restoring visio foundation.png";
 import ridley from "../assets/ridley eye foundation.png";
 import see from "../assets/see foundation.png";
 import norges from "../assets/norges foundation.png";
+import nihr from "../assets/nihr.png";
+import peekvision from "../assets/peekvision.png";
+import qatarcharity from "../assets/qatarcharity.png";
+import seva from "../assets/qatarcharity.png";
+import sightlife from "../assets/sightlife.png";
+import socialeye from "../assets/socialeye.png";
+import johnhopkins from "../assets/johnhopkins.png";
+import cbm from "../assets/cbm.png";
 export default function Partners() {
   const [showButton, setShowButton] = useState(false);
 
@@ -123,6 +131,33 @@ export default function Partners() {
             </SwiperSlide>
             <SwiperSlide>
               <img src={proctor} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={peekvision} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={qatarcharity} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={seva} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={sightlife} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={socialeye} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={johnhopkins} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={cbm} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={norges} className="h-[150px] w-[150px]" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={nihr} className="h-[150px] w-[150px]" />
             </SwiperSlide>
           </Swiper>
         </div>
