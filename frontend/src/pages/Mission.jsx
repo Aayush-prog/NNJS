@@ -8,7 +8,7 @@ import CoreValues from "../components/CoreValues";
 import Footer from "../components/Footer";
 import Commitments from "../components/Commitments";
 import { motion } from "motion/react";
-
+import { FaArrowCircleUp } from "react-icons/fa";
 export default function Mission() {
   const [showButton, setShowButton] = useState(false);
 
