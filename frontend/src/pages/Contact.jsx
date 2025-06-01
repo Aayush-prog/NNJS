@@ -59,77 +59,87 @@ export default function Contact() {
           <h1 className="text-6xl font-bold font-secondary ">Contact</h1>
         </div>
       </motion.div>
-      <div className="h-screen bg-grey p-20 ">
-        <div className="flex ">
-          <div className="flex flex-col justify-center items-center text-left w-1/2 space-y-5 text-white bg-primary rounded-l-2xl">
-            <h1 className="text-4xl font-bold font-secondary ">Get in touch</h1>
-            <div className="border-4 border-accent w-[150px]"></div>
-            <form className="flex flex-col w-1/2 text-2xl space-y-5">
+      <div className="h-screen bg-grey p-20 flex items-center justify-center">
+        <div className="flex bg-white rounded-2xl overflow-hidden shadow-lg">
+          {/* Left Form */}
+          <div className="flex flex-col justify-center items-left text-left w-[500px] space-y-5 text-white bg-primary p-10">
+            <div>
+              <h1 className="text-4xl font-bold font-secondary">
+                Get in touch
+              </h1>
+              <div className="border-2 border-accent w-[100px]"></div>
+            </div>
+
+            <form className="flex flex-col w-full space-y-5">
               <input
-                className="border-b-2 text-white"
+                className="border-b-2 bg-transparent text-white"
                 placeholder="Name"
-              ></input>
+              />
               <input
-                className="border-b-2 text-white"
+                className="border-b-2 bg-transparent text-white"
                 placeholder="Email"
-              ></input>
+              />
               <input
-                className="border-b-2 text-white"
+                className="border-b-2 bg-transparent text-white"
                 placeholder="Phone"
-              ></input>
+              />
               <input
-                className="border-b-2 text-white"
+                className="border-b-2 bg-transparent text-white"
                 placeholder="Message"
-              ></input>
-              <button className="bg-accent w-1/2 rounded-sm">Submit</button>
-            </form>{" "}
+              />
+              <button className="bg-accent p-2 rounded-sm mt-3 font-bold">
+                Submit
+              </button>
+            </form>
           </div>
-          <div className="rounded-r-2xl p-10 bg-white">
-            <div className=" flex flex-col  space-y-5">
-              <p className="w-full font-bold">
+
+          {/* Right Info */}
+          <div className="w-[500px] p-10 bg-white text-black flex flex-col justify-between">
+            <div className="space-y-5">
+              <p className="font-bold">
                 Feel free to reach out using the contact information
               </p>
+
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.8064616406664!2d85.3115335749225!3d27.69237602615263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19b2b6d87343%3A0x2d6c2814b031114b!2sNepal%20Netra%20Jyoti%20Sangh%2C%20Tripureshwor!5e0!3m2!1sen!2snp!4v1748617431017!5m2!1sen!2snp"
-                width="500"
-                height="250"
+                width="100%"
+                height="200"
                 style={{ border: "0" }}
-                allowFullScreen={true}
+                allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
-              <div className="flex gap-10 ">
+
+              <div className="flex gap-10 text-sm">
                 <div className="space-y-3">
                   <p className="font-bold mb-2">MAILING ADDRESS</p>
-                  <div className="space-y-1 ">
+                  <div>
                     <p>P.O. Box 335</p>
                     <p>Netra Jyoti Bhawan</p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <p className="font-bold mb-2">PHYSICAL ADDRESS</p>
-                  <div className="space-y-1 ">
+                  <div>
                     <p>Netra Jyoti Bhawan</p>
-                    <p>
-                      Tripureshwor, <br></br>Kathmandu
-                    </p>
+                    <p>Tripureshwor, Kathmandu</p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <p className="font-bold mb-2">REACH US</p>
-                  <div className="space-y-1 ">
-                    <p>
-                      +977-1-5361921 / <br></br>5361066
-                    </p>
+                  <div>
+                    <p>+977-1-5361921 / 5361066</p>
                     <p>nnjs@mos.com.np</p>
                   </div>
                 </div>
               </div>
-              <div className="flex space-x-5 text-3xl">
-                <FaFacebook />
-                <FaLinkedin />
-                <RiTwitterXLine />
-              </div>
+            </div>
+
+            {/* Social icons */}
+            <div className="flex space-x-5 text-2xl mt-5 text-primary">
+              <FaFacebook />
+              <FaLinkedin />
+              <RiTwitterXLine />
             </div>
           </div>
         </div>

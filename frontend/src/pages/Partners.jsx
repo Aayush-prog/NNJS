@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from "react";
-import partners from "../assets/partners.png";
+import partnerImage from "../assets/partners.png";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp } from "react-icons/fa";
+import LogoSlider from "../components/LogoSlider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Mousewheel } from "swiper/modules";
 import "swiper/css";
@@ -18,13 +19,63 @@ import norges from "../assets/norges foundation.png";
 import nihr from "../assets/nihr.png";
 import peekvision from "../assets/peekvision.png";
 import qatarcharity from "../assets/qatarcharity.png";
-import seva from "../assets/qatarcharity.png";
+import seva from "../assets/seva.png";
 import sightlife from "../assets/sightlife.png";
 import socialeye from "../assets/socialeye.png";
 import johnhopkins from "../assets/johnhopkins.png";
 import cbm from "../assets/cbm.png";
+import champalimaud from "../assets/champalimaud.png";
+import disvi from "../assets/disvi.png";
+import helenkeller from "../assets/helenkeller.png";
+import helpage from "../assets/helpage.png";
+import helpmesee from "../assets/helpmesee.png";
+import iris from "../assets/iris.png";
+import iti from "../assets/iti.png";
+import jica from "../assets/jica.png";
+import lightfortheworld from "../assets/lightfortheworld.png";
+import nippontv from "../assets/nippontv.png";
+import opcfoundation from "../assets/opcfoundation.png";
+import openeyes from "../assets/openeyes.png";
+import redcross from "../assets/redcross.png";
+import usaid from "../assets/usaid.png";
+import nepal from "../assets/nepal.png";
+import india from "../assets/india.png";
+import pakistan from "../assets/pakistan.png";
+import japan from "../assets/japan.png";
 export default function Partners() {
   const [showButton, setShowButton] = useState(false);
+  const special = [nepal, india, pakistan, japan];
+  const past = [
+    champalimaud,
+    disvi,
+    helenkeller,
+    helpage,
+    helpmesee,
+    iris,
+    iti,
+    jica,
+    lightfortheworld,
+    nippontv,
+    opcfoundation,
+    openeyes,
+    redcross,
+    usaid,
+  ];
+  const partners = [
+    ridley,
+    see,
+    restoring,
+    ranzco,
+    proctor,
+    qatarcharity,
+    seva,
+    sightlife,
+    socialeye,
+    johnhopkins,
+    cbm,
+    norges,
+    nihr,
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +104,7 @@ export default function Partners() {
       <main>
         <div
           className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${partners})` }}
+          style={{ backgroundImage: `url(${partnerImage})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 text-white text-center space-y-10">
@@ -64,24 +115,20 @@ export default function Partners() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ amount: 0.2 }}
-          className="flex flex-col items-center justify-center h-[70vh] text-center space-y-5"
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-col items-center justify-center h-[70vh] text-center space-y-5 bg-grey"
         >
           <motion.h1
             variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.2 }}
-            className="text-6xl font-bold text-primary font-secondary"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-4xl font-bold text-primary font-secondary"
           >
             Together, We Bring Vision to Life
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.2 }}
-            className="text-xl font-bold font-primary w-[55vw] leading-loose"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-l font-bold font-primary w-[55vw] leading-loose"
           >
             We’ve always believed that lasting change happens when we work
             together.<br></br> Our partners help us reach more communities,
@@ -93,73 +140,31 @@ export default function Partners() {
             collaboration make this journey possible.
           </motion.p>
         </motion.div>
-        <div>
-          <h2>Partner Organizations</h2>
-          <Swiper
-            direction="horizontal"
-            slidesPerView={5}
-            spaceBetween={100}
-            mousewheel={{
-              forceToAxis: true,
-              releaseOnEdges: true,
-              sensitivity: 1,
-            }}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            pagination={{ clickable: true }}
-            modules={[Autoplay, Pagination, Mousewheel]}
-            className="mySwiper"
-            style={{ width: "75%" }}
-          >
-            <SwiperSlide>
-              <img src={ridley} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={see} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src={restoring}
-                className="h-[150px] w-[150px] object-fill"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={ranzco} className="" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={proctor} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={peekvision} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={qatarcharity} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={seva} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={sightlife} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={socialeye} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={johnhopkins} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={cbm} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={norges} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={nihr} className="h-[150px] w-[150px]" />
-            </SwiperSlide>
-          </Swiper>
+        <div className="h-screen flex flex-col justify-center items-center space-y-30">
+          <div className="flex flex-col justify-center items-center">
+            <h2 className="text-4xl font-bold text-primary font-secondary">
+              Partner Organizations
+            </h2>
+            <div className="w-full flex justify-center items-center">
+              <LogoSlider logos={partners} />
+            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <h2 className="text-4xl font-bold text-primary font-secondary">
+              Past Supporters
+            </h2>
+            <div className="w-full flex justify-center items-center ">
+              <LogoSlider logos={past} />
+            </div>
+          </div>
+          {/* <div className="flex flex-col justify-center items-center">
+            <h2 className="text-4xl font-bold text-primary font-secondary">
+              Special Thanks
+            </h2>
+            <div className="w-full flex justify-center items-center py-10">
+              <LogoSlider logos={special} />
+            </div>
+          </div> */}
         </div>
       </main>
       <Footer />
