@@ -36,13 +36,6 @@ const principles = [
     color: "red",
     icon: <FaShieldAlt className="text-3xl" />,
   },
-  {
-    title: "Integrity",
-    description:
-      "We conduct all activities with honesty, transparency, and adherence to our core principles.",
-    color: "sky",
-    icon: <FaBalanceScale className="text-3xl text-purple-800" />,
-  },
 ];
 
 const Commitments = () => {

@@ -1,8 +1,42 @@
 import { FaCheckCircle } from "react-icons/fa";
 
 export default function SpecificObjectives() {
+  const timeline = [
+    {
+      year: "By 2022",
+      objectives: [
+        "Increase the national CSR from 4300 to 6000",
+        "Establish a cataract audit system to monitor quality and quantity",
+        "Achieve WHO visual outcome benchmarks (PVA ≥ 80%, BCVA ≥ 90%)",
+      ],
+    },
+    {
+      year: "By 2023",
+      objectives: [
+        "Raise community awareness of eye diseases and services to over 90%",
+        "Reduce vision impairment from URE below 2% and increase spectacle coverage above 80%",
+        "Ensure 90% awareness of IEC materials among the target population",
+      ],
+    },
+    {
+      year: "By 2024",
+      objectives: [
+        "Establish at least 100 district-level ear care centres",
+        "Train at least 70 additional ophthalmologists with sub-specialty training",
+        "Establish 350 vision centres at the local government level",
+        "Upgrade 33 ECCs to surgical eye hospitals",
+        "Upgrade tertiary eye hospitals into Centres of Excellence in each province",
+        "Provide Eye Banking and cornea harvesting facilities in all Centres of Excellence",
+      ],
+    },
+    {
+      year: "By 2030",
+      objectives: ["Eliminate corneal blindness"],
+    },
+  ];
+
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 ">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 font-primary">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-4 font-secondary">
@@ -14,120 +48,46 @@ export default function SpecificObjectives() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden font-primary">
-          <div className="p-8 border-b border-gray-200">
-            <div className="flex items-center gap-3 mb-4">
-              <FaCheckCircle className="text-green-500 text-2xl" />
-              <h3 className="text-2xl font-bold text-primary font-secondary ">By 2022:</h3>
-            </div>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>Increase the national CSR from 4300 to 6000</span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Establish a cataract audit system to monitor quality and
-                  quantity
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Achieve WHO visual outcome benchmarks (PVA ≥ 80%, BCVA ≥ 90%)
-                </span>
-              </li>
-            </ul>
-          </div>
+        <div className="relative">
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full border-l-4 border-primary"></div>
 
-          <div className="p-8 border-b border-gray-200">
-            <div className="flex items-center gap-3 mb-4">
-              <FaCheckCircle className="text-green-500 text-2xl" />
-              <h3 className="text-2xl font-bold text-primary font-secondary ">By 2023:</h3>
-            </div>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Raise community awareness of eye diseases and services to over
-                  90%
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Reduce vision impairment from URE below 2% and increase
-                  spectacle coverage above 80%
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Ensure 90% awareness of IEC materials among the target
-                  population
-                </span>
-              </li>
-            </ul>
-          </div>
+          <div className="space-y-12">
+            {timeline.map((item, index) => {
+              const isLeft = index % 2 === 0;
 
-          <div className="p-8 border-b border-gray-200">
-            <div className="flex items-center gap-3 mb-4">
-              <FaCheckCircle className="text-green-500 text-2xl" />
-              <h3 className="text-2xl font-secondary font-bold text-primary">By 2024:</h3>
-            </div>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Establish at least 100 district-level ear care centres
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Train at least 70 additional ophthalmologists with
-                  sub-specialty training
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Establish 350 vision centres at the local government level
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>Upgrade 33 ECCs to surgical eye hospitals</span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Upgrade tertiary eye hospitals into Centres of Excellence in
-                  each province
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block"></span>
-                <span>
-                  Provide Eye Banking and cornea harvesting facilities in all
-                  Centres of Excellence
-                </span>
-              </li>
-            </ul>
-          </div>
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col md:flex-row ${
+                    isLeft ? "md:justify-start" : "md:justify-end"
+                  } relative`}
+                >
+                  <div
+                    className={`md:w-1/2 md:px-8 ${
+                      isLeft ? "md:pr-12" : "md:pl-12"
+                    }`}
+                  >
+                    <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <FaCheckCircle className="text-green-500 text-xl" />
+                        <h3 className="text-xl font-bold text-primary font-secondary">
+                          {item.year}
+                        </h3>
+                      </div>
+                      <ul className="list-disc ml-6 space-y-2 text-gray-700">
+                        {item.objectives.map((obj, i) => (
+                          <li key={i}>{obj}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
 
-          <div className="p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <FaCheckCircle className="text-green-500 text-2xl" />
-              <h3 className="text-2xl font-bold text-primary font-secondary ">By 2030:</h3>
-            </div>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 inline-block "></span>
-                <span>Eliminate corneal blindness</span>
-              </li>
-            </ul>
+                  <div className="hidden md:flex items-center justify-center absolute left-1/2 transform -translate-x-1/2 top-4 z-10">
+                    <div className="w-6 h-6 bg-white border-4 border-primary rounded-full"></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

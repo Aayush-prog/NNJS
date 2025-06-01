@@ -158,7 +158,7 @@ export default function Footer() {
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mx-20">
             <img src={Logo} alt="NNJS Logo" className="h-12" />
-            <p>© 2025 NNJS. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} NNJS. All Rights Reserved.</p>
             <div className="flex space-x-5 text-3xl">
               <a
                 href="https://www.facebook.com"
