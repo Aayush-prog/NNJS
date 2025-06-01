@@ -6,7 +6,7 @@ import {
   FaShieldAlt,
   FaBalanceScale,
 } from "react-icons/fa";
-
+import { motion } from "motion/react";
 const principles = [
   {
     title: "UHC & SDG Alignment",
@@ -39,18 +39,43 @@ const principles = [
 ];
 
 const Commitments = () => {
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-primary">
+    <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-primary"
+    >
       <div className="max-w-5xl mx-auto text-center mb-12">
-        <h2 className="text-4xl font-bold text-primary mb-4 font-secondary">
+        <motion.h2
+          variants={fadeInUp}
+          className="text-4xl font-bold text-primary mb-4 font-secondary"
+        >
           Our Commitments
-        </h2>
-        <p className="text-lg">
+        </motion.h2>
+        <motion.p
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-xl"
+        >
           The fundamental principles that guide our work in eye healthcare:
-        </p>
+        </motion.p>
       </div>
 
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      <motion.div
+        variants={fadeInUp}
+        viewport={{ once: true, amount: 0.2 }}
+        className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
         {principles.map((item, index) => (
           <div
             key={index}
@@ -63,8 +88,8 @@ const Commitments = () => {
             <p className="text-gray-600">{item.description}</p>
           </div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

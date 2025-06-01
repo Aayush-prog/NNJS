@@ -67,13 +67,13 @@ export default function LandingPage() {
           viewport={{ once: true, amount: 0.2 }}
           className="flex flex-col items-center justify-center h-[50vh] text-center space-y-5"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-6xl font-bold text-primary font-secondary"
+            className="text-4xl font-bold text-primary font-secondary"
           >
             One Vision at a Time.
-          </motion.h1>
+          </motion.h2>
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
@@ -94,13 +94,13 @@ export default function LandingPage() {
           viewport={{ once: true, amount: 0.2 }}
           className="h-screen flex flex-col items-center justify-center"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-6xl font-bold text-primary font-secondary"
+            className="text-4xl font-bold text-primary font-secondary"
           >
             Our Services
-          </motion.h1>
+          </motion.h2>
           <motion.img
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
@@ -117,47 +117,47 @@ export default function LandingPage() {
           viewport={{ once: true, amount: 0.2 }}
           className="flex flex-col items-center justify-center space-y-10 bg-primary text-white p-20"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-6xl font-bold font-secondary"
+            className="text-4xl font-bold font-secondary"
           >
             Our Impacts
-          </motion.h1>
+          </motion.h2>
           <div className="flex justify-evenly w-full flex-wrap gap-8">
             <motion.div
               variants={fadeInUp}
               viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-4xl font-bold text-center"
+              className="font-secondary text-2xl font-bold text-center"
             >
-              <FaUserInjured className="mb-2 text-support inline-block" />
+              <FaUserInjured className="mb-2 text-4xl text-support inline-block" />
               <h1>46,868,060</h1>
               <h2>OPD Visits</h2>
             </motion.div>
             <motion.div
               variants={fadeInUp}
               viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-4xl font-bold text-center"
+              className="font-secondary text-2xl font-bold text-center"
             >
-              <FaProcedures className="mb-2 text-support inline-block" />
+              <FaProcedures className="mb-2 text-4xl text-support inline-block" />
               <h1>5,392,224</h1>
               <h2>Surgeries</h2>
             </motion.div>
             <motion.div
               variants={fadeInUp}
               viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-4xl font-bold text-center"
+              className="font-secondary text-2xl font-bold text-center"
             >
-              <FaHospital className="mb-2 text-support inline-block" />
+              <FaHospital className="mb-2 text-4xl text-support inline-block" />
               <h1>150+</h1>
               <h2>Hospitals</h2>
             </motion.div>
             <motion.div
               variants={fadeInUp}
               viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-4xl font-bold text-center"
+              className="font-secondary text-2xl font-bold text-center"
             >
-              <FaEye className="mb-2 text-support inline-block" />
+              <FaEye className="mb-2 text-4xl text-support inline-block" />
               <h1>300+</h1>
               <h2>Eye Care Centers</h2>
             </motion.div>
@@ -171,13 +171,13 @@ export default function LandingPage() {
           viewport={{ once: true, amount: 0.2 }}
           className="h-screen flex flex-col items-center space-y-10 justify-center"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-6xl font-bold text-primary font-secondary"
+            className="text-4xl font-bold text-primary font-secondary"
           >
             Success Stories
-          </motion.h1>
+          </motion.h2>
           <motion.section
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
@@ -191,7 +191,7 @@ export default function LandingPage() {
               />
             </div>
             <div className="w-full text-center md:text-left mt-6 md:mt-0">
-              <blockquote className="text-2xl italic font-semibold text-gray-800 font-italic">
+              <blockquote className="text-xl italic font-semibold text-gray-800 font-italic">
                 “I’m thankful for this glass- it’s allowing me to perceive the
                 world in an entirely different way. Thank You.”
               </blockquote>
@@ -212,7 +212,7 @@ export default function LandingPage() {
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
           aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={30} />

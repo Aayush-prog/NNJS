@@ -36,7 +36,7 @@ export default function Mission() {
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
@@ -49,11 +49,7 @@ export default function Mission() {
   return (
     <div>
       <Nav />
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+      <div
         className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${mission})` }}
       >
@@ -63,36 +59,72 @@ export default function Mission() {
             Our Mission & Objectives
           </h1>
         </div>
-      </motion.div>
-      <div className="items-center justify-center flex flex-col text-center my-32">
-        <h1 className="font-secondary text-4xl text-primary font-bold p-5">
+      </div>
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="items-center justify-center flex flex-col text-center h-[50vh]"
+      >
+        <motion.h2
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="font-secondary text-4xl text-primary font-bold p-5"
+        >
           One Vision At a Time
-        </h1>
-        <p className="text-lg font-primary">
+        </motion.h2>
+        <motion.p
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-xl font-bold w-[55vw] font-primary"
+        >
           Our vision is a Nepal where no one is blind from avoidable causes, and
           everyone can access the eye care they need to live a full and
           dignified life.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
       <MissionSection />
-      <div className="flex flex-col items-center mb-8 py-30">
-        <h1 className="font-secondary text-4xl text-primary font-bold p-5">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="flex flex-col items-center mb-8 py-30"
+      >
+        <motion.h2
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="font-secondary text-4xl text-primary font-bold p-5"
+        >
           About NNJS
-        </h1>
-        <p className="text-lg font-primary px-24 text-center">
+        </motion.h2>
+        <motion.p
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-xl font-primary px-24 text-center"
+        >
           The Nepal Netra Jyoti Sangh (NNJS) is the central coordinating body
           for eye care in Nepal. It liaises with eye hospitals, the Government
           of Nepal, and national and international organizations to support eye
           health programs and ensure quality standards. NNJS plays a key role in
           program evaluation, resource mobilization, community engagement, and
           promoting self-reliance.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
       <ObjectivesSection />
       <SpecificObjectives />
       <CoreValues />
       <Commitments />
       <Footer />
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+        >
+          <FaArrowCircleUp size={30} />
+        </button>
+      )}
     </div>
   );
 }
