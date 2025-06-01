@@ -19,7 +19,7 @@ export default function MissionSection() {
           </div>
 
           <div className="lg:w-1/2 w-full p-8 lg:p-10 flex items-center">
-            <p className="text-gray-700 text-lg leading-relaxed">
+            <p className="text-gray-700 text-lg leading-relaxed font-primary">
               To develop and provide high quality, sustainable, comprehensive
               and affordable eye care service network in the country by
               identifying and mobilizing local, national and international

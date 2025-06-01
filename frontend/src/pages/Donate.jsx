@@ -50,7 +50,7 @@ export default function Donate() {
         </div>
       </motion.div>
 
-      <div className="bg-primary py-16 px-4 md:px-12">
+      <div className="bg-primary py-24 px-4 md:px-12 min-h-screen">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 font-primary">
           <div className="bg-white rounded-2xl p-8 flex-1 space-y-5">
             <div className="flex justify-center">
