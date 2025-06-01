@@ -3,6 +3,10 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import team from "../assets/team.jpg";
 import { motion } from "motion/react";
+import FounderCaraousel from "../components/FounderCaraousel";
+import PastChairpersons from "../components/PastChairperson";
+import Board from "../components/Board";
+import StaffSection from "../components/StaffSection";
 
 export default function Team() {
   const [showButton, setShowButton] = useState(false);
@@ -60,7 +64,7 @@ export default function Team() {
             </h1>
           </div>
         </motion.div>
-        <div className="items-center justify-center flex flex-col text-center py-18">
+        <div className="items-center justify-center flex flex-col text-center py-16">
           <h1 className="font-secondary text-4xl text-primary font-bold p-5">
             The Eyes Behind the Vision
           </h1>
@@ -93,6 +97,9 @@ export default function Team() {
             </p>
           </div>
         </div>
+        <FounderCaraousel />
+        <PastChairpersons />
+        <Board />
       </main>
       <Footer />
     </div>

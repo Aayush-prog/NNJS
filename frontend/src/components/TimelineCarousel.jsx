@@ -12,13 +12,13 @@ const data = [
     year: "1978",
     title: "Founded",
     description:
-      "NNJS was formed by nine visionary individuals with the goal to tackle preventable blindness through structured national efforts.",
+      "NNJS was formed by nine visionary individuals with the goal to tackle preventable blindness.",
   },
   {
     year: "1980",
     title: "NGO Strengthening",
     description:
-      "Became a full-fledged NGO, coordinating with the Social Welfare Council to represent Nepal in eye care services.",
+      "Became a full-fledged NGO, coordinating with the Social Welfare Council.",
   },
   {
     year: "1990",
@@ -78,14 +78,14 @@ const TimelineCarousel = () => {
 
       <div className="relative">
         <button
-          className="absolute -left-14 z-10 bg-blue-200 text-primary p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
+          className="absolute left-20 z-10 bg-blue-200 text-primary p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
           ref={prevRef}
         >
           <FaArrowLeft />
         </button>
 
         <button
-          className="absolute -right-14 z-10 bg-blue-200 text-primary p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
+          className="absolute right-20 z-10 bg-blue-200 text-primary p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
           ref={nextRef}
         >
           <FaArrowRight />
@@ -99,7 +99,6 @@ const TimelineCarousel = () => {
             nextEl: nextRef.current,
           }}
           onBeforeInit={(swiper) => {
-            // Bind custom navigation refs before Swiper initializes
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
           }}
@@ -135,7 +134,7 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                   {group.map((item, i) => (
                     <div
                       key={i}
@@ -161,68 +160,6 @@ const TimelineCarousel = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* <Swiper
-          direction="horizontal"
-          slidesPerView={1}
-          spaceBetween={100}
-          mousewheel={{
-            forceToAxis: true,
-            releaseOnEdges: true,
-            sensitivity: 1,
-          }}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          pagination={{ clickable: true }}
-          modules={[Autoplay, Pagination, Mousewheel]}
-          className="mySwiper"
-          style={{ width: "75%" }}
-        >
-          {groupedSlides.map((group, index) => (
-            <SwiperSlide>
-              <div key={index}>
-                <div className="relative mb-8">
-                  <div className="h-1 bg-primary absolute top-4 left-0 right-0"></div>
-                  <div className="flex justify-around relative z-10">
-                    {group.map((item, i) => (
-                      <div key={i} className="text-center">
-                        <div className="w-8 h-8 rounded-full bg-primary border-4 border-white mx-auto shadow-lg"></div>
-                        <div className="mt-2 font-semibold text-lg text-primary">
-                          {item.year}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                  {group.map((item, i) => (
-                    <div
-                      key={i}
-                      className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 min-h-[340px]"
-                    >
-                      <img
-                        src={timelineImage}
-                        alt={item.title}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold font-secondary text-primary mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-700 leading-relaxed font-primary">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper> */}
       </div>
     </div>
   );
