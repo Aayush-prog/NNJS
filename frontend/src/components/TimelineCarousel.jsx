@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
+import { motion } from "motion/react";
 const data = [
   {
     year: "1978",
@@ -69,14 +70,35 @@ const groupedSlides = [data.slice(0, 3), data.slice(3, 6), data.slice(6, 9)];
 const TimelineCarousel = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
   return (
-    <div className="py-16 px-4 max-w-7xl mx-auto min-h-screen">
-      <h2 className="text-4xl font-secondary font-bold text-center text-primary mb-12">
+    <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="py-16 px-4 max-w-7xl mx-auto min-h-screen"
+    >
+      <motion.h2
+        variants={fadeInUp}
+        viewport={{ once: true, amount: 0.2 }}
+        className="text-4xl font-secondary font-bold text-center text-primary mb-12"
+      >
         Our Journey Through Time
-      </h2>
+      </motion.h2>
 
-      <div className="relative">
+      <motion.div
+        variants={fadeInUp}
+        viewport={{ once: true, amount: 0.2 }}
+        className="relative"
+      >
         <button
           className="absolute left-20 z-10 bg-blue-200 text-primary p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
           ref={prevRef}
@@ -126,7 +148,7 @@ const TimelineCarousel = () => {
                     {group.map((item, i) => (
                       <div key={i} className="text-center">
                         <div className="w-8 h-8 rounded-full bg-primary border-4 border-white mx-auto shadow-lg"></div>
-                        <div className="mt-2 font-semibold text-lg text-primary">
+                        <div className="mt-2 font-semibold text-xl text-primary">
                           {item.year}
                         </div>
                       </div>
@@ -160,8 +182,8 @@ const TimelineCarousel = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

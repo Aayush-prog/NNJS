@@ -25,7 +25,7 @@ export default function Donate() {
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
@@ -37,10 +37,6 @@ export default function Donate() {
     <div>
       <Nav />
       <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
         className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${donate})` }}
       >
@@ -51,7 +47,13 @@ export default function Donate() {
       </motion.div>
 
       <div className="bg-primary py-24 px-4 md:px-12 min-h-screen">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 font-primary">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 font-primary"
+        >
           <div className="bg-white rounded-2xl p-8 flex-1 space-y-5">
             <div className="flex justify-center">
               <FaHeart className="text-red-600 text-4xl" />
@@ -124,15 +126,22 @@ export default function Donate() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <Footer />
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <Footer />
+      </motion.div>
 
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
         >
           <FaArrowCircleUp size={30} />
         </button>

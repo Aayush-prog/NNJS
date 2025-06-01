@@ -1,6 +1,14 @@
 import { FaCheckCircle } from "react-icons/fa";
-
+import { motion } from "motion/react";
 export default function SpecificObjectives() {
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
   const timeline = [
     {
       year: "By 2022",
@@ -36,22 +44,40 @@ export default function SpecificObjectives() {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 font-primary">
+    <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="py-20 px-4 sm:px-6 lg:px-8 font-primary"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-primary mb-4 font-secondary">
+          <motion.h2
+            variants={fadeInUp}
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-4xl font-bold text-primary mb-4 font-secondary"
+          >
             Specific Objectives Timeline
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto font-secondary">
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-xl max-w-3xl mx-auto font-secondary"
+          >
             Our roadmap for eliminating preventable blindness and improving eye
             care services
-          </p>
+          </motion.p>
         </div>
 
         <div className="relative">
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full border-l-4 border-primary"></div>
 
-          <div className="space-y-12">
+          <motion.div
+            variants={fadeInUp}
+            viewport={{ once: true, amount: 0.2 }}
+            className="space-y-12"
+          >
             {timeline.map((item, index) => {
               const isLeft = index % 2 === 0;
 
@@ -67,7 +93,11 @@ export default function SpecificObjectives() {
                       isLeft ? "md:pr-12" : "md:pl-12"
                     }`}
                   >
-                    <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+                    <motion.div
+                      variants={fadeInUp}
+                      viewport={{ once: true, amount: 0.2 }}
+                      className="bg-white shadow-xl rounded-xl p-6 border border-gray-200"
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         <FaCheckCircle className="text-green-500 text-xl" />
                         <h3 className="text-xl font-bold text-primary font-secondary">
@@ -79,7 +109,7 @@ export default function SpecificObjectives() {
                           <li key={i}>{obj}</li>
                         ))}
                       </ul>
-                    </div>
+                    </motion.div>
                   </div>
 
                   <div className="hidden md:flex items-center justify-center absolute left-1/2 transform -translate-x-1/2 top-4 z-10">
@@ -88,9 +118,9 @@ export default function SpecificObjectives() {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.div>
   );
 }

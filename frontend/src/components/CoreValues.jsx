@@ -28,15 +28,13 @@ export default function CoreValues() {
       viewport={{ once: true, amount: 0.2 }}
       className="h-screen flex flex-col items-center justify-center bg-support space-y-10"
     >
-      <motion.h1
+      <motion.h2
         variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="text-6xl font-bold text-primary font-secondary"
+        className="text-4xl font-bold text-primary font-secondary"
       >
         Our Values
-      </motion.h1>
+      </motion.h2>
       <Swiper
         direction="horizontal"
         slidesPerView={1}
@@ -61,9 +59,9 @@ export default function CoreValues() {
           <div className="flex items-center justify-center pl-10 bg-white h-full">
             <div className="flex flex-col md:flex-row items-center max-w-5xl">
               <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0 md:mr-8">
-                <h1 className="text-6xl font-bold text-primary font-secondary mb-4">
+                <h3 className="text-3xl font-bold text-primary font-secondary mb-4">
                   Integrity
-                </h1>
+                </h3>
                 <p className="text-xl font-primary">
                   We demonstrate honesty, trust, and mutual respect in all our
                   interactions. We accept responsibility for our actions and the
@@ -87,10 +85,10 @@ export default function CoreValues() {
           <div className="flex items-center justify-center pl-10 bg-white h-full">
             <div className="flex flex-col md:flex-row items-center max-w-5xl">
               <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0 md:mr-8">
-                <h1 className="text-6xl font-bold text-primary font-secondary mb-4">
+                <h3 className="text-3xl font-bold text-primary font-secondary mb-4">
                   Togetherness
-                </h1>
-                <p className="text-xl font-primary">
+                </h3>
+                <p className="text-lg font-primary">
                   We believe in the power of unity and collaboration to achieve
                   shared goals. Our community thrives on mutual support,
                   respect, and inclusivity where every voice is valued.
@@ -115,10 +113,10 @@ export default function CoreValues() {
           <div className="flex items-center justify-center pl-10 bg-white h-full">
             <div className="flex flex-col md:flex-row items-center max-w-5xl">
               <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0 md:mr-8">
-                <h1 className="text-6xl font-bold text-primary font-secondary mb-4">
+                <h3 className="text-3xl font-bold text-primary font-secondary mb-4">
                   Transparency
-                </h1>
-                <p className="text-xl font-primary">
+                </h3>
+                <p className="text-lg font-primary">
                   We commit to openness and clarity in all our communications
                   and decisions. By sharing information honestly and promptly,
                   we build trust within our community and stakeholders.
@@ -143,10 +141,10 @@ export default function CoreValues() {
           <div className="flex items-center justify-center pl-10 bg-white h-full">
             <div className="flex flex-col md:flex-row items-center max-w-5xl">
               <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0 md:mr-8">
-                <h1 className="text-6xl font-bold text-primary font-secondary mb-4">
+                <h3 className="text-3xl font-bold text-primary font-secondary mb-4">
                   Excellence
-                </h1>
-                <p className="text-xl font-primary">
+                </h3>
+                <p className="text-lg font-primary">
                   We strive for the highest standards in everything we do,
                   continuously improving to deliver exceptional outcomes.
                   Excellence drives our commitment to quality, innovation, and
@@ -170,10 +168,10 @@ export default function CoreValues() {
           <div className="flex items-center justify-center pl-10 bg-white h-full">
             <div className="flex flex-col md:flex-row items-center max-w-5xl">
               <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0 md:mr-8">
-                <h1 className="text-6xl font-bold text-primary font-secondary mb-4">
+                <h3 className="text-3xl font-bold text-primary font-secondary mb-4">
                   Governance
-                </h1>
-                <p className="text-xl font-primary">
+                </h3>
+                <p className="text-lg font-primary">
                   Our governance framework is built on accountability,
                   integrity, and responsible leadership. We adhere strictly to
                   policies and regulations that guide our operations to ensure

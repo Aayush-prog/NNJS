@@ -1,15 +1,37 @@
 import React from "react";
-import eye from "../assets/eye.jpg"; 
-
+import eye from "../assets/eye.jpg";
+import { motion } from "motion/react";
 export default function MissionSection() {
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
   return (
-    <section className="bg-primary py-12 px-4  font-secondary">
+    <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="bg-primary py-12 px-4  font-secondary"
+    >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-center text-4xl font-bold text-white mb-10">
+        <motion.h2
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-center text-4xl font-bold text-white mb-10"
+        >
           Our Mission
-        </h2>
+        </motion.h2>
 
-        <div className="bg-white rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-xl mb-16">
+        <motion.div
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="bg-white rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-xl mb-16"
+        >
           <div className="lg:w-1/2 w-full flex-shrink-0">
             <img
               src={eye}
@@ -19,7 +41,7 @@ export default function MissionSection() {
           </div>
 
           <div className="lg:w-1/2 w-full p-8 lg:p-10 flex items-center">
-            <p className="text-gray-700 text-lg leading-relaxed font-primary">
+            <p className=" text-xl leading-relaxed font-primary">
               To develop and provide high quality, sustainable, comprehensive
               and affordable eye care service network in the country by
               identifying and mobilizing local, national and international
@@ -32,8 +54,8 @@ export default function MissionSection() {
               disability through the effective mobilization of volunteers.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.div>
   );
 }

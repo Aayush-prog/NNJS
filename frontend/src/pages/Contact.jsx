@@ -33,7 +33,7 @@ export default function Contact() {
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
@@ -47,10 +47,6 @@ export default function Contact() {
     <div>
       <Nav />
       <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
         className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${coveringEyes})` }}
       >
@@ -59,8 +55,18 @@ export default function Contact() {
           <h1 className="text-6xl font-bold font-secondary ">Contact</h1>
         </div>
       </motion.div>
-      <div className="h-screen bg-grey p-20 flex items-center justify-center">
-        <div className="flex bg-white rounded-2xl overflow-hidden shadow-lg">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="h-screen bg-grey p-20 flex items-center justify-center"
+      >
+        <motion.div
+          variants={fadeInUp}
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex bg-white rounded-2xl overflow-hidden shadow-lg"
+        >
           {/* Left Form */}
           <div className="flex flex-col justify-center items-left text-left w-[500px] space-y-5 text-white bg-primary p-10">
             <div>
@@ -72,19 +78,19 @@ export default function Contact() {
 
             <form className="flex flex-col w-full space-y-5">
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Name"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Email"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Phone"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Message"
               />
               <button className="bg-accent p-2 rounded-sm mt-3 font-bold">
@@ -110,8 +116,8 @@ export default function Contact() {
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
 
-              <div className="flex gap-10 text-sm">
-                <div className="space-y-3">
+              <div className="flex text-sm gap-3">
+                <div className="w-1/3 space-y-3">
                   <p className="font-bold mb-2">MAILING ADDRESS</p>
                   <div>
                     <p>P.O. Box 335</p>
@@ -142,13 +148,20 @@ export default function Contact() {
               <RiTwitterXLine />
             </div>
           </div>
-        </div>
-      </div>
-      <Footer />
+        </motion.div>
+      </motion.div>
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <Footer />
+      </motion.div>
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
         >
           <FaArrowCircleUp size={30} />
         </button>

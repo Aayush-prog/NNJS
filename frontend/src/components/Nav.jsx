@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Logo from "../assets/LOGO.png";
 import DonateButton from "./DonateButton";
 import { ChevronDown } from "lucide-react";
@@ -86,11 +86,11 @@ export default function Nav() {
           <DonateButton />
         </div>
       </div>
-      <div className="flex items-center justify-between px-32 py-5 text-white font-secondary bg-primary relative">
+      <div className="flex items-center justify-between px-32 py-5 text-primary font-secondary  relative">
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className="flex items-center gap-1 hover:text-gray-200 focus:outline-none"
+            className="flex items-center gap-1 hover:text-accent focus:outline-none font-bold"
             aria-haspopup="true"
             aria-expanded={showDropdown}
             ref={dropdownButtonRef}
@@ -102,7 +102,7 @@ export default function Nav() {
           <AnimatePresence>
             {showDropdown && (
               <motion.div
-                className="absolute mt-2 w-48 bg-white text-black rounded shadow-lg z-50"
+                className="absolute mt-2 w-48 bg-white text-black rounded shadow-lg z-50 font-bold"
                 ref={dropdownRef}
                 role="menu"
                 aria-label="Who We Are Navigation"
@@ -111,40 +111,52 @@ export default function Nav() {
                 animate="animate"
                 exit="exit"
               >
-                <Link
+                <NavLink
                   to="/mission"
-                  className="block px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
                 >
                   Our Mission
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/history"
-                  className="block px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
                 >
                   History & Timeline
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/team"
-                  className="block px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
                 >
                   Our Team
-                </Link>
+                </NavLink>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-        <Link to="/what_we_do">What We Do</Link>
-        <Link to="/partners">Partners</Link>
-        <Link to="/resources">Resources</Link>
-        <Link to="/press">Press/Media</Link>
-        <Link to="/ethics">Ethical Review</Link>
-        <Link to="/contact">Contact Us</Link>
+        <NavLink to="/what_we_do" className="font-bold hover:text-accent">
+          What We Do
+        </NavLink>
+        <NavLink to="/partners" className="font-bold hover:text-accent">
+          Partners
+        </NavLink>
+        <NavLink to="/resources" className="font-bold hover:text-accent">
+          Resources
+        </NavLink>
+        <NavLink to="/press" className="font-bold hover:text-accent">
+          Press/Media
+        </NavLink>
+        <NavLink to="/ethics" className="font-bold hover:text-accent">
+          Ethical Review
+        </NavLink>
+        <NavLink to="/contact" className="font-bold hover:text-accent">
+          Contact Us
+        </NavLink>
       </div>
     </nav>
   );
