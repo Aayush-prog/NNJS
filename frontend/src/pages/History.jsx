@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import history from "../assets/history-pic.webp";
 import { motion } from "motion/react";
 import TimelineCarousel from "../components/TimelineCarousel";
+import { FaArrowCircleUp } from "react-icons/fa";
 
 export default function History() {
   const [showButton, setShowButton] = useState(false);
