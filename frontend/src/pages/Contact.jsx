@@ -78,19 +78,19 @@ export default function Contact() {
 
             <form className="flex flex-col w-full space-y-5">
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Name"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Email"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Phone"
               />
               <input
-                className="border-b-2 bg-transparent text-white"
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent"
                 placeholder="Message"
               />
               <button className="bg-accent p-2 rounded-sm mt-3 font-bold">
@@ -116,8 +116,8 @@ export default function Contact() {
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
 
-              <div className="flex gap-10 text-sm">
-                <div className="space-y-3">
+              <div className="flex text-sm gap-3">
+                <div className="w-1/3 space-y-3">
                   <p className="font-bold mb-2">MAILING ADDRESS</p>
                   <div>
                     <p>P.O. Box 335</p>
