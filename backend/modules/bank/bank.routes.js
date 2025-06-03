@@ -1,0 +1,12 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const getBank = require("./controllers/getBank");
+const createBank = require("./controllers/createBank");
+const delBank = require("./controllers/delBank");
+const editBank = require("./controllers/editBank");
+const bankRouter = express.Router();
+bankRouter.get("/", getBank);
+bankRouter.post("/create", createBank);
+bankRouter.delete("/del/:bankId", delBank);
+bankRouter.patch("/edit/:bankId", editBank);
+module.exports = bankRouter;
