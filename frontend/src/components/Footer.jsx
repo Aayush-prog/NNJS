@@ -1,8 +1,7 @@
 import React from "react";
 import DonateButton from "./DonateButton";
 import Logo from "../assets/LOGO.png";
-import { FaFacebook, FaLinkedin } from "react-icons/fa";
-import { RiTwitterXLine } from "react-icons/ri";
+import { FaFacebook, FaYoutube, FaGoogle } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -136,18 +135,18 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="https://www.linkedin.com"
+                    href="https://www.youtube.com"
                     aria-label="Visit our LinkedIn page"
                   >
-                    LinkedIn
+                    Youtube
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://www.twitter.com"
+                    href="https://www.google.com"
                     aria-label="Visit our Twitter page"
                   >
-                    Twitter
+                    Google
                   </a>
                 </li>
               </ul>
@@ -167,16 +166,13 @@ export default function Footer() {
                 <FaFacebook />
               </a>
               <a
-                href="https://www.linkedin.com"
-                aria-label="Visit our LinkedIn page"
+                href="https://www.youtube.com"
+                aria-label="Visit our YouTube channel"
               >
-                <FaLinkedin />
+                <FaYoutube />
               </a>
-              <a
-                href="https://www.twitter.com"
-                aria-label="Visit our Twitter page"
-              >
-                <RiTwitterXLine />
+              <a href="https://www.google.com" aria-label="Visit Google">
+                <FaGoogle />
               </a>
             </div>
           </div>

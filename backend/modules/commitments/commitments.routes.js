@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createCommitment = require("./controllers/createCommitment");
+const getCommitments = require("./controllers/getCommitments");
+const getCommitmentById = require("./controllers/getCommitmentById");
+const delCommitment = require("./controllers/delCommitment");
+const editCommitment = require("./controllers/editCommitment");
+const commitmentsRouter = express.Router();
+commitmentsRouter.get("/", getCommitments);
+commitmentsRouter.get("/:eyeCareCenterId", getCommitmentById);
+commitmentsRouter.post("/create", createCommitment);
+commitmentsRouter.delete("/del/:eyeCareCenterId", delCommitment);
+commitmentsRouter.patch("/edit/:eyeCareCenterId", editCommitment);
+module.exports = commitmentsRouter;

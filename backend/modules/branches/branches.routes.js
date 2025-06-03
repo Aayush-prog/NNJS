@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createBranch = require("./controllers/createBranch");
+const getBranches = require("./controllers/getBranches");
+const getBranchById = require("./controllers/getBranchById");
+const delBranch = require("./controllers/delBranch");
+const editBranch = require("./controllers/editBranch");
+const branchRouter = express.Router();
+branchRouter.get("/", getBranches);
+branchRouter.get("/:branchId", getBranchById);
+branchRouter.post("/create", createBranch);
+branchRouter.delete("/del/:branchId", delBranch);
+branchRouter.patch("/edit/:branchId", editBranch);
+module.exports = branchRouter;

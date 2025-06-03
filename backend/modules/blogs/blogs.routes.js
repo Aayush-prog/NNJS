@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createBlog = require("./controllers/createBlog");
+const getBlog = require("./controllers/getBlog");
+const getBlogById = require("./controllers/getBlogById");
+const delBlog = require("./controllers/delBlog");
+const editBlog = require("./controllers/editBlog");
+const blogRouter = express.Router();
+blogRouter.get("/", getBlog);
+blogRouter.get("/:blogId", getBlogById);
+blogRouter.post("/create", createBlog);
+blogRouter.delete("/del/:blogId", delBlog);
+blogRouter.patch("/edit/:blogId", editBlog);
+module.exports = blogRouter;

@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createEyeHospital = require("./controllers/createEyeHospital");
+const getEyeHospitals = require("./controllers/getEyeHospitals");
+const getEyeHospitalById = require("./controllers/getEyeHospitalById");
+const delEyeHospital = require("./controllers/delEyeHospital");
+const editEyeHospital = require("./controllers/editEyeHospital");
+const eyeHospitalRouter = express.Router();
+eyeHospitalRouter.get("/", getEyeHospitals);
+eyeHospitalRouter.get("/:eyeCareCenterId", getEyeHospitalById);
+eyeHospitalRouter.post("/create", createEyeHospital);
+eyeHospitalRouter.delete("/del/:eyeCareCenterId", delEyeHospital);
+eyeHospitalRouter.patch("/edit/:eyeCareCenterId", editEyeHospital);
+module.exports = eyeHospitalRouter;
