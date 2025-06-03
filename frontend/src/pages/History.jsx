@@ -5,10 +5,7 @@ import history from "../assets/history-pic.webp";
 import { motion } from "motion/react";
 import TimelineCarousel from "../components/TimelineCarousel";
 import { FaArrowCircleUp } from "react-icons/fa";
-<<<<<<< HEAD
 
-=======
->>>>>>> 376cd21c5770deccf1ad1865e41aa31f9cdbd96d
 export default function History() {
   const [showButton, setShowButton] = useState(false);
 
