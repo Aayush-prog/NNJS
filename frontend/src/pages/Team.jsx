@@ -100,6 +100,7 @@ export default function Team() {
         <FounderCaraousel />
         <PastChairpersons />
         <Board />
+        <StaffSection />
       </main>
       <Footer />
     </div>
