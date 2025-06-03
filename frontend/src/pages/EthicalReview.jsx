@@ -238,9 +238,8 @@ export default function EthicalReview() {
           ))}
         </div>
 
-        {/* Process Image */}
         <div>
-          <h2 className="text-3xl font-bold font-secondary text-primary mt-16 mb-8 text-center">
+          <h2 className="text-3xl font-bold font-secondary text-primary mt-20 mb-8 text-center">
             Ethical Review Process
           </h2>
           <p className="text-center font-primary text-lg px-32 mx-auto mb-8">

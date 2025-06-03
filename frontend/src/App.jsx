@@ -27,6 +27,7 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path ="/what_we_do" element={<Locations />} />
         <Route path ="/ethical" element={<EthicalReview />} />
+        {/* <Route path ="/resources" element={<Resources />} /> */}
       </Route>
     )
   );
