@@ -4,8 +4,6 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-// Images
 import sailesh from "../assets/sailesh.jpg";
 import sabita from "../assets/sabita.jpg";
 import sailendra from "../assets/sailendra.jpg";
@@ -75,7 +73,6 @@ export default function StaffSection() {
             nextEl: nextRef.current,
           }}
           onBeforeInit={(swiper) => {
-            // assign refs to Swiper params
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
           }}

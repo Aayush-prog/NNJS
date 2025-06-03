@@ -151,7 +151,7 @@ export default function Nav() {
         <NavLink to="/press" className="font-bold hover:text-accent">
           Press/Media
         </NavLink>
-        <NavLink to="/ethics" className="font-bold hover:text-accent">
+        <NavLink to="/ethical" className="font-bold hover:text-accent">
           Ethical Review
         </NavLink>
         <NavLink to="/contact" className="font-bold hover:text-accent">
