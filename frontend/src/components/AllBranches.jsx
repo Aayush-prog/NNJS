@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
+import { motion } from "framer-motion";
+
+// Define the fadeInUp animation variant
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
 
 // Dummy data for hospitals
 const dummyHospitals = [
@@ -18,6 +29,14 @@ const dummyHospitals = [
     phone: "071-522921",
     email: "contact@lumbinieye.com",
     website: "lumbinieye.com",
+    images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
+  },
+  {
+    name: "Sagarmatha Choudhary Eye Hospital",
+    address: "Lahan, Siraha",
+    phone: "033-560187",
+    email: "info@sceh.org.np",
+    website: "http://www.sceh.org.np",
     images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
   },
   {
@@ -139,26 +158,30 @@ export default function NNJSCombinedList({
 }) {
   // Hospital/Eye Center search and sort
   const [search, setSearch] = useState("");
-  // Add a list of common keywords
-  const keywordOptions = [
-    "Eye Hospital",
-    "Eye Center",
-    "President List",
-  ];
+  
+  // Replace keywords with category filter
+  const [activeCategory, setActiveCategory] = useState("all"); // "all", "hospitals", "centers", "presidents"
+  
   const [hospitalSortBy, setHospitalSortBy] = useState("name");
+  const [hospitalSortDirection, setHospitalSortDirection] = useState("asc");
   const [hospitalPage, setHospitalPage] = useState(1);
+  
   const [centerSortBy, setCenterSortBy] = useState("name");
-  const [centerSecondarySortBy, setCenterSecondarySortBy] = useState("district");
+  const [centerSortDirection, setCenterSortDirection] = useState("asc");
   const [centerPage, setCenterPage] = useState(1);
+  
   const [presidentSortBy, setPresidentSortBy] = useState("name");
+  const [presidentSortDirection, setPresidentSortDirection] = useState("asc");
   const [presidentPage, setPresidentPage] = useState(1);
 
   const itemsPerPage = 3;
 
-  // Multi-keyword search logic for hospitals
-  const hospitalKeywords = search.toLowerCase().split(" ").filter((kw) => kw.trim() !== "");
+  // Search and filter logic
+  const searchKeywords = search.toLowerCase().split(" ").filter((kw) => kw.trim() !== "");
+  
+  // Hospital filtering and sorting
   const filteredHospitals = hospitals.filter((h) =>
-    hospitalKeywords.every(
+    searchKeywords.every(
       (kw) =>
         (h.name && h.name.toLowerCase().includes(kw)) ||
         (h.address && h.address.toLowerCase().includes(kw)) ||
@@ -167,18 +190,17 @@ export default function NNJSCombinedList({
         (h.website && h.website.toLowerCase().includes(kw))
     )
   );
-  const sortedHospitals = [...filteredHospitals].sort((a, b) =>
-    (a[hospitalSortBy] || "").localeCompare(b[hospitalSortBy] || "")
-  );
+  
+  const sortedHospitals = sortByProperty(filteredHospitals, hospitalSortBy, hospitalSortDirection);
   const hospitalTotalPages = Math.ceil(sortedHospitals.length / itemsPerPage);
   const paginatedHospitals = sortedHospitals.slice(
     (hospitalPage - 1) * itemsPerPage,
     hospitalPage * itemsPerPage
   );
 
-  // Multi-keyword search logic for centers
+  // Centers filtering and sorting
   const filteredCenters = centers.filter((c) =>
-    hospitalKeywords.every(
+    searchKeywords.every(
       (kw) =>
         (c.name && c.name.toLowerCase().includes(kw)) ||
         (c.district && c.district.toLowerCase().includes(kw)) ||
@@ -186,20 +208,17 @@ export default function NNJSCombinedList({
         (c.contactNumber && c.contactNumber.toLowerCase().includes(kw))
     )
   );
-  const sortedCenters = [...filteredCenters].sort((a, b) => {
-    const primary = (a[centerSortBy] || "").localeCompare(b[centerSortBy] || "");
-    if (primary !== 0) return primary;
-    return (a[centerSecondarySortBy] || "").localeCompare(b[centerSecondarySortBy] || "");
-  });
+  
+  const sortedCenters = sortByProperty(filteredCenters, centerSortBy, centerSortDirection);
   const centerTotalPages = Math.ceil(sortedCenters.length / itemsPerPage);
   const paginatedCenters = sortedCenters.slice(
     (centerPage - 1) * itemsPerPage,
     centerPage * itemsPerPage
   );
 
-  // President list (now with search, sort/paginate)
+  // Presidents filtering and sorting
   const filteredPresidents = presidents.filter((p) =>
-    hospitalKeywords.every(
+    searchKeywords.every(
       (kw) =>
         (p.name && p.name.toLowerCase().includes(kw)) ||
         (p.district && p.district.toLowerCase().includes(kw)) ||
@@ -208,133 +227,299 @@ export default function NNJSCombinedList({
         (p.contactPerson && p.contactPerson.toLowerCase().includes(kw))
     )
   );
-  const sortedPresidents = [...filteredPresidents].sort((a, b) =>
-    (a[presidentSortBy] || "").localeCompare(b[presidentSortBy] || "")
-  );
+  
+  const sortedPresidents = sortByProperty(filteredPresidents, presidentSortBy, presidentSortDirection);
   const presidentTotalPages = Math.ceil(sortedPresidents.length / itemsPerPage);
   const paginatedPresidents = sortedPresidents.slice(
     (presidentPage - 1) * itemsPerPage,
     presidentPage * itemsPerPage
   );
 
+  // Sort options for each category
+  const hospitalSortOptions = [
+    { label: "Name", value: "name" },
+    { label: "Address", value: "address" },
+  ];
+  
+  const centerSortOptions = [
+    { label: "Name", value: "name" },
+    { label: "District", value: "district" },
+    { label: "Contact Person", value: "contactPerson" },
+  ];
+  
+  const presidentSortOptions = [
+    { label: "Name", value: "name" },
+    { label: "District", value: "district" },
+    { label: "Committee", value: "committee" },
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 space-y-16">
-      {/* Hospital/Eye Center Search Bar and Keyword Selector */}
-      <div className="mb-6 flex justify-center gap-2">
-        <input
-          type="text"
-          placeholder="Search hospitals or centers (e.g. 'eye Kathmandu')"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setHospitalPage(1);
-            setCenterPage(1);
-          }}
-          className="border border-gray-300 rounded px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <select
-          className="border border-gray-300 rounded px-2 py-2 bg-white"
-          defaultValue=""
-          onChange={e => {
-            if (e.target.value) {
-              setSearch(prev => prev ? prev + " " + e.target.value : e.target.value);
+    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8">
+      {/* Category Filter and Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+        {/* Category Filter */}
+        <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+          <button 
+            className={`px-4 py-2 rounded-md transition ${activeCategory === 'all' 
+              ? 'bg-support text-white font-medium' 
+              : 'hover:bg-gray-200'}`}
+            onClick={() => setActiveCategory('all')}
+          >
+            All
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-md transition ${activeCategory === 'hospitals' 
+              ? 'bg-support text-white font-medium' 
+              : 'hover:bg-gray-200'}`}
+            onClick={() => setActiveCategory('hospitals')}
+          >
+            Eye Hospitals
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-md transition ${activeCategory === 'centers' 
+              ? 'bg-support text-white font-medium' 
+              : 'hover:bg-gray-200'}`}
+            onClick={() => setActiveCategory('centers')}
+          >
+            Eye Centers
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-md transition ${activeCategory === 'presidents' 
+              ? 'bg-support text-white font-medium' 
+              : 'hover:bg-gray-200'}`}
+            onClick={() => setActiveCategory('presidents')}
+          >
+            Branches
+          </button>
+        </div>
+        
+        {/* Search Bar */}
+        <div className="w-full sm:w-auto flex-1 max-w-md">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
               setHospitalPage(1);
               setCenterPage(1);
-              e.target.value = "";
-            }
-          }}
-        >
-          <option value="" disabled>Add keyword</option>
-          {keywordOptions.map((kw, idx) => (
-            <option key={idx} value={kw}>{kw}</option>
-          ))}
-        </select>
+              setPresidentPage(1);
+            }}
+            className="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        
+        {/* Sort Dropdown - Changes based on active category */}
+        <div className="flex gap-2 items-center">
+          <span className="text-gray-700">Sort by:</span>
+          {activeCategory === 'all' || activeCategory === 'hospitals' ? (
+            <div className="flex gap-2 items-center">
+              <select
+                value={hospitalSortBy}
+                onChange={(e) => setHospitalSortBy(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-2"
+              >
+                {hospitalSortOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <button 
+                onClick={() => setHospitalSortDirection(hospitalSortDirection === 'asc' ? 'desc' : 'asc')}
+                className="p-1 rounded hover:bg-gray-200"
+              >
+                {hospitalSortDirection === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
+          ) : activeCategory === 'centers' ? (
+            <div className="flex gap-2 items-center">
+              <select
+                value={centerSortBy}
+                onChange={(e) => setCenterSortBy(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-2"
+              >
+                {centerSortOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <button 
+                onClick={() => setCenterSortDirection(centerSortDirection === 'asc' ? 'desc' : 'asc')}
+                className="p-1 rounded hover:bg-gray-200"
+              >
+                {centerSortDirection === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <select
+                value={presidentSortBy}
+                onChange={(e) => setPresidentSortBy(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-2"
+              >
+                {presidentSortOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <button 
+                onClick={() => setPresidentSortDirection(presidentSortDirection === 'asc' ? 'desc' : 'asc')}
+                className="p-1 rounded hover:bg-gray-200"
+              >
+                {presidentSortDirection === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* Conditional rendering based on active category */}
       {/* Hospitals Section */}
-      <section>
-        {/* <h2 className="text-2xl font-bold mb-4">Eye Hospitals</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {paginatedHospitals.map((h, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2">
+      {(activeCategory === 'all' || activeCategory === 'hospitals') && (
+        <section>
+          <h2 className="text-2xl font-bold mb-4">Eye Hospitals</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {paginatedHospitals.length > 0 ? paginatedHospitals.map((h, i) => (
+              <motion.div
+                key={i}
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
                 {h.images && (
-                <div className="mt-">
-                  <img src={h.images} alt={h.name} className="w-full h-48 object-cover rounded-lg" />
+                  <img
+                    src={h.images}
+                    alt={h.name}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">
+                    {h.name}
+                  </h3>
+                  {h.address && (
+                    <p className="text-sm text-gray-600 mb-3">
+                      {h.address}
+                    </p>
+                  )}
+                  <div className="text-gray-700 mb-4">
+                    {h.phone && <p><span className="font-semibold">Phone:</span> {h.phone}</p>}
+                    {h.email && <p><span className="font-semibold">Email:</span> {h.email}</p>}
+                  </div>
+                  {h.website && (
+                    <a
+                      href={h.website.startsWith('http') ? h.website : `http://${h.website}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary font-medium hover:text-accent transition-colors duration-colors inline-flex items-center"
+                    >
+                      Visit Website <span className="ml-1">→</span>
+                    </a>
+                  )}
                 </div>
-              )}
-              <h2 className="text-xl font-bold text-blue-900">{h.name}</h2>
-              {h.address && <p className="text-gray-700"><span className="font-semibold">Address:</span> {h.address}</p>}
-              {h.phone && <p className="text-gray-700"><span className="font-semibold">Phone:</span> {h.phone}</p>}
-              {h.email && <p className="text-gray-700"><span className="font-semibold">Email:</span> <a href={`mailto:${h.email}`} className="text-blue-600 underline">{h.email}</a></p>}
-              {h.website && <p className="text-gray-700"><span className="font-semibold">Website:</span> <a href={h.website.startsWith('http') ? h.website : `http://${h.website}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{h.website}</a></p>}
-              
-            </div>
-          ))}
-        </div>
-        {/* <Pagination
-          currentPage={hospitalPage}
-          totalPages={hospitalTotalPages}
-          onPageChange={setHospitalPage}
-        /> */}
-      </section>
+              </motion.div>
+            )) : (
+              <div className="col-span-3 text-center py-8">
+                <p className="text-gray-500">No hospitals found</p>
+              </div>
+            )}
+          </div>
+          {sortedHospitals.length > itemsPerPage && (
+            <Pagination
+              currentPage={hospitalPage}
+              totalPages={hospitalTotalPages}
+              onPageChange={setHospitalPage}
+            />
+          )}
+        </section>
+      )}
 
       {/* Eye Care Centers Section */}
-      <section>
-        {/* <h2 className="text-2xl font-bold mb-4">Eye Care Centers</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {paginatedCenters.map((center, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2">
-              <h2 className="text-xl font-bold text-blue-900">{center.name}</h2>
-              <p className="text-gray-700">
-                <span className="font-semibold">District:</span> {center.district}
-              </p>
-              {center.contactPerson && (
+      {(activeCategory === 'all' || activeCategory === 'centers') && (
+        <section>
+          <h2 className="text-2xl font-bold mb-4">Eye Care Centers</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {paginatedCenters.length > 0 ? paginatedCenters.map((center, i) => (
+              <motion.div 
+                key={i} 
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+                className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2"
+              >
+                <h2 className="text-xl font-bold text-blue-900">{center.name}</h2>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Contact Person:</span> {center.contactPerson}
+                  <span className="font-semibold">District:</span> {center.district}
                 </p>
-              )}
-              {center.contactNumber && (
-                <p className="text-gray-700">
-                  <span className="font-semibold">Contact Number:</span> {center.contactNumber}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-        {/* <Pagination
-          currentPage={centerPage}
-          totalPages={centerTotalPages}
-          onPageChange={setCenterPage}
-        /> */}
-      </section>
+                {center.contactPerson && (
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Contact Person:</span> {center.contactPerson}
+                  </p>
+                )}
+                {center.contactNumber && (
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Contact Number:</span> {center.contactNumber}
+                  </p>
+                )}
+              </motion.div>
+            )) : (
+              <div className="col-span-3 text-center py-8">
+                <p className="text-gray-500">No eye care centers found</p>
+              </div>
+            )}
+          </div>
+          {sortedCenters.length > itemsPerPage && (
+            <Pagination
+              currentPage={centerPage}
+              totalPages={centerTotalPages}
+              onPageChange={setCenterPage}
+            />
+          )}
+        </section>
+      )}
 
       {/* District Presidents Section */}
-      <section>
-        {/* <h2 className="text-2xl font-bold mb-4">District Presidents</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {paginatedPresidents.map((president, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center">
-              <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
-                {president.profilePic ? (
-                  <img src={president.profilePic} alt={president.name} className="w-20 h-20 rounded-full object-cover" />
-                ) : (
-                  "Profile Pic"
-                )}
+      {(activeCategory === 'all' || activeCategory === 'presidents') && (
+        <section>
+          <h2 className="text-2xl font-bold mb-4">Branches</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {paginatedPresidents.length > 0 ? paginatedPresidents.map((president, i) => (
+              <motion.div 
+                key={i} 
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+                className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
+              >
+                {/* <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
+                  {president.profilePic ? (
+                    <img src={president.profilePic} alt={president.name} className="w-20 h-20 rounded-full object-cover" />
+                  ) : (
+                    "Profile Pic"
+                  )}
+                </div> */}
+                <h2 className="text-lg font-bold text-blue-900">{president.district}</h2>
+                <p className="text-gray-700"><span className="font-semibold">President:</span> {president.name}</p>
+                <p className="text-gray-700"><span className="font-semibold">Committee:</span> {president.committee}</p>
+                <p className="text-gray-700"><span className="font-semibold">Contact:</span> {president.contact}</p>
+                <p className="text-gray-700"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
+              </motion.div>
+            )) : (
+              <div className="col-span-3 text-center py-8">
+                <p className="text-gray-500">No Branches found</p>
               </div>
-              <h2 className="text-lg font-bold text-blue-900">{president.name}</h2>
-              <p className="text-gray-700"><span className="font-semibold">District:</span> {president.district}</p>
-              <p className="text-gray-700"><span className="font-semibold">Committee:</span> {president.committee}</p>
-              <p className="text-gray-700"><span className="font-semibold">Contact:</span> {president.contact}</p>
-              <p className="text-gray-700"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
-            </div>
-          ))}
-        </div>
-        {/* <Pagination
-          currentPage={presidentPage}
-          totalPages={presidentTotalPages}
-          onPageChange={setPresidentPage}
-        /> */}
-      </section>
+            )}
+          </div>
+          {sortedPresidents.length > itemsPerPage && (
+            <Pagination
+              currentPage={presidentPage}
+              totalPages={presidentTotalPages}
+              onPageChange={setPresidentPage}
+            />
+          )}
+        </section>
+      )}
     </div>
   );
 }

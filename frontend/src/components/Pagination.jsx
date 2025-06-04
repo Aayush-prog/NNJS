@@ -15,7 +15,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       {[...Array(totalPages)].map((_, idx) => (
         <button
           key={idx}
-          className={`px-3 py-1 rounded ${currentPage === idx + 1 ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"}`}
+          className={`px-3 py-1 rounded ${currentPage === idx + 1 ? "bg-support text-white" : "bg-gray-200 hover:bg-gray-300"}`}
           onClick={() => onPageChange(idx + 1)}
         >
           {idx + 1}
