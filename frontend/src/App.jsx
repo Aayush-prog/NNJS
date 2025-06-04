@@ -13,7 +13,7 @@ import History from "./pages/History";
 import Team from "./pages/Team";
 import Locations from "./pages/Locations";
 import EthicalReview from "./pages/EthicalReview";
-import PressAndMedia from "./pages/PressAndMedia";
+import Resources from "./pages/Resources";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -26,10 +26,9 @@ function App() {
         <Route path="/partners" element={<Partners />} />
         <Route path="/history" element={<History />} />
         <Route path="/team" element={<Team />} />
-        <Route path ="/what_we_do" element={<Locations />} />
-        <Route path ="/ethical" element={<EthicalReview />} />
-        {/* <Route path ="/resources" element={<Resources />} /> */}
-        <Route path="/press" element={<PressAndMedia/>} />
+        <Route path="/what_we_do" element={<Locations />} />
+        <Route path="/ethical" element={<EthicalReview />} />
+        <Route path="/resources" element={<Resources />} />
       </Route>
     )
   );
