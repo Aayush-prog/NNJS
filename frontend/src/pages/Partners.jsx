@@ -103,12 +103,14 @@ export default function Partners() {
 
       <main>
         <div
-          className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${partnerImage})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-white text-center space-y-10">
-            <h1 className="text-6xl font-bold font-secondary">Partners</h1>
+          <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
+            <h1 className="text-4xl md:text-6xl font-bold font-secondary">
+              Partners
+            </h1>
           </div>
         </div>
         <motion.div
@@ -116,33 +118,36 @@ export default function Partners() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center h-[70vh] text-center space-y-5 bg-grey"
+          className="flex flex-col items-center justify-center py-12 md:h-[70vh] text-center space-y-5 bg-grey px-4"
         >
           <motion.h1
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-4xl font-bold text-primary font-secondary"
+            className="text-3xl md:text-4xl font-bold text-primary font-secondary"
           >
             Together, We Bring Vision to Life
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-l font-bold font-primary w-[55vw] leading-loose"
+            className="text-base font-bold font-primary w-full md:w-[75vw] lg:w-[55vw] leading-relaxed md:leading-loose"
           >
-            We’ve always believed that lasting change happens when we work
-            together.<br></br> Our partners help us reach more communities,
-            deliver critical eye care services, and share our story with the
-            world.<br></br> From local clinics to global supporters, every
-            partnership brings us one step closer to a Nepal where no one is
-            blind from avoidable causes.<br></br>
-            To all our partners — thank you. Your support, trust, and
-            collaboration make this journey possible.
+            We've always believed that lasting change happens when we work
+            together.
+            <br className="hidden md:block"></br> Our partners help us reach
+            more communities, deliver critical eye care services, and share our
+            story with the world.
+            <br className="hidden md:block"></br> From local clinics to global
+            supporters, every partnership brings us one step closer to a Nepal
+            where no one is blind from avoidable causes.
+            <br className="hidden md:block"></br> To all our partners — thank
+            you. Your support, trust, and collaboration make this journey
+            possible.
           </motion.p>
         </motion.div>
-        <div className="h-screen flex flex-col justify-center items-center space-y-30">
+        <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">
           <div className="flex flex-col justify-center items-center">
-            <h2 className="text-4xl font-bold text-primary font-secondary">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Partner Organizations
             </h2>
             <div className="w-full flex justify-center items-center">
@@ -150,18 +155,18 @@ export default function Partners() {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center">
-            <h2 className="text-4xl font-bold text-primary font-secondary">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Past Supporters
             </h2>
-            <div className="w-full flex justify-center items-center ">
+            <div className="w-full flex justify-center items-center">
               <LogoSlider logos={past} />
             </div>
           </div>
           {/* <div className="flex flex-col justify-center items-center">
-            <h2 className="text-4xl font-bold text-primary font-secondary">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Special Thanks
             </h2>
-            <div className="w-full flex justify-center items-center py-10">
+            <div className="w-full flex justify-center items-center py-8 md:py-10">
               <LogoSlider logos={special} />
             </div>
           </div> */}
@@ -174,7 +179,7 @@ export default function Partners() {
           className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp size={30} />
+          <FaArrowCircleUp size={24} md:size={30} />
         </button>
       )}
     </div>

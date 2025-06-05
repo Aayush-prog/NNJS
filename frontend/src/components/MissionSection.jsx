@@ -1,6 +1,6 @@
 import React from "react";
 import eye from "../assets/eye.jpg";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 export default function MissionSection() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
@@ -16,13 +16,13 @@ export default function MissionSection() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="bg-primary py-12 px-4  font-secondary"
+      className="bg-primary py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 font-secondary"
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
           variants={fadeInUp}
           viewport={{ once: true, amount: 0.2 }}
-          className="text-center text-4xl font-bold text-white mb-10"
+          className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 sm:mb-8 md:mb-10"
         >
           Our Mission
         </motion.h2>
@@ -30,9 +30,9 @@ export default function MissionSection() {
         <motion.div
           variants={fadeInUp}
           viewport={{ once: true, amount: 0.2 }}
-          className="bg-white rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-xl mb-16"
+          className="bg-white rounded-lg sm:rounded-xl md:rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-md sm:shadow-lg md:shadow-xl mb-8 sm:mb-12 md:mb-16"
         >
-          <div className="lg:w-1/2 w-full flex-shrink-0">
+          <div className="lg:w-1/2 w-full flex-shrink-0 h-[200px] sm:h-[250px] md:h-[300px] lg:h-auto">
             <img
               src={eye}
               alt="Team working together"
@@ -40,8 +40,8 @@ export default function MissionSection() {
             />
           </div>
 
-          <div className="lg:w-1/2 w-full p-8 lg:p-10 flex items-center">
-            <p className=" text-xl leading-relaxed font-primary">
+          <div className="lg:w-1/2 w-full p-4 sm:p-6 md:p-8 lg:p-10 flex items-center">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-primary">
               To develop and provide high quality, sustainable, comprehensive
               and affordable eye care service network in the country by
               identifying and mobilizing local, national and international

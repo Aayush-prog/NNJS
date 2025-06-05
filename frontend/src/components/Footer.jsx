@@ -5,15 +5,15 @@ import { FaFacebook, FaYoutube, FaGoogle } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col h-screen  justify-center items-center bg-[#0A142F] text-white py-12">
+    <footer className="flex flex-col min-h-[500px] md:min-h-[600px] justify-center items-center bg-[#0A142F] text-white py-8 md:py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center space-y-8">
-          <h1 className="text-3xl font-secondary">तमसोमा ज्योतिर्गमय</h1>
+        <div className="text-center space-y-6 md:space-y-8">
+          <h1 className="text-2xl md:text-3xl font-secondary">तमसोमा ज्योतिर्गमय</h1>
           <DonateButton aria-label="Donate to support our cause" />
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-6 md:mt-8 text-sm md:text-base">
             <div>
-              <h2 className="font-bold mb-2 text-lg" id="quick-links-heading">
+              <h2 className="font-bold mb-2 text-base md:text-lg" id="quick-links-heading">
                 QUICK LINKS
               </h2>
               <ul aria-labelledby="quick-links-heading" className="space-y-1">
@@ -48,7 +48,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h2 className="font-bold mb-2 text-lg" id="what-we-do-heading">
+              <h2 className="font-bold mb-2 text-base md:text-lg" id="what-we-do-heading">
                 WHAT WE DO
               </h2>
               <ul aria-labelledby="what-we-do-heading" className="space-y-1">
@@ -86,7 +86,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h2 className="font-bold mb-2 text-lg" id="employee-heading">
+              <h2 className="font-bold mb-2 text-base md:text-lg" id="employee-heading">
                 EMPLOYEE
               </h2>
               <ul aria-labelledby="employee-heading" className="space-y-1">
@@ -108,7 +108,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h2 className="font-bold mb-2 text-lg" id="talk-to-us-heading">
+              <h2 className="font-bold mb-2 text-base md:text-lg" id="talk-to-us-heading">
                 TALK TO US
               </h2>
               <ul aria-labelledby="talk-to-us-heading" className="space-y-1">
@@ -153,12 +153,12 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="border-t border-gray-600 m-20"></div>
+          <div className="border-t border-gray-600 my-8 md:my-16"></div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mx-20">
-            <img src={Logo} alt="NNJS Logo" className="h-12" />
-            <p>© {new Date().getFullYear()} NNJS. All Rights Reserved.</p>
-            <div className="flex space-x-5 text-3xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-2 md:px-16">
+            <img src={Logo} alt="NNJS Logo" className="h-10 md:h-12 mb-4 md:mb-0" />
+            <p className="text-sm md:text-base">© {new Date().getFullYear()} NNJS. All Rights Reserved.</p>
+            <div className="flex space-x-5 text-2xl md:text-3xl mt-4 md:mt-0">
               <a
                 href="https://www.facebook.com"
                 aria-label="Visit our Facebook page"

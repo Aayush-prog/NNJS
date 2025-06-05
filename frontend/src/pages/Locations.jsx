@@ -15,7 +15,7 @@ import AllBranches from "../components/AllBranches";
 
 
 export default function Locations() {
-  const [selectedLists, setSelectedLists] = useState(["hospital"]); // array for multiple selections
+  const [selectedLists, setSelectedLists] = useState(["hospital"]); 
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function Locations() {
   };
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Nav />
       <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50">
        
@@ -73,12 +73,12 @@ export default function Locations() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="relative h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        className="relative h-[50vh] sm:h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${for_location_page})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-white text-center space-y-10">
-          <h1 className="text-6xl font-bold font-secondary ">
+        <div className="relative z-10 text-white text-center px-4 space-y-5 sm:space-y-10">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
             Hospitals and Eye Care Centers
           </h1>
           
@@ -86,37 +86,57 @@ export default function Locations() {
         
       </motion.div>
       <div className="max-w-7xl mx-auto px-4 py-5">
-        <img src={eye_hospital} alt="Eye Hospital" />
+        <img 
+          src={eye_hospital} 
+          alt="Eye Hospital" 
+          className="w-full h-auto"
+        />
       </div>
 
-      {/* Selection Buttons */}
-      {/* <div className="flex justify-center gap-4 mb-8">
+      {/* Selection Buttons - Commented out in original code */}
+      {/* <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
         <button
-          className={`px-4 py-2 rounded ${selectedLists.includes("hospital") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("hospital") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
           onClick={() => toggleList("hospital")}
         >
           Eye Hospitals
         </button>
         <button
-          className={`px-4 py-2 rounded ${selectedLists.includes("care") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("care") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
           onClick={() => toggleList("care")}
         >
           Eye Care Centers
         </button>
         <button
-          className={`px-4 py-2 rounded ${selectedLists.includes("president") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("president") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
           onClick={() => toggleList("president")}
         >
           District Presidents
         </button>
       </div> */}
 
-      {/* Conditionally Render Lists */}
+      {/* Conditionally Render Lists - Commented out in original code */}
       {/* {selectedLists.includes("hospital") && <EyeHospitalList />}
       {selectedLists.includes("care") && <EyeCareCenterList />}
       {selectedLists.includes("president") && <DistrictPresidentList />} */}
-      <AllBranches />
+      
+      <div className="px-4 sm:px-6 md:px-8">
+        <AllBranches />
+      </div>
+      
       <Footer />
+      
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-50"
+          aria-label="Scroll to top"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
     </div>
   );  
 }

@@ -45,6 +45,7 @@ const data = [
 
 const ResourcesSection = () => {
   const [activeGroup, setActiveGroup] = useState("Notices & Reports");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const activeCategories =
     categories.find((cat) => cat.group === activeGroup)?.includes || [];
@@ -53,40 +54,89 @@ const ResourcesSection = () => {
     activeCategories.includes(item.category)
   );
 
+  // Function to handle category selection and close dropdown on mobile
+  const handleCategorySelect = (group) => {
+    setActiveGroup(group);
+    setMenuOpen(false);
+  };
+
   return (
-    <div className="px-24 mt-1 mx-auto">
-      <div className="grid grid-cols-2 md:grid-cols-4 border-b border-gray-300 text-center items-center mb-4">
+    <div className="px-4 sm:px-6 md:px-12 lg:px-24 mt-1 mx-auto">
+      {/* Mobile view - Dropdown for categories */}
+      <div className="md:hidden mb-4">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="w-full flex justify-between items-center px-4 py-3 bg-white border border-gray-300 rounded-lg text-left"
+        >
+          <span className="font-secondary font-semibold text-primary">
+            {activeGroup}
+          </span>
+          <svg
+            className={`w-5 h-5 transition-transform ${
+              menuOpen ? "transform rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {menuOpen && (
+          <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+            {categories.map(({ group }) => (
+              <button
+                key={group}
+                onClick={() => handleCategorySelect(group)}
+                className={`block w-full text-left px-4 py-3 hover:bg-gray-100 ${
+                  activeGroup === group ? "bg-blue-50 text-blue-600" : ""
+                }`}
+              >
+                {group}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop view - Tabs for categories */}
+      <div className="hidden md:grid md:grid-cols-4 border-b border-gray-300 text-center items-center mb-4">
         {categories.map(({ group }) => (
           <button
             key={group}
             onClick={() => setActiveGroup(group)}
-            className={`py-6 text-sm border-b-2 transition font-secondary font-semibold ${
+            className={`py-3 md:py-6 text-xs md:text-sm border-b-2 transition font-secondary font-semibold ${
               activeGroup === group
                 ? "text-blue-600 border-blue-600 pb-[11px]"
                 : "text-gray-700 border-transparent hover:text-blue-600 pb-3"
-            }${activeGroup === group ? "pb-[11px]" : "pb-3"}`}
-            // style={{ marginBottom: activeGroup === group ? "-3px" : "0" }}
+            }`}
           >
             {group}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 p-2 sm:p-4 md:p-8">
         {filteredResources.length > 0 ? (
           filteredResources.map((item) => (
             <div
               key={item.id}
-              className="bg-white shadow-lg rounded-xl p-5 hover:shadow-xl transition h-[150px] flex flex-col justify-between"
+              className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto md:h-[150px] flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <FileText className="w-7 h-7 text-blue-500" />
-                  <h3 className="text-lg font-semibold text-primary font-secondary">
+                <div className="flex items-center gap-1 md:gap-2 mb-2">
+                  <FileText className="w-5 h-5 md:w-7 md:h-7 text-blue-500 flex-shrink-0" />
+                  <h3 className="text-base md:text-lg font-semibold text-primary font-secondary line-clamp-1">
                     {item.title}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-600 font-primary line-clamp-3 leading-relaxed">
+                <p className="text-xs md:text-sm text-gray-600 font-primary line-clamp-2 md:line-clamp-3 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -96,16 +146,16 @@ const ResourcesSection = () => {
                   href={item.fileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 text-sm font-primary flex items-center hover:underline mt-4"
+                  className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"
                 >
-                  <Download className="w-4 h-4 mr-1" />
+                  <Download className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                   Download PDF
                 </a>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-full">
+          <p className="text-center text-gray-500 col-span-full py-8">
             No resources available in this category.
           </p>
         )}
