@@ -21,4 +21,4 @@ const eyeHospitalSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("eyeHospitals", eyeHospitalSchema);
+module.exports = mongoose.model("EyeHospitals", eyeHospitalSchema);

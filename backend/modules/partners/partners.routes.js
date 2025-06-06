@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createPartner = require("./controllers/createPartner");
+const getPartners = require("./controllers/getPartners");
+const getPartnerById = require("./controllers/getPartnerById");
+const delPartner = require("./controllers/delPartner");
+const editPartner = require("./controllers/editPartner");
+const upload = require("../../middleware/upload");
+const partnersRouter = express.Router();
+partnersRouter.get("/", getPartners);
+partnersRouter.get("/:partnerId", getPartnerById);
+partnersRouter.post("/create", upload, createPartner);
+partnersRouter.delete("/del/:partnerId", delPartner);
+partnersRouter.patch("/edit/:partnerId", upload, editPartner);
+module.exports = partnersRouter;

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const createCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const {} = req.body;
+  const { title, body, image } = req.body;
   try {
-    const newCommitment = await CommitmentModel.create({});
+    const newCommitment = await CommitmentModel.create({ title, body, image });
     res.satus(201).json({
       status: "success",
       message: "Commitments created successfully",

@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createFounder = require("./controllers/createStaff");
+const getStaff = require("./controllers/getStaff");
+const getStaffById = require("./controllers/getStaffById");
+const delFounder = require("./controllers/delStaff");
+const editFounder = require("./controllers/editStaff");
+const founderRouter = express.Router();
+founderRouter.get("/", getStaff);
+founderRouter.get("/:founderId", getStaffById);
+founderRouter.post("/create", createFounder);
+founderRouter.delete("/del/:founderId", delFounder);
+founderRouter.patch("/edit/:founderId", editFounder);
+module.exports = founderRouter;

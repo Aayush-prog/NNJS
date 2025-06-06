@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createFounder = require("./controllers/createFounder");
+const getFounders = require("./controllers/getFounders");
+const getFoundersById = require("./controllers/getEyeCareCenterById");
+const delFounder = require("./controllers/delFounder");
+const editFounder = require("./controllers/editFounder");
+const founderRouter = express.Router();
+founderRouter.get("/", getFounders);
+founderRouter.get("/:founderId", getFoundersById);
+founderRouter.post("/create", createFounder);
+founderRouter.delete("/del/:founderId", delFounder);
+founderRouter.patch("/edit/:founderId", editFounder);
+module.exports = founderRouter;

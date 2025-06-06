@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createTimestone = require("./controllers/createTimestone");
+const getTimestone = require("./controllers/getTimestone");
+const getTimestoneById = require("./controllers/getTimestoneById");
+const delTimestone = require("./controllers/delTimestone");
+const editTimestone = require("./controllers/editTimestone");
+const upload = require("../../middleware/upload");
+const timestoneRouter = express.Router();
+timestoneRouter.get("/", getTimestone);
+timestoneRouter.get("/:timestoneId", getTimestoneById);
+timestoneRouter.post("/create", upload, createTimestone);
+timestoneRouter.delete("/del/:timestoneId", delTimestone);
+timestoneRouter.patch("/edit/:timestoneId", upload, editTimestone);
+module.exports = timestoneRouter;

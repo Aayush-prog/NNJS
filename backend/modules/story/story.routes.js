@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createStory = require("./controllers/createStory");
+const getStory = require("./controllers/getStory");
+const getStoryById = require("./controllers/getStoryById");
+const delStory = require("./controllers/delStory");
+const editStory = require("./controllers/editStory");
+const upload = require("../../middleware/upload");
+const storyRouter = express.Router();
+storyRouter.get("/", getStory);
+storyRouter.get("/:storyId", getStoryById);
+storyRouter.post("/create", upload, createStory);
+storyRouter.delete("/del/:storyId", delStory);
+storyRouter.patch("/edit/:storyId", upload, editStory);
+module.exports = storyRouter;

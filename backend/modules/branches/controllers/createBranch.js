@@ -1,9 +1,17 @@
 const mongoose = require("mongoose");
 const createBranch = async (req, res) => {
   const BranchModel = mongoose.model("Branches");
-  const {} = req.body;
+  const { contactPerson, phone, president, district, image, committee } =
+    req.body;
   try {
-    const newBranch = await BranchModel.create({});
+    const newBranch = await BranchModel.create({
+      contactPerson,
+      phone,
+      president,
+      district,
+      image,
+      committee,
+    });
     res.satus(201).json({
       status: "success",
       message: "Branches created successfully",

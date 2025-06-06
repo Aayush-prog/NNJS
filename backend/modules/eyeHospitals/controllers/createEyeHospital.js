@@ -1,9 +1,39 @@
 const mongoose = require("mongoose");
 const createEyeHospital = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
-  const {} = req.body;
+  const {
+    title,
+    body,
+    phone,
+    email,
+    website,
+    address,
+    image,
+    aim,
+    coverageArea,
+    availableServices,
+    communityServices,
+    futurePlans,
+    totalOPD,
+    totalSurgery,
+  } = req.body;
   try {
-    const newEyeHospital = await EyeHospitalModel.create({});
+    const newEyeHospital = await EyeHospitalModel.create({
+      title,
+      body,
+      phone,
+      email,
+      website,
+      address,
+      image,
+      aim,
+      coverageArea,
+      availableServices,
+      communityServices,
+      futurePlans,
+      totalOPD,
+      totalSurgery,
+    });
     res.satus(201).json({
       status: "success",
       message: "EyeHospitals created successfully",

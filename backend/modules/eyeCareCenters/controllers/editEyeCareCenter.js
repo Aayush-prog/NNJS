@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const editEyeCareCenter = async (req, res) => {
   const EyeCareCenterModel = mongoose.model("EyeCareCenters");
-  const {} = req.body;
+  const { title, body, district, contactNum, contactPerson, image } = req.body;
   const { eyeCareCenterId } = req.params;
   try {
     const eyeCareCenter = await EyeCareCenterModel.findById(eyeCareCenterId);
@@ -13,7 +13,7 @@ const editEyeCareCenter = async (req, res) => {
     }
     const updatedEyeCareCenter = await EyeCareCenterModel.findByIdAndUpdate(
       eyeCareCenterId,
-      {}
+      { title, body, district, contactNum, contactPerson, image }
     );
     res.satus(201).json({
       status: "success",

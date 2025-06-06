@@ -1,0 +1,59 @@
+const mongoose = require("mongoose");
+const editEyeHospital = async (req, res) => {
+  const EyeHospitalModel = mongoose.model("EyeHospitals");
+  const {
+    title,
+    body,
+    phone,
+    email,
+    website,
+    address,
+    image,
+    aim,
+    coerageArea,
+    availableServices,
+    communityServices,
+    futurePlans,
+    totalOPD,
+    totalSurgery,
+  } = req.body;
+  const { eyeHospitalId } = req.params;
+  try {
+    const eyeHospital = await EyeHospitalModel.findById(eyeHospitalId);
+    if (!eyeHospital) {
+      return res.status(404).json({
+        status: "error",
+        message: "EyeHospitals not found",
+      });
+    }
+    const updatedEyeHospital = await EyeHospitalModel.findByIdAndUpdate(
+      eyeHospitalId,
+      {
+        title,
+        body,
+        phone,
+        email,
+        website,
+        address,
+        image,
+        aim,
+        coerageArea,
+        availableServices,
+        communityServices,
+        futurePlans,
+        totalOPD,
+        totalSurgery,
+      }
+    );
+    res.satus(201).json({
+      status: "success",
+      message: "EyeHospitals updated successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: error.message || error,
+    });
+  }
+};
+module.exports = editEyeHospital;

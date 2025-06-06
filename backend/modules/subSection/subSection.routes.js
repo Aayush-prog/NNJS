@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createSubSection = require("./controllers/createSubSection");
+const getSubSection = require("./controllers/getSubSection");
+const getSubSectionById = require("./controllers/getSubSectionById");
+const delSubSection = require("./controllers/delSubSection");
+const editSubSection = require("./controllers/editSubSection");
+const upload = require("../../middleware/upload");
+const subSectionRouter = express.Router();
+subSectionRouter.get("/", getSubSection);
+subSectionRouter.get("/:eyeCareCenterId", getSubSectionById);
+subSectionRouter.post("/create", upload, createSubSection);
+subSectionRouter.delete("/del/:eyeCareCenterId", delSubSection);
+subSectionRouter.patch("/edit/:eyeCareCenterId", upload, editSubSection);
+module.exports = subSectionRouter;

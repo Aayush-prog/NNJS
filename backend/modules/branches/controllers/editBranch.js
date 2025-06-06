@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const editBranch = async (req, res) => {
   const BranchModel = mongoose.model("Branches");
-  const {} = req.body;
+  const { contactPerson, phone, president, district, image, committee } =
+    req.body;
   const { branchId } = req.params;
   try {
     const branch = await BranchModel.findById(branchId);
@@ -11,7 +12,14 @@ const editBranch = async (req, res) => {
         message: "Branches not found",
       });
     }
-    const updatedBranch = await BranchModel.findByIdAndUpdate(branchId, {});
+    const updatedBranch = await BranchModel.findByIdAndUpdate(branchId, {
+      contactPerson,
+      phone,
+      president,
+      district,
+      image,
+      committee,
+    });
     res.satus(201).json({
       status: "success",
       message: "Branches updated successfully",
