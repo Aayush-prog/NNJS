@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createValue = async (req, res) => {
   const ValueModel = mongoose.model("Values");
-  const { title, body, image } = req.body;
+  const { title, body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newValue = await ValueModel.create({ title, body, image });
     res.satus(201).json({

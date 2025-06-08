@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const { title, body, image } = req.body;
+  const { title, body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newCommitment = await CommitmentModel.create({ title, body, image });
     res.satus(201).json({

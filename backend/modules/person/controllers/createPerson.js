@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createPerson = async (req, res) => {
   const Person = mongoose.model("Person");
-  const { name, designation, body, duration, image, type } = req.body;
+  const { name, designation, body, duration, type } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newPerson = await Person.create({
       name,

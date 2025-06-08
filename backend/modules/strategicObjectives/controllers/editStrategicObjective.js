@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editStrategicObjective = async (req, res) => {
   const StrategicObjectiveModel = mongoose.model("StrategicObjectives");
-  const { title, body, image } = req.body;
+  const { title, body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   const { strategicObjectiveId } = req.params;
   try {
     const strategicObjective = await StrategicObjectiveModel.findById(

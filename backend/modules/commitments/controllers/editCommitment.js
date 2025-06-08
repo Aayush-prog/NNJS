@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const { title, body, image } = req.body;
+  const { title, body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   const { commitmentId } = req.params;
   try {
     const commitment = await CommitmentModel.findById(commitmentId);
