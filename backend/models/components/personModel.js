@@ -6,6 +6,11 @@ const personSchema = new mongoose.Schema(
     body: { type: String, required: true },
     duration: { type: String },
     image: { type: String },
+    type: {
+      type: String,
+      enum: ["Past", "Current", "Founder"],
+      required: true,
+    },
   },
   { timestamps: true }
 );
