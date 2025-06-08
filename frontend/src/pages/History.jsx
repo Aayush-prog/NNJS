@@ -59,19 +59,19 @@ export default function History() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.05 }}
           className="items-center justify-center flex flex-col text-center py-10 sm:py-16 md:py-24 bg-blue-50 px-4 sm:px-6"
         >
           <motion.h1
             variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.05 }}
             className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-2 sm:p-3 md:p-5"
           >
             Our History
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.05 }}
             className="text-sm sm:text-base md:text-lg lg:text-xl font-primary max-w-6xl mx-auto"
           >
             Motivated by the urgent need to address preventable blindness and
@@ -92,19 +92,19 @@ export default function History() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.05 }}
           className="flex flex-col items-start py-10 sm:py-16 md:py-24 bg-blue-50 px-4 sm:px-6 md:px-12 lg:px-24"
         >
           <motion.h1
             variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.05 }}
             className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-3 sm:mb-4 md:mb-6"
           >
             Our story is still unfolding.
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.05 }}
             className="text-sm sm:text-base md:text-lg lg:text-xl font-primary text-left"
           >
             What began as a vision among a few compassionate pioneers in 1978
@@ -129,7 +129,10 @@ export default function History() {
           className="fixed bottom-3 sm:bottom-4 md:bottom-5 right-3 sm:right-4 md:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp size={20} className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
+          <FaArrowCircleUp
+            size={20}
+            className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
+          />
         </button>
       )}
     </div>

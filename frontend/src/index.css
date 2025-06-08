@@ -27,3 +27,6 @@
 .active {
   color: #d32f2f;
 }
+summary::-webkit-details-marker {
+  display: none;
+}
