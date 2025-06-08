@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const createBank = async (req, res) => {
   const BankModel = mongoose.model("Bank");
-  const {} = req.body;
+  const { accName, accNum, bank, swiftCode } = req.body;
   try {
-    const newBank = await BankModel.create({});
+    const newBank = await BankModel.create({
+      accName,
+      accNum,
+      bank,
+      swiftCode,
+    });
     res
       .satus(201)
       .json({ status: "success", message: "Bank created successfully" });

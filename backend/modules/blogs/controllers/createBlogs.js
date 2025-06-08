@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const createBlog = async (req, res) => {
   const BlogModel = mongoose.model("Blogs");
-  const {} = req.body;
+  const { title, body } = req.body;
   try {
-    const newBlog = await BlogModel.create({});
+    const newBlog = await BlogModel.create({ title, body });
     res.satus(201).json({
       status: "success",
       message: "Blogs created successfully",

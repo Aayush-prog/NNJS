@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const editCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const {} = req.body;
+  const { title, body, image } = req.body;
   const { commitmentId } = req.params;
   try {
     const commitment = await CommitmentModel.findById(commitmentId);
@@ -13,7 +13,7 @@ const editCommitment = async (req, res) => {
     }
     const updatedCommitment = await CommitmentModel.findByIdAndUpdate(
       commitmentId,
-      {}
+      { title, body, image }
     );
     res.satus(201).json({
       status: "success",

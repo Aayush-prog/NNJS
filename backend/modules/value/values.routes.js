@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createValue = require("./controllers/createValue");
+const getValue = require("./controllers/getValue");
+const getValueById = require("./controllers/getValueById");
+const delValue = require("./controllers/delValue");
+const editValue = require("./controllers/editValue");
+const upload = require("../../middleware/upload");
+const valueRouter = express.Router();
+valueRouter.get("/", getValue);
+valueRouter.get("/:valueId", getValueById);
+valueRouter.post("/create", upload, createValue);
+valueRouter.delete("/del/:valueId", delValue);
+valueRouter.patch("/edit/:valueId", upload, editValue);
+module.exports = valueRouter;

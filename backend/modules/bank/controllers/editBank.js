@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const editBank = async (req, res) => {
   const BankModel = mongoose.model("Bank");
-  const {} = req.body;
+  const { accName, accNum, bank, swiftCode } = req.body;
   const { bankId } = req.params;
   try {
     const bank = await JobModel.findById(bankId);
@@ -11,7 +11,12 @@ const editBank = async (req, res) => {
         message: "Bank not found",
       });
     }
-    const updatedBank = await BankModel.findByIdAndUpdate(bankId, {});
+    const updatedBank = await BankModel.findByIdAndUpdate(bankId, {
+      accName,
+      accNum,
+      bank,
+      swiftCode,
+    });
     res
       .satus(201)
       .json({ status: "success", message: "Bank updated successfully" });

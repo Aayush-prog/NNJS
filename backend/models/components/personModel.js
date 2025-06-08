@@ -5,7 +5,7 @@ const personSchema = new mongoose.Schema(
     designation: { type: String, required: true },
     body: { type: String, required: true },
     duration: { type: String },
-    img: { type: String },
+    image: { type: String },
   },
   { timestamps: true }
 );

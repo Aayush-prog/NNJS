@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const editBlog = async (req, res) => {
   const BlogModel = mongoose.model("Blogs");
-  const {} = req.body;
+  const { title, body } = req.body;
   const { blogId } = req.params;
   try {
     const blog = await BlogModel.findById(blogId);
@@ -11,7 +11,10 @@ const editBlog = async (req, res) => {
         message: "Blogs not found",
       });
     }
-    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, {});
+    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, {
+      title,
+      body,
+    });
     res.satus(201).json({
       status: "success",
       message: "Blogs updated successfully",

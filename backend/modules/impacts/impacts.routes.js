@@ -1,0 +1,17 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createImpacts = require("./controllers/createImpacts");
+const getImpacts = require("./controllers/getImpacts");
+const getImpactById = require("./controllers/getImpactById");
+const delImpacts = require("./controllers/delImpacts");
+const editImpacts = require("./controllers/editImpacts");
+const delImpacts = require("./controllers/delImpacts");
+const editImpacts = require("./controllers/editImpacts");
+const upload = require("../../middleware/upload");
+const impactsRouter = express.Router();
+impactsRouter.get("/", getImpacts);
+impactsRouter.get("/:impactId", getImpactById);
+impactsRouter.post("/create", upload, createImpacts);
+impactsRouter.delete("/del/:impactId", delImpacts);
+impactsRouter.patch("/edit/:impactId", upload, editImpacts);
+module.exports = impactsRouter;

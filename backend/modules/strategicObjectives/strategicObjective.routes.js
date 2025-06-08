@@ -1,0 +1,25 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createEyeCareCenter = require("./controllers/createEyeCareCenter");
+const getStrategicObjective = require("./controllers/getStrategicObjective");
+const getStrategicObjectiveById = require("./controllers/getStrategicObjectiveById");
+const delStrategicObjective = require("./controllers/delStrategicObjective");
+const editStrategicObjective = require("./controllers/editStrategicObjective");
+const upload = requie("../../middleware/upload");
+const strategicObjectiveRouter = express.Router();
+strategicObjectiveRouter.get("/", getStrategicObjective);
+strategicObjectiveRouter.get(
+  "/:strategicObjectiveId",
+  getStrategicObjectiveById
+);
+strategicObjectiveRouter.post("/create", upload, createEyeCareCenter);
+strategicObjectiveRouter.delete(
+  "/del/:strategicObjectiveId",
+  delStrategicObjective
+);
+strategicObjectiveRouter.patch(
+  "/edit/:strategicObjectiveId",
+  upload,
+  editStrategicObjective
+);
+module.exports = strategicObjectiveRouter;
