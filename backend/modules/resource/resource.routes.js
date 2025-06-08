@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createResource = require("./controllers/createResource");
+const getResource = require("./controllers/getResource");
+const getResourceById = require("./controllers/getResourceById");
+const delResource = require("./controllers/delResource");
+const editResource = require("./controllers/editResource");
+const upload = require("../../middleware/upload");
+const impactsRouter = express.Router();
+impactsRouter.get("/", getResource);
+impactsRouter.get("/:resourceId", getResourceById);
+impactsRouter.post("/create", upload, createResource);
+impactsRouter.delete("/del/:resourceId", delResource);
+impactsRouter.patch("/edit/:resourceId", upload, editResource);
+module.exports = impactsRouter;

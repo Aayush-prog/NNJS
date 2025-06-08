@@ -4,8 +4,7 @@ const path = require("path");
 // Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const folder =
-      file.fieldname === "image" ? "public/profile-pictures" : "public/resumes";
+    const folder = "public/images";
     cb(null, folder); // Ensure these directories exist
   },
   filename: function (req, file, cb) {
@@ -18,10 +17,7 @@ const upload = multer({ storage: storage });
 
 // Middleware for handling profile picture and CV uploads
 const uploadMiddleware = (req, res, next) => {
-  const uploadFields = upload.fields([
-    { name: "image", maxCount: 1 }, // Single profile picture
-    { name: "resume", maxCount: 1 }, // Single CV
-  ]);
+  const uploadFields = upload.fields([{ name: "image", maxCount: 1 }]);
 
   uploadFields(req, res, function (err) {
     if (err instanceof multer.MulterError) {
