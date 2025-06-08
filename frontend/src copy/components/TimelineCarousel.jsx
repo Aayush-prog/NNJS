@@ -102,12 +102,12 @@ const TimelineCarousel = () => {
       variants={fadeInUp}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.05 }}
+      viewport={{ once: true, amount: 0.2 }}
       className="py-8 sm:py-12 md:py-16 px-4 max-w-7xl mx-auto"
     >
       <motion.h2
         variants={fadeInUp}
-        viewport={{ once: true, amount: 0.05 }}
+        viewport={{ once: true, amount: 0.2 }}
         className="text-2xl sm:text-3xl md:text-4xl font-secondary font-bold text-center text-primary mb-6 sm:mb-8 md:mb-12"
       >
         Our Journey Through Time
@@ -115,7 +115,7 @@ const TimelineCarousel = () => {
 
       <motion.div
         variants={fadeInUp}
-        viewport={{ once: true, amount: 0.05 }}
+        viewport={{ once: true, amount: 0.2 }}
         className="relative"
       >
         <button

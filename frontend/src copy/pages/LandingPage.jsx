@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import HeroSection from "../components/HeroSection";
+import DonateButton from "../components/DonateButton";
 import { motion } from "framer-motion";
 import {
   FaArrowCircleUp,
@@ -40,21 +40,27 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="">
+    // The "overflow-x-hidden" class was removed from this div to fix the double scrollbar.
+    <div>
       <Nav />
 
       <main>
-        <HeroSection
-          image={heroImage}
-          heading="Let There Be Sight."
-          subheading="Bringing vision and hope to the people of Nepal through quality eye care services"
-        />
-        {/* <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        ></motion.div> */}
+        <div
+          className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        >
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="relative z-10 text-white text-center px-4 space-y-4 sm:space-y-6 md:space-y-10">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary leading-tight">
+              Let There Be Sight.
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary">
+              Bringing vision and hope to the people of Nepal through quality
+              eye care services
+            </p>
+            <DonateButton />
+          </div>
+        </div>
 
         <motion.div
           variants={fadeInUp}
@@ -198,7 +204,7 @@ export default function LandingPage() {
           </motion.section>
         </motion.div>
       </main>
-
+      
       <motion.div
         variants={fadeInUp}
         initial="hidden"
@@ -214,10 +220,7 @@ export default function LandingPage() {
           className="fixed bottom-3 sm:bottom-4 md:bottom-5 right-3 sm:right-4 md:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp
-            size={20}
-            className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
-          />
+          <FaArrowCircleUp size={20} className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
         </button>
       )}
     </div>

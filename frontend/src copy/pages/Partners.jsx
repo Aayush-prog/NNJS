@@ -134,13 +134,15 @@ export default function Partners() {
           >
             We've always believed that lasting change happens when we work
             together.
-            <br></br> Our partners help us reach more communities, deliver
-            critical eye care services, and share our story with the world.
-            <br></br> From local clinics to global supporters, every partnership
-            brings us one step closer to a Nepal where no one is blind from
-            avoidable causes.
-            <br></br> To all our partners — thank you. Your support, trust, and
-            collaboration make this journey possible.
+            <br className="hidden md:block"></br> Our partners help us reach
+            more communities, deliver critical eye care services, and share our
+            story with the world.
+            <br className="hidden md:block"></br> From local clinics to global
+            supporters, every partnership brings us one step closer to a Nepal
+            where no one is blind from avoidable causes.
+            <br className="hidden md:block"></br> To all our partners — thank
+            you. Your support, trust, and collaboration make this journey
+            possible.
           </motion.p>
         </motion.div>
         <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">

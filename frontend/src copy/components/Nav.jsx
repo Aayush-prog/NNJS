@@ -72,10 +72,10 @@ export default function Nav() {
               className="w-14 h-14 mr-4 sm:w-16 sm:h-16"
             />
             <div>
-              <h1 className="font-semibold text-lg sm:text-9xl md:text-2xl lg:text-3xl xl:text-4xl font-secondary leading-tight">
+              <h1 className="font-semibold text-2xl sm:text-3xl lg:text-4xl font-secondary">
                 Nepal Netra Jyoti Sangh
               </h1>
-              <p className="sm:text-xs md:text-sm lg:text-lg leading-snug">
+              <p className="text-sm sm:text-base">
                 National Society for Comprehensive Eye Care
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function Nav() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="lg:hidden fixed top-20 left-0 right-0 bg-white text-black shadow-inner px-6 pt-4 pb-8 space-y-4 font-bold text-base z-50"
+            className="lg:hidden bg-white text-black shadow-inner px-6 pt-4 pb-8 space-y-4 font-bold text-base"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}

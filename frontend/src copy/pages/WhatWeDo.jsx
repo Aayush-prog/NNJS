@@ -1,20 +1,20 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Nav from "../components/Nav";
+import Nav from "../components/Nav.jsx";
 import for_location_page from "../assets/Locations.png";
 import eye_hospital from "../assets/eye_hospital.png";
 import { motion } from "motion/react";
 import Footer from "../components/Footer.jsx";
-import DonateButton from "../components/DonateButton";
-import EyeHospitalList from "../components/EyeHospitalList";
-import EyeCareCenterList from "../components/EyeCareCenterList";
-import DistrictPresidentList from "../components/DistrictPresidentList";
-import BranchList from "../components/BranchList";
-import AllBranches from "../components/AllBranches";
+import DonateButton from "../components/DonateButton.jsx";
+import EyeHospitalList from "../components/EyeHospitalList.jsx";
+import EyeCareCenterList from "../components/EyeCareCenterList.jsx";
+import DistrictPresidentList from "../components/DistrictPresidentList.jsx";
+import BranchList from "../components/BranchList.jsx";
+import AllBranches from "../components/AllBranches.jsx";
 
 
 
-export default function Locations() {
+export default function WhatWeDo() {
   const [selectedLists, setSelectedLists] = useState(["hospital"]); 
   const [showButton, setShowButton] = useState(false);
 
