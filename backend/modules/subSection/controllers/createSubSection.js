@@ -8,7 +8,7 @@ const createSubSection = async (req, res) => {
     : null;
   try {
     const newSubSection = await SubSectionModel.create({ title, image, body });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "SubSection created successfully",
     });
