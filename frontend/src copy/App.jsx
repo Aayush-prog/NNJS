@@ -15,7 +15,6 @@ import Locations from "./pages/Locations";
 import EthicalReview from "./pages/EthicalReview";
 import Resources from "./pages/Resources";
 import PressAndMedia from "./pages/PressAndMedia";
-import AdminLandingPage from "../src copy/pages/LandingPage";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,12 +32,12 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/press" element={<PressAndMedia />} />
         
-        <Route path="/admin" element={<AdminLandingPage />}>
-          {/* <Route index element={<AdminDashboard />} /> */}
-          {/* <Route path="users" element={<AdminUsers />} />
+        {/* <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
           <Route path="content" element={<AdminContent />} />
-          <Route path="settings" element={<AdminSettings />} /> */}
-        </Route>
+          <Route path="settings" element={<AdminSettings />} />
+        </Route> */}
       </Route>
     )
   );
