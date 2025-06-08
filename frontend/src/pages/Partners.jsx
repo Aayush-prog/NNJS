@@ -118,7 +118,7 @@ export default function Partners() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center py-12 md:h-[70vh] text-center space-y-5 bg-grey px-4"
+          className="flex flex-col items-center justify-center py-12 md:h-[70vh] text-center space-y-5 bg-blue-50 px-4"
         >
           <motion.h1
             variants={fadeInUp}

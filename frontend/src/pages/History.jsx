@@ -45,7 +45,7 @@ export default function History() {
       <Nav />
       <main>
         <motion.div
-          className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${history})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>

@@ -103,7 +103,7 @@ export default function StaffSection() {
           pagination={{ clickable: true }}
           spaceBetween={20}
           slidesPerView={slidesPerView}
-          className="pb-10 sm:pb-12" // Add bottom padding for pagination bullets
+          className="pb-10 sm:pb-12"
         >
           {groupedStaff.map((group, index) => (
             <SwiperSlide key={index}>
@@ -119,7 +119,7 @@ export default function StaffSection() {
                 {group.map((staff, idx) => (
                   <div
                     key={idx}
-                    className="bg-white border border-gray-200 shadow-md rounded-lg p-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px]"
+                    className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px]"
                   >
                     <img
                       src={staff.image}
@@ -144,7 +144,7 @@ export default function StaffSection() {
 
         <div
           ref={prevRef}
-          className="swiper-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 sm:-left-4 md:-left-6 p-1 sm:p-2 md:p-3 bg-blue-50 rounded-full shadow-md z-10 cursor-pointer"
+          className="hidden lg:flex swiper-button-prev-custom absolute top-36 -translate-y-1/2 left-0 sm:-left-4 md:-left-18 p-1 sm:p-2 md:p-3 bg-blue-50 rounded-full shadow-md z-10 cursor-pointer"
           aria-label="Previous slide"
         >
           <svg
@@ -163,11 +163,11 @@ export default function StaffSection() {
         </div>
         <div
           ref={nextRef}
-          className="swiper-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 sm:-right-4 md:-right-6 p-1 sm:p-2 md:p-3 bg-blue-50 rounded-full shadow-md z-10 cursor-pointer"
+          className="hidden lg:flex swiper-button-prev-custom absolute md:top-36 -translate-y-1/2 right-0 sm:-right-4 md:-right-18 p-1 md:p-3 bg-blue-50 rounded-full shadow-md z-10 cursor-pointer"
           aria-label="Next slide"
         >
           <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-primary"
+            className="md:w-6 md:h-6 text-primary"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}

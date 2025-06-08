@@ -10,7 +10,7 @@ import { FaArrowCircleUp } from "react-icons/fa";
 
 export default function Contact() {
   const [showButton, setShowButton] = useState(false);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -45,7 +45,7 @@ export default function Contact() {
       },
     },
   };
-  
+
   return (
     <div>
       <Nav />
@@ -55,23 +55,24 @@ export default function Contact() {
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
-          <h1 className="text-4xl md:text-6xl font-bold font-secondary">Contact</h1>
+          <h1 className="text-4xl md:text-6xl font-bold font-secondary">
+            Contact
+          </h1>
         </div>
       </motion.div>
-      
+
       <motion.div
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="min-h-screen bg-grey p-4 sm:p-8 md:p-12 lg:p-20 flex items-center justify-center py-16"
+        className="min-h-screen bg-blue-50 p-4 sm:p-8 md:p-12 lg:p-20 flex items-center justify-center py-16"
       >
         <motion.div
           variants={fadeInUp}
           viewport={{ once: true, amount: 0.2 }}
           className="flex flex-col lg:flex-row bg-white rounded-2xl overflow-hidden shadow-lg w-full max-w-5xl"
         >
-          {/* Form Section - Full width on mobile, left side on desktop */}
           <div className="flex flex-col justify-center items-left text-left w-full lg:w-1/2 space-y-4 md:space-y-5 text-white bg-primary p-6 sm:p-8 md:p-10">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold font-secondary">
@@ -93,11 +94,11 @@ export default function Contact() {
                 className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Phone"
               />
-              <textarea
-                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2 min-h-[80px]"
+              <input
+                className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Message"
               />
-              <button className="bg-accent p-2 rounded-sm mt-3 font-bold hover:bg-opacity-90 transition-colors">
+              <button className="bg-accent p-2 rounded-sm mt-8 font-bold hover:bg-opacity-90 transition-colors">
                 Submit
               </button>
             </form>
@@ -149,20 +150,32 @@ export default function Contact() {
 
             {/* Social icons */}
             <div className="flex space-x-5 text-xl md:text-2xl mt-5 text-primary">
-              <a href="#" className="hover:text-accent transition-colors" aria-label="Facebook">
+              <a
+                href="#"
+                className="hover:text-accent transition-colors"
+                aria-label="Facebook"
+              >
                 <FaFacebook />
               </a>
-              <a href="#" className="hover:text-accent transition-colors" aria-label="LinkedIn">
+              <a
+                href="#"
+                className="hover:text-accent transition-colors"
+                aria-label="LinkedIn"
+              >
                 <FaLinkedin />
               </a>
-              <a href="#" className="hover:text-accent transition-colors" aria-label="Twitter">
+              <a
+                href="#"
+                className="hover:text-accent transition-colors"
+                aria-label="Twitter"
+              >
                 <RiTwitterXLine />
               </a>
             </div>
           </div>
         </motion.div>
       </motion.div>
-      
+
       <motion.div
         variants={fadeInUp}
         initial="hidden"
@@ -171,7 +184,7 @@ export default function Contact() {
       >
         <Footer />
       </motion.div>
-      
+
       {showButton && (
         <button
           onClick={scrollToTop}
