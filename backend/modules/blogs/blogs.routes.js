@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("../../middleware/auth");
-const createBlog = require("./controllers/createBlog");
+const createBlog = require("./controllers/createBlogs");
 const getBlog = require("./controllers/getBlog");
 const getBlogById = require("./controllers/getBlogById");
 const delBlog = require("./controllers/delBlog");
