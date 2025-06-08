@@ -11,7 +11,7 @@ import Mission from "./pages/Mission";
 import Partners from "./pages/Partners";
 import History from "./pages/History";
 import Team from "./pages/Team";
-import Locations from "./pages/Locations";
+import Locations from "./pages/WhatWeDo";
 import EthicalReview from "./pages/EthicalReview";
 import Resources from "./pages/Resources";
 import PressAndMedia from "./pages/PressAndMedia";

@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createImpacts = async (req, res) => {
   const ImpactModel = mongoose.model("Impacts");
-  const { title, count, image } = req.body;
+  const { title, count } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newImpact = await ImpactModel.create({ title, count, image });
     res.satus(201).json({

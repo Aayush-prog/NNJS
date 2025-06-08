@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editPartner = async (req, res) => {
   const PartnerModel = mongoose.model("Partners");
-  const { name, image, type } = req.body;
+  const { name, type } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   const { partnerId } = req.params;
   try {
     const partner = await PartnerModel.findById(partnerId);

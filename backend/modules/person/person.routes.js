@@ -1,0 +1,14 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createPerson = require("./controllers/createPerson");
+const getPerson = require("./controllers/getPersonById");
+const getPersonById = require("./controllers/getPersonById");
+const delPerson = require("./controllers/delPerson");
+const editPerson = require("./controllers/editPerson");
+const personRouter = express.Router();
+personRouter.get("/", getPerson);
+personRouter.get("/:personId", getPersonById);
+personRouter.post("/create", createPerson);
+personRouter.delete("/del/:personId", delPerson);
+personRouter.patch("/edit/:personId", editPerson);
+module.exports = personRouter;

@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createSubSection = async (req, res) => {
   const SubSectionModel = mongoose.model("SubSection");
-  const { title, image, body } = req.body;
+  const { title, body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newSubSection = await SubSectionModel.create({ title, image, body });
     res.satus(201).json({

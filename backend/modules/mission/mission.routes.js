@@ -1,15 +1,15 @@
 const express = require("express");
 const auth = require("../../middleware/auth");
-const createEyeCareCenter = require("./controllers/createEyeCareCenter");
+const createMission = require("./controllers/createMission");
 const getMission = require("./controllers/getMission");
-const getMissionById = require("./controllers/getEyeCareCenterById");
+const getMissionById = require("./controllers/getMissionById");
 const delMission = require("./controllers/delMission");
 const editMission = require("./controllers/editMission");
 const upload = require("../../middleware/upload");
 const missionROuter = express.Router();
 missionROuter.get("/", getMission);
 missionROuter.get("/:missionId", getMissionById);
-missionROuter.post("/create", upload, createEyeCareCenter);
+missionROuter.post("/create", upload, createMission);
 missionROuter.delete("/del/:missionId", delMission);
 missionROuter.patch("/edit/:missionId", upload, editMission);
 module.exports = missionROuter;

@@ -19,16 +19,13 @@ export default function LandingPage() {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowButton(window.scrollY > 200);
-    };
+    const handleScroll = () => setShowButton(window.scrollY > 200);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
+  const scrollToTop = () =>
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
@@ -39,22 +36,33 @@ export default function LandingPage() {
     },
   };
 
-  return (
-    <div className="">
-      <Nav />
+  // Data arrays
+  const impactsData = [
+    { Icon: FaUserInjured, value: "46,868,060", label: "OPD Visits" },
+    { Icon: FaProcedures,  value: "5,392,224",  label: "Surgeries" },
+    { Icon: FaHospital,    value: "150+",        label: "Hospitals" },
+    { Icon: FaEye,         value: "300+",        label: "Eye Care Centers" },
+  ];
 
+  const storiesData = [
+    {
+      image: profileImage,
+      quote:
+        "“I'm thankful for this glass—it's allowing me to perceive the world in an entirely different way. Thank You.”",
+      author: "Bishal Dhami",
+    },
+    // add more stories here...
+  ];
+
+  return (
+    <div>
+      <Nav />
       <main>
         <HeroSection
           image={heroImage}
           heading="Let There Be Sight."
           subheading="Bringing vision and hope to the people of Nepal through quality eye care services"
         />
-        {/* <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        ></motion.div> */}
 
         <motion.div
           variants={fadeInUp}
@@ -121,42 +129,17 @@ export default function LandingPage() {
             Our Impacts
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 w-full">
-            <motion.div
-              variants={fadeInUp}
-              viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-xl sm:text-2xl font-bold text-center"
-            >
-              <FaUserInjured className="mb-2 text-3xl sm:text-4xl text-support inline-block" />
-              <h1>46,868,060</h1>
-              <h2>OPD Visits</h2>
-            </motion.div>
-            <motion.div
-              variants={fadeInUp}
-              viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-xl sm:text-2xl font-bold text-center"
-            >
-              <FaProcedures className="mb-2 text-3xl sm:text-4xl text-support inline-block" />
-              <h1>5,392,224</h1>
-              <h2>Surgeries</h2>
-            </motion.div>
-            <motion.div
-              variants={fadeInUp}
-              viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-xl sm:text-2xl font-bold text-center"
-            >
-              <FaHospital className="mb-2 text-3xl sm:text-4xl text-support inline-block" />
-              <h1>150+</h1>
-              <h2>Hospitals</h2>
-            </motion.div>
-            <motion.div
-              variants={fadeInUp}
-              viewport={{ once: true, amount: 0.2 }}
-              className="font-secondary text-xl sm:text-2xl font-bold text-center"
-            >
-              <FaEye className="mb-2 text-3xl sm:text-4xl text-support inline-block" />
-              <h1>300+</h1>
-              <h2>Eye Care Centers</h2>
-            </motion.div>
+            {impactsData.map(({ Icon, value, label }, i) => (
+              <motion.div
+                key={i}
+                variants={fadeInUp}
+                className="text-center font-bold font-secondary text-xl"
+              >
+                <Icon className="mb-2 text-support text-4xl inline-block" />
+                <h1>{value}</h1>
+                <h2>{label}</h2>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
@@ -165,59 +148,47 @@ export default function LandingPage() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-screen py-12 sm:py-16 md:py-20 flex flex-col items-center space-y-6 sm:space-y-8 md:space-y-10 justify-center"
+          className="py-16 flex flex-col items-center space-y-8"
         >
-          <motion.h2
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary"
-          >
+          <motion.h2 variants={fadeInUp} className="text-4xl font-bold text-primary font-secondary">
             Success Stories
           </motion.h2>
-          <motion.section
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-col md:flex-row items-center w-[90%] sm:w-[85%] md:w-[80%] lg:w-3/4 justify-between px-4 sm:px-6 py-6 sm:py-8 md:py-12 bg-grey rounded-md shadow-sm"
-          >
-            <div className="md:w-1/2 flex justify-center">
-              <img
-                src={profileImage}
-                alt="Profile of Bishal Dhami"
-                className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover shadow-lg"
-              />
-            </div>
-            <div className="w-full text-center md:text-left mt-6 md:mt-0 px-2 sm:px-4">
-              <blockquote className="text-sm sm:text-base md:text-lg lg:text-xl italic font-semibold text-gray-800">
-                "I'm thankful for this glass- it's allowing me to perceive the
-                world in an entirely different way. Thank You."
-              </blockquote>
-              <cite className="block mt-3 sm:mt-4 text-sm sm:text-base text-gray-500">
-                — Bishal Dhami
-              </cite>
-            </div>
-          </motion.section>
+
+          {storiesData.map(({ image, quote, author }, i) => (
+            <motion.section
+              key={i}
+              variants={fadeInUp}
+              className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8 w-3/4"
+            >
+              <div className="md:w-1/2 flex justify-center">
+                <img
+                  src={image}
+                  alt={author}
+                  className="rounded-full w-40 h-40 object-cover shadow-lg"
+                />
+              </div>
+              <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
+                <blockquote className="italic font-semibold text-lg">
+                  {quote}
+                </blockquote>
+                <cite className="block mt-4 text-gray-500">— {author}</cite>
+              </div>
+            </motion.section>
+          ))}
         </motion.div>
       </main>
 
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">
         <Footer />
       </motion.div>
 
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-3 sm:bottom-4 md:bottom-5 right-3 sm:right-4 md:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp
-            size={20}
-            className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
-          />
+          <FaArrowCircleUp size={24} />
         </button>
       )}
     </div>
