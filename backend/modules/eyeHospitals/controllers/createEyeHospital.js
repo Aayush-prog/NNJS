@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createEyeHospital = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
   const {
@@ -8,7 +9,6 @@ const createEyeHospital = async (req, res) => {
     email,
     website,
     address,
-    image,
     aim,
     coverageArea,
     availableServices,
@@ -17,6 +17,9 @@ const createEyeHospital = async (req, res) => {
     totalOPD,
     totalSurgery,
   } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newEyeHospital = await EyeHospitalModel.create({
       title,

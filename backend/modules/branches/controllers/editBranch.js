@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editBranch = async (req, res) => {
   const BranchModel = mongoose.model("Branches");
-  const { contactPerson, phone, president, district, image, committee } =
-    req.body;
+  const { contactPerson, phone, president, district, committee } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   const { branchId } = req.params;
   try {
     const branch = await BranchModel.findById(branchId);

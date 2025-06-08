@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const createMission = async (req, res) => {
   const MissionModel = mongoose.model("Mission");
-  const { image, body } = req.body;
+  const { body } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   try {
     const newMission = await MissionModel.create({ image, body });
     res.satus(201).json({

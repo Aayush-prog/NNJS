@@ -119,7 +119,7 @@ const TimelineCarousel = () => {
         className="relative"
       >
         <button
-          className="absolute left-0 sm:left-8 md:left-20 top-1/2 -translate-y-1/2 z-10 bg-blue-200 text-primary p-2 sm:p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
+          className="hidden md:block absolute left-0 sm:left-4 md:-left-6 top-4 -translate-y-1/2 z-10 bg-blue-200 text-primary p-2 sm:p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
           ref={prevRef}
           aria-label="Previous slide"
         >
@@ -127,7 +127,7 @@ const TimelineCarousel = () => {
         </button>
 
         <button
-          className="absolute right-0 sm:right-8 md:right-20 top-1/2 -translate-y-1/2 z-10 bg-blue-200 text-primary p-2 sm:p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
+          className="hidden md:block absolute right-0 sm:right-8 md:-right-6 top-4 -translate-y-1/2 z-10 bg-blue-200 text-primary p-2 sm:p-3 rounded-full shadow hover:bg-primary hover:text-white transition-colors duration-300"
           ref={nextRef}
           aria-label="Next slide"
         >
@@ -164,8 +164,8 @@ const TimelineCarousel = () => {
           {groupedSlides.map((group, index) => (
             <SwiperSlide key={index}>
               <div className="px-4 sm:px-8 md:px-12">
-                <div className="relative mb-6 sm:mb-8">
-                  <div className="h-1 bg-primary absolute top-4 left-0 right-0"></div>
+                <div className="relative mb-6 sm:mb-10">
+                  <div className="h-1 bg-primary absolute top-3 left-0 right-0 sm:top-4"></div>
                   <div className="flex justify-around relative z-10">
                     {group.map((item, i) => (
                       <div key={i} className="text-center">
@@ -178,7 +178,7 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 mb-10 h-[260px] sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 sm:mb-10 sm:h-[350px]">
                   {group.map((item, i) => (
                     <div
                       key={i}

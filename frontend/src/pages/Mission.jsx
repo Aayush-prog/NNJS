@@ -51,7 +51,7 @@ export default function Mission() {
     <div className="overflow-x-hidden">
       <Nav />
       <div
-        className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${mission})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -129,7 +129,10 @@ export default function Mission() {
           className="fixed bottom-3 sm:bottom-4 md:bottom-5 right-3 sm:right-4 md:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp size={20} className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
+          <FaArrowCircleUp
+            size={20}
+            className="sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
+          />
         </button>
       )}
     </div>

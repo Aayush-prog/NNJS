@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editEyeHospital = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
   const {
@@ -8,7 +9,6 @@ const editEyeHospital = async (req, res) => {
     email,
     website,
     address,
-    image,
     aim,
     coerageArea,
     availableServices,
@@ -17,6 +17,9 @@ const editEyeHospital = async (req, res) => {
     totalOPD,
     totalSurgery,
   } = req.body;
+  const image = req.files?.image?.[0]
+    ? path.basename(req.files.image[0].path)
+    : null;
   const { eyeHospitalId } = req.params;
   try {
     const eyeHospital = await EyeHospitalModel.findById(eyeHospitalId);
