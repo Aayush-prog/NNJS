@@ -103,7 +103,7 @@ export default function Partners() {
 
       <main>
         <div
-          className="relative h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${partnerImage})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -118,7 +118,7 @@ export default function Partners() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center py-12 md:h-[70vh] text-center space-y-5 bg-blue-50 px-4"
+          className="flex flex-col items-center justify-center py-12 md:h-[60vh] text-center space-y-4 bg-blue-50 px-4"
         >
           <motion.h1
             variants={fadeInUp}
@@ -130,7 +130,7 @@ export default function Partners() {
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-base font-bold font-primary w-full md:w-[75vw] lg:w-[55vw] leading-relaxed md:leading-loose"
+            className="text-base font-primary w-full md:w-[75vw] lg:w-[55vw] leading-relaxed md:leading-loose"
           >
             We've always believed that lasting change happens when we work
             together.
