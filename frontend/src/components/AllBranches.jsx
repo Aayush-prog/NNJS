@@ -268,45 +268,62 @@ export default function NNJSCombinedList({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8">
-      {/* Category Filter and Search Bar */}
-      <motion.div 
+    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-sans">
+      {/* Category Filter and Search/Sort Panel */}
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-xl shadow-md p-4 mb-8"
+        className="mb-8"
       >
-        <div className="flex flex-col lg:flex-row gap-4 justify-between items-center">
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 p-1 bg-gray-100 rounded-lg shadow-inner">
-            {['all', 'hospitals', 'centers', 'presidents'].map((category) => (
-              <button 
-                key={category}
-                className={`px-4 py-2 rounded-md transition-all duration-300 ${
-                  activeCategory === category 
-                    ? 'bg-support text-white font-medium shadow-md transform scale-105' 
-                    : 'hover:bg-gray-200 text-gray-700'
-                }`}
-                onClick={() => setActiveCategory(category)}
-              >
-                {category === 'all' ? 'All' : 
-                 category === 'hospitals' ? 'Eye Hospitals' : 
-                 category === 'centers' ? 'Eye Centers' : 'Branches'}
-              </button>
-            ))}
-          </div>
+        <div className="w-full max-w-2xl mx-auto bg-white p-5 rounded-2xl shadow-lg space-y-5">
           
-          {/* Search and Sort Controls */}
-          <div className="flex flex-col sm:flex-row w-full lg:w-auto gap-4 items-center">
-            {/* Search Bar */}
-            <div className="relative w-full sm:w-auto sm:flex-1 min-w-[240px]">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+          {/*** 1. SCROLLING CATEGORY FILTER ***/}
+          <div className="relative">
+            <div className="overflow-x-auto pb-1 hide-scrollbar pr-12">
+              <div className="flex flex-nowrap items-center gap-3">
+                {['all','hospitals','centers','presidents'].map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setActiveCategory(category);
+                      setHospitalPage(1);
+                      setCenterPage(1);
+                      setPresidentPage(1);
+                    }}
+                    className={`flex-shrink-0 px-5 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                      activeCategory === category
+                        ? 'bg-sky-500 text-white shadow-sm'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {{
+                      all: 'All',
+                      hospitals: 'Hospitals',
+                      centers: 'Centers',
+                      presidents: 'Branches'
+                    }[category]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* gradient fade */}
+            <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-white pointer-events-none" />
+          </div>
+
+          {/*** 2. SEARCH + SORT ***/}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            {/* Search */}
+            <div className="relative md:flex-grow">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
               <input
-                type="text"
+                type="search"
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => {
@@ -315,76 +332,72 @@ export default function NNJSCombinedList({
                   setCenterPage(1);
                   setPresidentPage(1);
                 }}
-                className="pl-10 border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-support focus:border-transparent shadow-sm"
+                className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl text-slate-800
+                           focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none shadow-sm"
               />
             </div>
-            
-            {/* Sort Dropdown - Changes based on active category */}
-            <div className="flex gap-2 items-center bg-gray-100 px-3 py-2 rounded-lg">
-              <span className="text-gray-700 font-medium">Sort:</span>
-              {activeCategory === 'all' || activeCategory === 'hospitals' ? (
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={hospitalSortBy}
-                    onChange={(e) => setHospitalSortBy(e.target.value)}
-                    className="bg-white border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-support focus:border-transparent shadow-sm"
-                  >
-                    {hospitalSortOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                  <button 
-                    onClick={() => setHospitalSortDirection(hospitalSortDirection === 'asc' ? 'desc' : 'asc')}
-                    className="bg-white p-1 w-8 h-8 rounded-md flex items-center justify-center border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm"
-                    aria-label="Toggle sort direction"
-                  >
-                    {hospitalSortDirection === 'asc' ? '↑' : '↓'}
-                  </button>
-                </div>
-              ) : activeCategory === 'centers' ? (
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={centerSortBy}
-                    onChange={(e) => setCenterSortBy(e.target.value)}
-                    className="bg-white border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-support focus:border-transparent shadow-sm"
-                  >
-                    {centerSortOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                  <button 
-                    onClick={() => setCenterSortDirection(centerSortDirection === 'asc' ? 'desc' : 'asc')}
-                    className="bg-white p-1 w-8 h-8 rounded-md flex items-center justify-center border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm"
-                    aria-label="Toggle sort direction"
-                  >
-                    {centerSortDirection === 'asc' ? '↑' : '↓'}
-                  </button>
-                </div>
-              ) : (
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={presidentSortBy}
-                    onChange={(e) => setPresidentSortBy(e.target.value)}
-                    className="bg-white border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-support focus:border-transparent shadow-sm"
-                  >
-                    {presidentSortOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                  <button 
-                    onClick={() => setPresidentSortDirection(presidentSortDirection === 'asc' ? 'desc' : 'asc')}
-                    className="bg-white p-1 w-8 h-8 rounded-md flex items-center justify-center border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm"
-                    aria-label="Toggle sort direction"
-                  >
-                    {presidentSortDirection === 'asc' ? '↑' : '↓'}
-                  </button>
-                </div>
-              )}
+
+            {/* Sort */}
+            <div className="flex-shrink-0 flex items-center gap-3">
+              <span className="text-slate-700 font-medium">Sort:</span>
+              <select
+                value={
+                  activeCategory === 'centers'
+                    ? centerSortBy
+                    : activeCategory === 'presidents'
+                      ? presidentSortBy
+                      : hospitalSortBy
+                }
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (activeCategory === 'centers') setCenterSortBy(v);
+                  else if (activeCategory === 'presidents') setPresidentSortBy(v);
+                  else setHospitalSortBy(v);
+                }}
+                className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800
+                           focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
+              >
+                {(
+                  activeCategory === 'centers'
+                    ? centerSortOptions
+                    : activeCategory === 'presidents'
+                      ? presidentSortOptions
+                      : hospitalSortOptions
+                ).map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+
+              <button
+                onClick={() => {
+                  if (activeCategory === 'centers')
+                    setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                  else if (activeCategory === 'presidents')
+                    setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                  else setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                }}
+                className="flex-shrink-0 bg-white border border-slate-200 rounded-lg w-10 h-10
+                           flex items-center justify-center text-slate-700 hover:bg-slate-50
+                           focus:ring-2 focus:ring-sky-500 outline-none"
+                aria-label="Toggle sort direction"
+              >
+                <span className="text-xl font-semibold leading-none align-middle">
+                  {(
+                    activeCategory === 'centers'
+                      ? centerSortDirection
+                      : activeCategory === 'presidents'
+                        ? presidentSortDirection
+                        : hospitalSortDirection
+                  ) === 'asc'
+                    ? '↑'
+                    : '↓'}
+                </span>
+              </button>
             </div>
           </div>
         </div>
       </motion.div>
-
+      
       {/* Conditional rendering based on active category */}
       {/* Hospitals Section */}
       {(activeCategory === 'all' || activeCategory === 'hospitals') && (
