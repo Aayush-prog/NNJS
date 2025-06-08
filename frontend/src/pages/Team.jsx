@@ -56,7 +56,7 @@ export default function Team() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${team})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>

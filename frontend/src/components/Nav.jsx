@@ -72,10 +72,10 @@ export default function Nav() {
               className="w-14 h-14 mr-4 sm:w-16 sm:h-16"
             />
             <div>
-              <h1 className="font-semibold text-lg sm:text-9xl md:text-2xl lg:text-3xl xl:text-4xl font-secondary leading-tight">
+              <h1 className="font-semibold text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-secondary leading-tight">
                 Nepal Netra Jyoti Sangh
               </h1>
-              <p className="sm:text-xs md:text-sm lg:text-lg leading-snug">
+              <p className="text-[10px] pt-1 sm:text-sm md:text-base lg:text-lg leading-snug">
                 National Society for Comprehensive Eye Care
               </p>
             </div>
@@ -95,7 +95,7 @@ export default function Nav() {
       </div>
 
       <div className="hidden lg:flex items-center justify-between px-6 sm:px-10 lg:px-32 py-5 text-primary font-secondary relative">
-        <div className="relative">
+        <div className="relative inline-block">
           <button
             onClick={toggleDropdown}
             className="flex items-center gap-1 hover:text-accent focus:outline-none font-bold"
@@ -110,7 +110,7 @@ export default function Nav() {
           <AnimatePresence>
             {showDropdown && (
               <motion.div
-                className="absolute mt-2 w-48 bg-white text-black rounded shadow-lg z-50 font-bold"
+                className="absolute left-0 top-full mt-2 w-48 bg-white text-black rounded shadow-lg z-50 font-bold"
                 ref={dropdownRef}
                 role="menu"
                 aria-label="Who We Are Navigation"
@@ -170,7 +170,7 @@ export default function Nav() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="lg:hidden fixed top-20 left-0 right-0 bg-white text-black shadow-inner px-6 pt-4 pb-8 space-y-4 font-bold text-base z-50"
+            className="lg:hidden bg-white text-black shadow-inner px-6 pt-4 pb-8 space-y-4 font-bold text-base z-50"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
