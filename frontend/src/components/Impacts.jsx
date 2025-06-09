@@ -7,15 +7,55 @@ import {
   FaHospital,
   FaEye,
 } from "react-icons/fa";
+import axios from "axios";
 
 export default function Impacts() {
   const [showButton, setShowButton] = useState(false);
+  const [impacts, setImpacts] = useState([]);
+  const api = import.meta.env.VITE_URL;
+  const iconMap = {
+    FaProcedures: FaProcedures,
+    FaUserInjured: FaUserInjured,
+    FaHospital: FaHospital,
+    FaEye: FaEye,
+  };
+
+  function IconRenderer({ iconName }) {
+    const IconComponent = iconMap[iconName];
+
+    if (!IconComponent) {
+      return <span>Icon not found</span>;
+    }
+
+    return (
+      <IconComponent className="mb-2 text-support text-4xl inline-block" />
+    );
+  }
 
   useEffect(() => {
     const handleScroll = () => setShowButton(window.scrollY > 200);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const fetchImpacts = async () => {
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/impacts/`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setImpacts(res.data.data);
+        } else {
+          console.error("Error fetching impacts: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching impacts:", error);
+      }
+    };
+
+    fetchImpacts();
+  }, [api]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -27,14 +67,6 @@ export default function Impacts() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
-  // Data arrays
-  const impactsData = [
-    { Icon: FaUserInjured, value: "46,868,060", label: "OPD Visits" },
-    { Icon: FaProcedures, value: "5,392,224", label: "Surgeries" },
-    { Icon: FaHospital, value: "150+", label: "Hospitals" },
-    { Icon: FaEye, value: "300+", label: "Eye Care Centers" },
-  ];
 
   return (
     <motion.div
@@ -52,15 +84,16 @@ export default function Impacts() {
         Our Impacts
       </motion.h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 w-full">
-        {impactsData.map(({ Icon, value, label }, i) => (
+        {impacts?.map((impact, i) => (
           <motion.div
             key={i}
             variants={fadeInUp}
             className="text-center font-bold font-secondary text-xl"
           >
-            <Icon className="mb-2 text-support text-4xl inline-block" />
-            <h1>{value}</h1>
-            <h2>{label}</h2>
+            <IconRenderer iconName={impact.icon} />
+
+            <h1>{impact.count}</h1>
+            <h2>{impact.title}</h2>
           </motion.div>
         ))}
       </div>

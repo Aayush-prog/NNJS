@@ -5,17 +5,11 @@ import for_location_page from "../assets/Locations.png";
 import eye_hospital from "../assets/eye_hospital.png";
 import { motion } from "motion/react";
 import Footer from "../components/Footer.jsx";
-import DonateButton from "../components/DonateButton.jsx";
-import EyeHospitalList from "../components/EyeHospitalList.jsx";
-import EyeCareCenterList from "../components/EyeCareCenterList.jsx";
-import DistrictPresidentList from "../components/DistrictPresidentList.jsx";
-import BranchList from "../components/BranchList.jsx";
+import { FaArrowCircleUp } from "react-icons/fa";
 import AllBranches from "../components/AllBranches.jsx";
 
-
-
 export default function WhatWeDo() {
-  const [selectedLists, setSelectedLists] = useState(["hospital"]); 
+  const [selectedLists, setSelectedLists] = useState(["hospital"]);
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -65,9 +59,7 @@ export default function WhatWeDo() {
   return (
     <div className="w-full overflow-x-hidden">
       <Nav />
-      <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50">
-       
-      </div>
+      <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50"></div>
       <motion.div
         variants={fadeInUp}
         initial="hidden"
@@ -78,19 +70,13 @@ export default function WhatWeDo() {
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 text-white text-center px-4 space-y-5 sm:space-y-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold font-secondary">
             Hospitals and Eye Care Centers
           </h1>
-          
         </div>
-        
       </motion.div>
-      <div className="max-w-7xl mx-auto px-4 py-5">
-        <img 
-          src={eye_hospital} 
-          alt="Eye Hospital" 
-          className="w-full h-auto"
-        />
+      <div className="max-w-7xl mx-auto px-4 mt-14">
+        <img src={eye_hospital} alt="Eye Hospital" className="w-full h-auto" />
       </div>
 
       {/* Selection Buttons - Commented out in original code */}
@@ -119,24 +105,22 @@ export default function WhatWeDo() {
       {/* {selectedLists.includes("hospital") && <EyeHospitalList />}
       {selectedLists.includes("care") && <EyeCareCenterList />}
       {selectedLists.includes("president") && <DistrictPresidentList />} */}
-      
+
       <div className="px-4 sm:px-6 md:px-8">
         <AllBranches />
       </div>
-      
+
       <Footer />
-      
+
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none z-50"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
           aria-label="Scroll to top"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
+          <FaArrowCircleUp size={24} />
         </button>
       )}
     </div>
-  );  
+  );
 }

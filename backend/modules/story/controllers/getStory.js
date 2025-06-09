@@ -3,7 +3,7 @@ const getStory = async (req, res) => {
   const StoryModel = mongoose.model("Story");
   try {
     const story = await StoryModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Story found successfully",
       data: story,

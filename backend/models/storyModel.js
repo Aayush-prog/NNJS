@@ -7,4 +7,4 @@ const storySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Stories", storySchema);
+module.exports = mongoose.model("Story", storySchema);

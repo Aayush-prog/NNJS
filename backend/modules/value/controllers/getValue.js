@@ -3,7 +3,7 @@ const getValue = async (req, res) => {
   const ValueModel = mongoose.model("Values");
   try {
     const Values = await ValueModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Values found successfully",
       data: Values,

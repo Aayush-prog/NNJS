@@ -14,6 +14,8 @@ import heroImage from "../assets/Landing frame.png";
 import mapImage from "../assets/map.png";
 import profileImage from "../assets/profile.png";
 import CoreValues from "../components/CoreValues";
+import Impacts from "../components/Impacts";
+import Stories from "../components/Stories";
 
 export default function LandingPage() {
   const [showButton, setShowButton] = useState(false);
@@ -24,8 +26,7 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () =>
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
@@ -35,24 +36,6 @@ export default function LandingPage() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
-  // Data arrays
-  const impactsData = [
-    { Icon: FaUserInjured, value: "46,868,060", label: "OPD Visits" },
-    { Icon: FaProcedures,  value: "5,392,224",  label: "Surgeries" },
-    { Icon: FaHospital,    value: "150+",        label: "Hospitals" },
-    { Icon: FaEye,         value: "300+",        label: "Eye Care Centers" },
-  ];
-
-  const storiesData = [
-    {
-      image: profileImage,
-      quote:
-        "“I'm thankful for this glass—it's allowing me to perceive the world in an entirely different way. Thank You.”",
-      author: "Bishal Dhami",
-    },
-    // add more stories here...
-  ];
 
   return (
     <div>
@@ -126,68 +109,9 @@ export default function LandingPage() {
           />
         </motion.div>
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center space-y-6 sm:space-y-8 md:space-y-10 bg-primary text-white py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-8 md:px-12 lg:px-20"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary"
-          >
-            Our Impacts
-          </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 w-full">
-            {impactsData.map(({ Icon, value, label }, i) => (
-              <motion.div
-                key={i}
-                variants={fadeInUp}
-                className="text-center font-bold font-secondary text-xl"
-              >
-                <Icon className="mb-2 text-support text-4xl inline-block" />
-                <h1>{value}</h1>
-                <h2>{label}</h2>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        <Impacts />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="py-16 flex flex-col items-center space-y-8"
-        >
-          <motion.h2 variants={fadeInUp} className="text-4xl font-bold text-primary font-secondary">
-            Success Stories
-          </motion.h2>
-
-          {storiesData.map(({ image, quote, author }, i) => (
-            <motion.section
-              key={i}
-              variants={fadeInUp}
-              className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8 w-3/4"
-            >
-              <div className="md:w-1/2 flex justify-center">
-                <img
-                  src={image}
-                  alt={author}
-                  className="rounded-full w-40 h-40 object-cover shadow-lg"
-                />
-              </div>
-              <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
-                <blockquote className="italic font-semibold text-lg">
-                  {quote}
-                </blockquote>
-                <cite className="block mt-4 text-gray-500">— {author}</cite>
-              </div>
-            </motion.section>
-          ))}
-        </motion.div>
+        <Stories />
       </main>
 
       <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">

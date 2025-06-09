@@ -6,9 +6,26 @@ const categories = [
     group: "Notices & Reports",
     includes: ["Notice Board", "Activity Report", "Workshop Report"],
   },
-  { group: "Guidelines & Protocols", includes: ["Protocol", "NNJS Bidhan"] },
-  { group: "Media & Bulletins", includes: ["NNJS in Media", "Bulletins"] },
-  { group: "Publications", includes: ["Publication"] },
+  {
+    group: "Guidelines & Protocols",
+    includes: ["Protocol", "NNJS Bidhan"],
+  },
+  {
+    group: "Media & Bulletins",
+    includes: ["NNJS in Media", "Bulletins"],
+  },
+  {
+    group: "Publications",
+    includes: ["Publication"],
+  },
+  {
+    group: "CMEs & Conference",
+    includes: ["CME", "Conference"],
+  },
+  {
+    group: "RAAB Survey",
+    includes: ["RAAB Survey"],
+  },
 ];
 
 const data = [
@@ -63,10 +80,10 @@ const ResourcesSection = () => {
   return (
     <div className="px-4 sm:px-6 md:px-12 lg:px-24 mt-1 mx-auto">
       {/* Mobile view - Dropdown for categories */}
-      <div className="md:hidden mb-4">
+      <div className="md:hidden pt-8">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="w-full flex justify-between items-center px-4 py-3 bg-white border border-gray-300 rounded-lg text-left"
+          className="w-full flex justify-between items-center px-4 py-3 bg-white border border-gray-200 rounded-lg text-left"
         >
           <span className="font-secondary font-semibold text-primary">
             {activeGroup}
@@ -106,7 +123,7 @@ const ResourcesSection = () => {
       </div>
 
       {/* Desktop view - Tabs for categories */}
-      <div className="hidden md:grid md:grid-cols-4 border-b border-gray-300 text-center items-center mb-4">
+      <div className="hidden md:flex md:flex-wrap gap-20 border-b border-gray-300 mb-4 justify-evenly">
         {categories.map(({ group }) => (
           <button
             key={group}
@@ -122,7 +139,7 @@ const ResourcesSection = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 p-2 sm:p-4 md:p-8">
+      <div className="grid grid-cols-1 mb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 p-2 sm:p-4 md:p-8">
         {filteredResources.length > 0 ? (
           filteredResources.map((item) => (
             <div

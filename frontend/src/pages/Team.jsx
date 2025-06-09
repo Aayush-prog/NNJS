@@ -77,7 +77,7 @@ export default function Team() {
           <h1 className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-3 sm:p-4 md:p-5">
             The Eyes Behind the Vision
           </h1>
-          <div className="text-sm sm:text-base md:text-lg font-primary max-w-6xl mx-auto px-4 space-y-4 sm:space-y-5 md:space-y-6">
+          <div className="text-sm leading-relaxed sm:text-base md:text-lg font-primary max-w-6xl mx-auto px-4 space-y-4 sm:space-y-5 md:space-y-6">
             <p>
               Nepal Netra Jyoti Sangh began as the shared dream of a few
               passionate individuals — but it is the strength, compassion, and

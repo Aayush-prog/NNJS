@@ -8,7 +8,7 @@ const createStory = async (req, res) => {
     : null;
   try {
     const newStory = await StoryModel.create({ author, text, image });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Story created successfully",
     });
