@@ -45,7 +45,7 @@ export default function SubSection(props) {
           variants={fadeInUp}
           viewport={{ once: true, amount: 0.2 }}
           src={`${api}/images/${image}`}
-          className="w-full max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] h-auto max-h-[30vh] sm:max-h-[40vh] md:max-h-[50vh] lg:max-h-[75vh] object-contain"
+         className="w-full sm:w-[110vw] md:w-[100vw] lg:w-[90vw] rounded-md shadow-lg"
           alt={`${image}`}
         />
       )}
