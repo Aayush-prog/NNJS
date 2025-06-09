@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const createStrategicObjectives = async (req, res) => {
   const StrategicObjectiveModel = mongoose.model("StrategicObjectives");
-  const { title, body } = req.body;
+  const { title, body, icon, color, bg } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -11,8 +11,11 @@ const createStrategicObjectives = async (req, res) => {
       title,
       body,
       image,
+      icon,
+      color,
+      bg,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "StrategicObjectives created successfully",
     });

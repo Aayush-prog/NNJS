@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, transformValue } from "framer-motion";
+import Loading from "./Loading";
 
 export default function MissionSection() {
+  const [loading, setLoading] = useState(false);
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -17,11 +19,13 @@ export default function MissionSection() {
   useEffect(() => {
     const fetchMission = async () => {
       try {
+        setLoading(true);
         console.log(api);
         const res = await axios.get(`${api}/mission/`);
         console.log(res.data);
         if (res.status === 200) {
           setMission(res.data.data);
+          setLoading(false);
         } else {
           console.error("Error fetching mission: Status code", res.status);
         }
@@ -32,7 +36,9 @@ export default function MissionSection() {
 
     fetchMission();
   }, [api]);
-
+  if (loading) {
+    <Loading />;
+  }
   return (
     mission && (
       <motion.div

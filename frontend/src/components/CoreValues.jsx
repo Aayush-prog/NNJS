@@ -8,10 +8,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "swiper/css/autoplay";
+import Loading from "./Loading";
 
 export default function CoreValues() {
   const [isMobile, setIsMobile] = useState(false);
   const [values, setValues] = useState(null);
+  const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
   // Check screen size on mount and resize for responsive Swiper effects
   useEffect(() => {
@@ -25,11 +27,13 @@ export default function CoreValues() {
   useEffect(() => {
     const fetchValue = async () => {
       try {
+        setLoading(true);
         console.log(api);
         const res = await axios.get(`${api}/values/`);
         console.log(res.data);
         if (res.status === 200) {
           setValues(res.data.data);
+          setLoading(false);
         } else {
           console.error("Error fetching value: Status code", res.status);
         }
@@ -51,7 +55,9 @@ export default function CoreValues() {
   };
 
   const aspectRatio = "1 / 1";
-
+  if (loading) {
+    <Loading />;
+  }
   return (
     <motion.div
       variants={fadeInUp}
