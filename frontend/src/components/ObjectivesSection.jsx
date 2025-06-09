@@ -25,12 +25,12 @@ export default function ObjectivesSection() {
       return <span>Icon not found: {iconName}</span>; // Include iconName for debugging
     }
 
-    return <IconComponent className={`${color} text-lg sm:text-xl`} />;
+    return <IconComponent className={`${color} text-2xl sm:text-3xl`} />;
   }
   const [objectives, setObjectives] = useState(null);
   const api = import.meta.env.VITE_URL;
   useEffect(() => {
-    const fetchStory = async () => {
+    const fetchObjective = async () => {
       try {
         setLoading(true);
         console.log(api);
@@ -47,7 +47,7 @@ export default function ObjectivesSection() {
       }
     };
 
-    fetchStory();
+    fetchObjective();
   }, [api]);
   if (loading) {
     <Loading />;

@@ -14,7 +14,7 @@ const delCommitment = async (req, res) => {
     const deletedCommitment = await CommitmentModel.findByIdAndDelete(
       commitmentId
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Commitments deleted successfully",
     });

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const editCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const { title, body } = req.body;
+  const { title, body, icon, color } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -17,9 +17,9 @@ const editCommitment = async (req, res) => {
     }
     const updatedCommitment = await CommitmentModel.findByIdAndUpdate(
       commitmentId,
-      { title, body, image }
+      { title, body, image, icon, color }
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Commitments updated successfully",
     });

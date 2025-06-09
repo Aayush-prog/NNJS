@@ -10,7 +10,7 @@ const getCommitmentById = async (req, res) => {
         message: "Commitments not found",
       });
     }
-    res.satus(201).json({
+    res.status(20).json({
       status: "success",
       message: "Commitments found successfully",
       data: commitment,
