@@ -8,7 +8,7 @@ const createContact = async (req, res) => {
       physicalAddress,
       reachUs,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Contact created successfully",
     });

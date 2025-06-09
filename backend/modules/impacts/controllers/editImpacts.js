@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const editImpacts = async (req, res) => {
   const ImpactModel = mongoose.model("Impacts");
-  const { title, count } = req.body;
+  const { title, count, icon } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -19,6 +19,7 @@ const editImpacts = async (req, res) => {
       title,
       count,
       image,
+      icon,
     });
     res.satus(201).json({
       status: "success",
