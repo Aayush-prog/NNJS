@@ -15,7 +15,7 @@ const delSpecificObjective = async (req, res) => {
     }
     const deletedSpecificObjective =
       await SpecificObjectiveModel.findByIdAndDelete(specificObjectiveId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "SpecificObjectives deleted successfully",
     });

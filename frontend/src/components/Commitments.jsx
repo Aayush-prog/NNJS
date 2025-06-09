@@ -1,43 +1,10 @@
-import React from "react";
-import {
-  FaGlobeAsia,
-  FaAward,
-  FaHandsHelping,
-  FaShieldAlt,
-} from "react-icons/fa";
+import { React, useState, useEffect } from "react";
+import * as ReactIcons from "react-icons/fa";
 import { motion } from "motion/react";
-const principles = [
-  {
-    title: "UHC & SDG Alignment",
-    description:
-      "We align with the principles of Universal Health Coverage (UHC), the Sustainable Development Goals (SDGs), and Nepal's National Health Policy 2076. Our goal is to integrate eye health services into mainstream healthcare through strategic collaboration and system strengthening.",
-    color: "indigo",
-    icon: <FaGlobeAsia className="text-2xl sm:text-3xl text-blue-600" />,
-  },
-  {
-    title: "Quality",
-    description:
-      "We are dedicated to delivering high-quality services and achieving optimal outcomes across all aspects of eye health care.",
-    color: "emerald",
-    icon: <FaAward className="text-2xl sm:text-3xl text-yellow-500" />,
-  },
-  {
-    title: "Diversity & Inclusion",
-    description:
-      "We promote diversity, equity, and inclusion by ensuring impartiality and non-discrimination in all our operations and partnerships.",
-    color: "amber",
-    icon: <FaHandsHelping className="text-2xl sm:text-3xl text-green-700" />,
-  },
-  {
-    title: "Safeguarding",
-    description:
-      "We uphold the safety, dignity, and rights of the communities we serve and the people who work with us, regardless of context.",
-    color: "red",
-    icon: <FaShieldAlt className="text-2xl sm:text-3xl text-red-600" />,
-  },
-];
-
+import axios from "axios";
+import Loading from "../components/Loading";
 const Commitments = () => {
+  const [loading, setLoading] = useState(false);
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -46,6 +13,46 @@ const Commitments = () => {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  const iconMap = {
+    ...ReactIcons,
+  };
+
+  function IconRenderer({ iconName, color }) {
+    const IconComponent = iconMap[iconName];
+
+    if (!IconComponent) {
+      return <span>Icon not found: {iconName}</span>; // Include iconName for debugging
+    }
+
+    return (
+      <IconComponent className={`${color} text-2xl sm:text-3xl mb-3 sm:mb-4`} />
+    );
+  }
+  const [commitments, setCommitments] = useState(null);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchCommitments = async () => {
+      try {
+        setLoading(true);
+        console.log(api);
+        const res = await axios.get(`${api}/commitments`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setCommitments(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching commitments: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching commitments:", error);
+      }
+    };
+
+    fetchCommitments();
+  }, [api]);
+  if (loading) {
+    <Loading />;
+  }
   return (
     <motion.div
       variants={fadeInUp}
@@ -75,16 +82,16 @@ const Commitments = () => {
         viewport={{ once: true, amount: 0.2 }}
         className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
       >
-        {principles.map((item, index) => (
+        {commitments?.map((item, index) => (
           <div
             key={index}
             className={`bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 border-t-4 border-primary hover:shadow-lg transition-all`}
           >
-            <div className={`mb-3 sm:mb-4`}>{item.icon}</div>
+            <IconRenderer iconName={item.icon} color={item.color} />
             <h3 className="text-lg sm:text-xl font-bold text-primary font-secondary mb-1 sm:mb-2">
               {item.title}
             </h3>
-            <p className="text-sm sm:text-base text-gray-600">{item.description}</p>
+            <p className="text-sm sm:text-base text-gray-600">{item.body}</p>
           </div>
         ))}
       </motion.div>

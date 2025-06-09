@@ -3,7 +3,7 @@ const getCommitments = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
   try {
     const commitments = await CommitmentModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Commitments found successfully",
       data: commitments,
