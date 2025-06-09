@@ -3,7 +3,7 @@ const getStrategicObjective = async (req, res) => {
   const StrategicObjectiveModel = mongoose.model("StrategicObjectives");
   try {
     const strategicObjective = await StrategicObjectiveModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "StrategicObjectives found successfully",
       data: strategicObjective,

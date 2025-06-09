@@ -324,18 +324,18 @@ export default function PressAndMedia() {
                         className="w-full h-40 sm:h-48 object-cover"
                       />
                       <div className="p-4 sm:p-6">
-                        <h3 className="text-lg sm:text-xl font-bold mb-2">
+                        <h3 className="text-lg sm:text-xl font-bold mb-2 font-secondary">
                           {article.headline}
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 font-primary">
                           {article.source} – {article.date}
                         </p>
-                        <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4">{article.summary}</p>
+                        <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 font-primary">"{article.summary}</p>
                         <a
                           href={article.link}
-                          className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base"
-                        >
-                          Read More <span className="ml-1">→</span>
+                          className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base font-primary">"
+                        
+                          Read More <span className="ml-1 font-primary">→</span>
                         </a>
                       </div>
                     </motion.div>
@@ -379,7 +379,7 @@ export default function PressAndMedia() {
                     setActiveFilter("all");
                     setReleaseCurrentPage(1);
                   }}
-                  className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-l-lg border ${
+                  className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary rounded-l-lg border ${
                     activeFilter === "all"
                       ? "bg-primary text-white"
                       : "bg-white text-gray-700 hover:bg-gray-100"
@@ -394,7 +394,7 @@ export default function PressAndMedia() {
                       setActiveFilter(year);
                       setReleaseCurrentPage(1);
                     }}
-                    className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium border-t border-b border-r ${
+                    className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary border-t border-b border-r ${
                       index === AVAILABLE_YEARS.length - 1 ? "rounded-r-lg" : ""
                     } ${
                       activeFilter === year
@@ -432,15 +432,21 @@ export default function PressAndMedia() {
                       className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
                     >
                       <div>
-                        <h3 className="text-lg sm:text-xl font-bold">{release.title}</h3>
-                        <p className="text-gray-600 mt-1">{release.date}</p>
+                        <h3 className="text-lg sm:text-xl font-bold font-secondary">
+                          {release.title}
+                        </h3>
+                        <p className="text-gray-600 mt-1 font-primary">
+                          {release.date}
+                        </p>
                       </div>
                       <a
                         href={release.pdfLink}
-                        className="flex items-center text-primary hover:text-accent transition-colors duration-300 mt-2 sm:mt-0"
+                        className="flex items-center text-primary hover:text-accent transition-colors duration-300 mt-2 sm:mt-0 font-secondary"
                       >
                         <FaFilePdf className="mr-2" />
-                        <span className="text-sm sm:text-base">Download PDF</span>
+                        <span className="text-sm sm:text-base font-secondary">
+                          Download PDF
+                        </span>
                       </a>
                     </motion.div>
                   ))}
@@ -496,7 +502,7 @@ export default function PressAndMedia() {
                         className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center p-2">
-                        <span className="text-white text-center text-sm sm:text-base opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold">
+                        <span className="text-white text-center text-sm sm:text-base opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold font-secondary">
                           {item.title}
                         </span>
                       </div>

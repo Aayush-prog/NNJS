@@ -12,7 +12,7 @@ const getStrategicObjectiveById = async (req, res) => {
         message: "StrategicObjectives not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "StrategicObjectives found successfully",
       data: strategicObjective,

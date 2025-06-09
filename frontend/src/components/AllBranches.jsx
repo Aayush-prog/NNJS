@@ -268,7 +268,7 @@ export default function NNJSCombinedList({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-sans">
+    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-primary">
       {/* Category Filter and Search/Sort Panel */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -281,7 +281,7 @@ export default function NNJSCombinedList({
           {/*** 1. SCROLLING CATEGORY FILTER ***/}
           <div className="relative">
             <div className="overflow-x-auto pb-1 hide-scrollbar pr-12">
-              <div className="flex flex-nowrap items-center gap-3">
+              <div className="flex flex-nowrap items-center gap-3 font-primary">
                 {['all','hospitals','centers','presidents'].map((category) => (
                   <button
                     key={category}
@@ -291,7 +291,7 @@ export default function NNJSCombinedList({
                       setCenterPage(1);
                       setPresidentPage(1);
                     }}
-                    className={`flex-shrink-0 px-5 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                    className={`flex-shrink-0 px-5 py-2 text-sm font-secondary rounded-lg transition-colors duration-200 ${
                       activeCategory === category
                         ? 'bg-sky-500 text-white shadow-sm'
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -333,13 +333,13 @@ export default function NNJSCombinedList({
                   setPresidentPage(1);
                 }}
                 className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl text-slate-800
-                           focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none shadow-sm"
+                           focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none shadow-sm font-primary"
               />
             </div>
 
             {/* Sort */}
             <div className="flex-shrink-0 flex items-center gap-3">
-              <span className="text-slate-700 font-medium">Sort:</span>
+              <span className="text-slate-700 font-secondary">Sort:</span>
               <select
                 value={
                   activeCategory === 'centers'
@@ -402,7 +402,7 @@ export default function NNJSCombinedList({
       {/* Hospitals Section */}
       {(activeCategory === 'all' || activeCategory === 'hospitals') && (
         <section>
-          <h2 className="text-2xl font-bold mb-4">Eye Hospitals</h2>
+          <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Hospitals</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedHospitals.length > 0 ? paginatedHospitals.map((h, i) => (
               <motion.div
@@ -421,24 +421,24 @@ export default function NNJSCombinedList({
                   />
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">
+                  <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
                     {h.name}
                   </h3>
                   {h.address && (
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-gray-600 mb-3 font-primary">
                       {h.address}
                     </p>
                   )}
-                  <div className="text-gray-700 mb-4">
+                  <div className="text-gray-700 mb-4 font-primary">
                     {h.phone && <p><span className="font-semibold">Phone:</span> {h.phone}</p>}
                     {h.email && <p><span className="font-semibold">Email:</span> {h.email}</p>}
                   </div>
                   {h.website && (
                     <a
+                      className="text-primary font-secondary hover:text-accent transition-colors duration-colors inline-flex items-center"
                       href={h.website.startsWith('http') ? h.website : `http://${h.website}`}
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-primary font-medium hover:text-accent transition-colors duration-colors inline-flex items-center"
                     >
                       Visit Website <span className="ml-1">→</span>
                     </a>
@@ -464,7 +464,7 @@ export default function NNJSCombinedList({
       {/* Eye Care Centers Section */}
       {(activeCategory === 'all' || activeCategory === 'centers') && (
         <section>
-          <h2 className="text-2xl font-bold mb-4">Eye Care Centers</h2>
+          <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Care Centers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedCenters.length > 0 ? paginatedCenters.map((center, i) => (
               <motion.div 
@@ -475,17 +475,19 @@ export default function NNJSCombinedList({
                 viewport={{ once: true, amount: 0.1 }}
                 className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2"
               >
-                <h2 className="text-xl font-bold text-blue-900">{center.name}</h2>
-                <p className="text-gray-700">
+                <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                  {center.name}
+                </h2>
+                <p className="text-gray-700 font-primary">
                   <span className="font-semibold">District:</span> {center.district}
                 </p>
                 {center.contactPerson && (
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 font-primary">
                     <span className="font-semibold">Contact Person:</span> {center.contactPerson}
                   </p>
                 )}
                 {center.contactNumber && (
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 font-primary">
                     <span className="font-semibold">Contact Number:</span> {center.contactNumber}
                   </p>
                 )}
@@ -509,7 +511,7 @@ export default function NNJSCombinedList({
       {/* District Presidents Section */}
       {(activeCategory === 'all' || activeCategory === 'presidents') && (
         <section>
-          <h2 className="text-2xl font-bold mb-4">Branches</h2>
+          <h2 className="text-2xl font-bold mb-4 font-secondary">Branches</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedPresidents.length > 0 ? paginatedPresidents.map((president, i) => (
               <motion.div 
@@ -527,11 +529,13 @@ export default function NNJSCombinedList({
                     "Profile Pic"
                   )}
                 </div> */}
-                <h2 className="text-lg font-bold text-blue-900">{president.district}</h2>
-                <p className="text-gray-700"><span className="font-semibold">President:</span> {president.name}</p>
-                <p className="text-gray-700"><span className="font-semibold">Committee:</span> {president.committee}</p>
-                <p className="text-gray-700"><span className="font-semibold">Contact:</span> {president.contact}</p>
-                <p className="text-gray-700"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
+                <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                  {president.district}
+                </h2>
+                <p className="text-gray-700 font-primary"><span className="font-semibold">President:</span> {president.name}</p>
+                <p className="text-gray-700 font-primary"><span className="font-semibold">Committee:</span> {president.committee}</p>
+                <p className="text-gray-700 font-primary"><span className="font-semibold">Contact:</span> {president.contact}</p>
+                <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
               </motion.div>
             )) : (
               <div className="col-span-3 text-center py-8">
