@@ -1,60 +1,11 @@
-import React from "react";
-import {
-  FaChartLine,
-  FaEye,
-  FaGlobeAmericas,
-  FaUsers,
-  FaCogs,
-  FaNetworkWired,
-} from "react-icons/fa";
+import { React, useState, useEffect } from "react";
+import * as ReactIcons from "react-icons/fa";
 import { motion } from "motion/react";
-
-const objectives = [
-  {
-    icon: <FaChartLine className="text-blue-600 text-lg sm:text-xl" />,
-    bg: "bg-blue-100",
-    title: "Reduce Blindness Prevalence",
-    description:
-      "Lower severe visual impairment (VA <3/60) from 0.35% to below 0.2%, and economic blindness (VA <6/60) from 0.8% to 0.4% by 2022.",
-  },
-  {
-    icon: <FaEye className="text-green-600 text-lg sm:text-xl" />,
-    bg: "bg-green-100",
-    title: "Prevent Avoidable Blindness",
-    description:
-      "Promote awareness and improve health-seeking behavior related to eye health through community engagement and education.",
-  },
-  {
-    icon: <FaGlobeAmericas className="text-purple-600 text-lg sm:text-xl" />,
-    bg: "bg-purple-100",
-    title: "Ensure Accessibility",
-    description:
-      "Provide primary eye care services at the local government level to make eye care accessible to all communities.",
-  },
-  {
-    icon: <FaUsers className="text-yellow-600 text-lg sm:text-xl" />,
-    bg: "bg-yellow-100",
-    title: "Strengthen Human Resources",
-    description:
-      "Train and deploy skilled professionals across all levels of eye care to ensure quality service delivery nationwide.",
-  },
-  {
-    icon: <FaCogs className="text-red-600 text-lg sm:text-xl" />,
-    bg: "bg-red-100",
-    title: "Enhance Systems & Quality",
-    description:
-      "Develop policies, support research and surveillance, and implement quality assurance in service delivery.",
-  },
-  {
-    icon: <FaNetworkWired className="text-teal-600 text-lg sm:text-xl" />,
-    bg: "bg-teal-100",
-    title: "Expand Service Coverage",
-    description:
-      "Deliver comprehensive eye care in all eye hospitals and basic ear care at all levels of care.",
-  },
-];
+import axios from "axios";
+import Loading from "./Loading";
 
 export default function ObjectivesSection() {
+  const [loading, setLoading] = useState(false);
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -63,6 +14,44 @@ export default function ObjectivesSection() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  const iconMap = {
+    ...ReactIcons,
+  };
+
+  function IconRenderer({ iconName, color }) {
+    const IconComponent = iconMap[iconName];
+
+    if (!IconComponent) {
+      return <span>Icon not found: {iconName}</span>; // Include iconName for debugging
+    }
+
+    return <IconComponent className={`${color} text-lg sm:text-xl`} />;
+  }
+  const [objectives, setObjectives] = useState(null);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchStory = async () => {
+      try {
+        setLoading(true);
+        console.log(api);
+        const res = await axios.get(`${api}/strategicObjectives/`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setObjectives(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching objectives: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching objectives:", error);
+      }
+    };
+
+    fetchStory();
+  }, [api]);
+  if (loading) {
+    <Loading />;
+  }
   return (
     <motion.div
       variants={fadeInUp}
@@ -90,7 +79,7 @@ export default function ObjectivesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {objectives.map((obj, index) => (
+          {objectives?.map((obj, index) => (
             <motion.div
               variants={fadeInUp}
               viewport={{ once: true, amount: 0.2 }}
@@ -101,14 +90,14 @@ export default function ObjectivesSection() {
                 <div
                   className={`icon-wrapper ${obj.bg} rounded-full flex items-center justify-center w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] flex-shrink-0`}
                 >
-                  {obj.icon}
+                  <IconRenderer color={obj.color} iconName={obj.icon} />
                 </div>
                 <h3 className="text-lg sm:text-xl font-semibold font-secondary">
                   {obj.title}
                 </h3>
               </div>
               <p className="text-sm sm:text-base text-gray-600 pl-12 sm:pl-14 mt-2 font-primary">
-                {obj.description}
+                {obj.body}
               </p>
             </motion.div>
           ))}
@@ -116,4 +105,4 @@ export default function ObjectivesSection() {
       </div>
     </motion.div>
   );
-};
+}

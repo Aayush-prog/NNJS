@@ -3,23 +3,41 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
 import { motion } from "framer-motion";
-import {
-  FaArrowCircleUp,
-  FaUserInjured,
-  FaProcedures,
-  FaHospital,
-  FaEye,
-} from "react-icons/fa";
+import { FaArrowCircleUp } from "react-icons/fa";
 import heroImage from "../assets/Landing frame.png";
 import mapImage from "../assets/map.png";
 import profileImage from "../assets/profile.png";
 import CoreValues from "../components/CoreValues";
 import Impacts from "../components/Impacts";
 import Stories from "../components/Stories";
-
+import SubSection from "../components/SubSection";
+import axios from "axios";
+import Loading from "../components/Loading";
 export default function LandingPage() {
   const [showButton, setShowButton] = useState(false);
+  const [landing, setLanding] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/landing`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setLanding(res.data.data[0]);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
+    fetchPage();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => setShowButton(window.scrollY > 200);
     window.addEventListener("scroll", handleScroll);
@@ -36,71 +54,40 @@ export default function LandingPage() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div>
       <Nav />
-      <main>
-        <HeroSection
-          image={heroImage}
-          heading="Let There Be Sight."
-          subheading="Bringing vision and hope to the people of Nepal through quality eye care services"
-        />
-
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[40vh] md:min-h-[50vh] py-8 sm:py-12 md:py-16 text-center px-4 space-y-3 sm:space-y-4 md:space-y-5"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary"
-          >
-            One Vision at a Time.
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]"
-          >
-            Our vision is a Nepal where no one is blind from avoidable causes,
-            and everyone can access the eye care they need to live a full and
-            dignified life.
-          </motion.p>
-        </motion.div>
-
-        <CoreValues />
-
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-screen py-10 sm:py-12 md:py-16 flex flex-col items-center justify-center px-4"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6 sm:mb-8 md:mb-10"
-          >
-            Our Services
-          </motion.h2>
-          <motion.img
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            src={mapImage}
-            className="w-full max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] h-auto max-h-[30vh] sm:max-h-[40vh] md:max-h-[50vh] lg:max-h-[75vh] object-contain"
-            alt="Map of services offered"
-          />
-        </motion.div>
-
-        <Impacts />
-
-        <Stories />
-      </main>
+      {landing && (
+        <main>
+          {landing.heroSection && (
+            <HeroSection
+              image={landing.heroSection.image}
+              title={landing.heroSection.title}
+              body={landing.heroSection.body}
+            />
+          )}
+          {landing.subSection1 && (
+            <SubSection
+              title={landing.subSection1.title}
+              image={landing.subSection1.image}
+              body={landing.subSection1.body}
+            />
+          )}
+          <CoreValues />
+          {landing.subSection2 && (
+            <SubSection
+              title={landing.subSection2.title}
+              image={landing.subSection2.image}
+              body={landing.subSection2.body}
+            />
+          )}
+          <Impacts />
+          <Stories />
+        </main>
+      )}
 
       <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">
         <Footer />

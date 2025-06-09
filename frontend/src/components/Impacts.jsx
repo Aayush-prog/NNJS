@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  FaArrowCircleUp,
-  FaUserInjured,
-  FaProcedures,
-  FaHospital,
-  FaEye,
-} from "react-icons/fa";
+import * as ReactIcons from "react-icons/fa";
 import axios from "axios";
+import Loading from "./Loading";
 
 export default function Impacts() {
-  const [showButton, setShowButton] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [impacts, setImpacts] = useState([]);
   const api = import.meta.env.VITE_URL;
   const iconMap = {
-    FaProcedures: FaProcedures,
-    FaUserInjured: FaUserInjured,
-    FaHospital: FaHospital,
-    FaEye: FaEye,
+    ...ReactIcons,
   };
 
   function IconRenderer({ iconName }) {
@@ -41,11 +33,13 @@ export default function Impacts() {
   useEffect(() => {
     const fetchImpacts = async () => {
       try {
+        setLoading(true);
         console.log(api);
         const res = await axios.get(`${api}/impacts/`);
         console.log(res.data);
         if (res.status === 200) {
           setImpacts(res.data.data);
+          setLoading(false);
         } else {
           console.error("Error fetching impacts: Status code", res.status);
         }
@@ -57,8 +51,6 @@ export default function Impacts() {
     fetchImpacts();
   }, [api]);
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -67,7 +59,9 @@ export default function Impacts() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
+  if (loading) {
+    <Loading />;
+  }
   return (
     <motion.div
       variants={fadeInUp}

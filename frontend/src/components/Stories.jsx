@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import Loading from "./Loading";
 export default function LandingPage() {
-  const [showButton, setShowButton] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storiesData, setStoriesData] = useState(null);
   const api = import.meta.env.VITE_URL;
   useEffect(() => {
@@ -13,11 +14,13 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchStory = async () => {
       try {
+        setLoading(true);
         console.log(api);
         const res = await axios.get(`${api}/story/`);
         console.log(res.data);
         if (res.status === 200) {
           setStoriesData(res.data.data);
+          setLoading(false);
         } else {
           console.error("Error fetching story: Status code", res.status);
         }
@@ -36,6 +39,9 @@ export default function LandingPage() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  if (loading) {
+    <Loading />;
+  }
 
   return (
     <motion.div

@@ -15,7 +15,7 @@ const delStrategicObjective = async (req, res) => {
     }
     const deletedStrategicObjective =
       await StrategicObjectiveModel.findByIdAndDelete(strategicObjectiveId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "StrategicObjectives deleted successfully",
     });
