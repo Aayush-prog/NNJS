@@ -18,7 +18,7 @@ const editSpecificObjective = async (req, res) => {
         title,
         objectives,
       });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "SpecificObjectives updated successfully",
     });

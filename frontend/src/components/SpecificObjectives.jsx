@@ -1,6 +1,11 @@
+import { React, useState, useEffect } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "motion/react";
+import axios from "axios";
+import Loading from "../components/Loading";
+
 export default function SpecificObjectives() {
+  const [loading, setLoading] = useState(false);
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -9,39 +14,45 @@ export default function SpecificObjectives() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-  const timeline = [
-    {
-      year: "By 2022",
-      objectives: [
-        "Increase the national CSR from 4300 to 6000",
-        "Establish a cataract audit system to monitor quality and quantity",
-        "Achieve WHO visual outcome benchmarks (PVA ≥ 80%, BCVA ≥ 90%)",
-      ],
-    },
-    {
-      year: "By 2023",
-      objectives: [
-        "Raise community awareness of eye diseases and services to over 90%",
-        "Reduce vision impairment from URE below 2% and increase spectacle coverage above 80%",
-        "Ensure 90% awareness of IEC materials among the target population",
-      ],
-    },
-    {
-      year: "By 2024",
-      objectives: [
-        "Establish at least 100 district-level ear care centres",
-        "Train at least 70 additional ophthalmologists with sub-specialty training",
-        "Establish 350 vision centres at the local government level",
-        "Upgrade 33 ECCs to surgical eye hospitals",
-        "Upgrade tertiary eye hospitals into Centres of Excellence in each province",
-        "Provide Eye Banking and cornea harvesting facilities in all Centres of Excellence",
-      ],
-    },
-    {
-      year: "By 2030",
-      objectives: ["Eliminate corneal blindness"],
-    },
-  ];
+  const [objectives, setObjectives] = useState(null);
+  const api = import.meta.env.VITE_URL;
+
+  useEffect(() => {
+    const fetchObjective = async () => {
+      try {
+        setLoading(true);
+        console.log(api);
+        const res = await axios.get(`${api}/specificObjectives/`);
+        console.log(res.data);
+        if (res.status === 200) {
+          // Sort the data here, after it's fetched
+          const sortedData = [...res.data.data].sort((a, b) => {
+            const titleA = a.title.toUpperCase();
+            const titleB = b.title.toUpperCase();
+            if (titleA < titleB) {
+              return -1;
+            }
+            if (titleA > titleB) {
+              return 1;
+            }
+            return 0;
+          });
+          setObjectives(sortedData);
+          setLoading(false);
+        } else {
+          console.error("Error fetching objectives: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching objectives:", error);
+      }
+    };
+
+    fetchObjective();
+  }, [api]);
+
+  if (loading) {
+    return <Loading />; //  Return Loading component when loading
+  }
 
   return (
     <motion.div
@@ -78,7 +89,7 @@ export default function SpecificObjectives() {
             viewport={{ once: true, amount: 0.2 }}
             className="space-y-8 sm:space-y-12"
           >
-            {timeline.map((item, index) => {
+            {objectives?.map((item, index) => {
               const isLeft = index % 2 === 0;
 
               return (
@@ -101,7 +112,7 @@ export default function SpecificObjectives() {
                       <div className="flex items-center gap-2 mb-2">
                         <FaCheckCircle className="text-green-500 text-lg md:text-xl flex-shrink-0" />
                         <h3 className="text-lg md:text-xl font-bold text-primary font-secondary">
-                          {item.year}
+                          {item.title}
                         </h3>
                       </div>
                       <ul className="list-disc ml-5 md:ml-6 space-y-1 md:space-y-2 text-sm md:text-base text-gray-700">

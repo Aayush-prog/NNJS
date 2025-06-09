@@ -12,7 +12,7 @@ const getSpecificObjectiveById = async (req, res) => {
         message: "SpecificObjectives not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "SpecificObjectives found successfully",
       data: specificObjective,
