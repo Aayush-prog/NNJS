@@ -20,7 +20,7 @@ const editValue = async (req, res) => {
       body,
       image,
     });
-    res.satus(201).json({
+    res.satus(200).json({
       status: "success",
       message: "Values updated successfully",
     });

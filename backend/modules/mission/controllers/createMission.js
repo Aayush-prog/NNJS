@@ -8,7 +8,7 @@ const createMission = async (req, res) => {
     : null;
   try {
     const newMission = await MissionModel.create({ image, body });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Mission created successfully",
     });
