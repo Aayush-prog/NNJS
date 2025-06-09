@@ -8,7 +8,7 @@ const createValue = async (req, res) => {
     : null;
   try {
     const newValue = await ValueModel.create({ title, body, image });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Values created successfully",
     });

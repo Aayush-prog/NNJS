@@ -3,10 +3,10 @@ const getMission = async (req, res) => {
   const MissionModel = mongoose.model("Mission");
   try {
     const mission = await MissionModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Mission found successfully",
-      data: mission,
+      data: mission[0],
     });
   } catch (error) {
     res.status(400).json({

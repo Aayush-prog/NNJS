@@ -3,7 +3,7 @@ const getImpacts = async (req, res) => {
   const ImpactModel = mongoose.model("Impacts");
   try {
     const impact = await ImpactModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Impacts found successfully",
       data: impact,
