@@ -274,16 +274,17 @@ export default function PressAndMedia() {
         {/* Latest Press Coverage */}
         <section id="news-section" className="py-10 sm:py-12 md:py-16 px-4 bg-gray-50">
           <div className="container mx-auto max-w-6xl">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              <h2 className="text-4xl font-bold text-center mb-12 font-secondary">
-                In the News
-              </h2>
-            </motion.div>
+          <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      animate="visible"
+      viewport={{ once: true, amount: 0.1 }}
+    >
+      <h2 className="text-4xl font-bold text-center mb-12 font-secondary">
+        In the News
+      </h2>
+    </motion.div> 
+ 
 
             {pressArticles.length === 0 ? (
               <div className="text-center py-12">
