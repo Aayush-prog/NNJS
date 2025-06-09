@@ -24,11 +24,6 @@ export default function Impacts() {
     );
   }
 
-  useEffect(() => {
-    const handleScroll = () => setShowButton(window.scrollY > 200);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const fetchImpacts = async () => {

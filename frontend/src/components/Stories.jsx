@@ -7,11 +7,6 @@ export default function LandingPage() {
   const [storiesData, setStoriesData] = useState(null);
   const api = import.meta.env.VITE_URL;
   useEffect(() => {
-    const handleScroll = () => setShowButton(window.scrollY > 200);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-  useEffect(() => {
     const fetchStory = async () => {
       try {
         setLoading(true);
