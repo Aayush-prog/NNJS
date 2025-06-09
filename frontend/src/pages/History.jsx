@@ -72,7 +72,7 @@ export default function History() {
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.05 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl font-primary max-w-6xl mx-auto"
+            className="text-sm leading-relaxed sm:text-base md:text-lg lg:text-xl font-primary max-w-6xl mx-auto"
           >
             Motivated by the urgent need to address preventable blindness and
             improve access to quality eye care, a group of nine committed

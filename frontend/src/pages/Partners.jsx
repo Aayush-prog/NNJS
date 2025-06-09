@@ -123,7 +123,7 @@ export default function Partners() {
           <motion.h1
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-3xl md:text-4xl font-bold text-primary font-secondary"
+            className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-2 sm:p-3 md:p-5"
           >
             Together, We Bring Vision to Life
           </motion.h1>
@@ -145,7 +145,7 @@ export default function Partners() {
         </motion.div>
         <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">
           <div className="flex flex-col justify-center items-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Partner Organizations
             </h2>
             <div className="w-full flex justify-center items-center">
@@ -153,7 +153,7 @@ export default function Partners() {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Past Supporters
             </h2>
             <div className="w-full flex justify-center items-center">
@@ -174,10 +174,10 @@ export default function Partners() {
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
           aria-label="Scroll to top"
         >
-          <FaArrowCircleUp size={24} md:size={30} />
+          <FaArrowCircleUp size={24} />
         </button>
       )}
     </div>

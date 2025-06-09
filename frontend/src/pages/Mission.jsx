@@ -106,7 +106,7 @@ export default function Mission() {
         <motion.p
           variants={fadeInUp}
           viewport={{ once: true, amount: 0.2 }}
-          className="text-sm sm:text-base md:text-lg lg:text-xl font-primary px-2 sm:px-8 md:px-12 lg:px-20 text-center max-w-4xl mx-auto"
+          className="text-sm leading-relaxed sm:text-base md:text-lg lg:text-xl font-primary px-2 sm:px-8 md:px-12 lg:px-20 text-center max-w-4xl mx-auto"
         >
           The Nepal Netra Jyoti Sangh (NNJS) is the central coordinating body
           for eye care in Nepal. It liaises with eye hospitals, the Government

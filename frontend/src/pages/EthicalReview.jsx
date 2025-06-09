@@ -171,22 +171,22 @@ export default function EthicalReview() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="relative h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${ethical})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
-            <h1 className="text-4xl md:text-6xl font-bold font-secondary">
+            <h1 className="text-2xl sm:text-3xl md:text-6xl font-bold font-secondary">
               Ethical Review
             </h1>
           </div>
         </motion.div>
 
         <div className="items-center bg-blue-50 justify-center flex flex-col text-center py-10 md:py-16">
-          <h1 className="font-secondary text-2xl md:text-3xl text-primary font-bold p-3 md:p-5">
+          <h1 className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-3 md:p-5">
             Institutional Review Committee (IRC) - NNJS
           </h1>
-          <div className="text-base md:text-lg font-primary max-w-6xl mx-auto px-4 md:px-6 space-y-4 md:space-y-6 leading-relaxed">
+          <div className="text-sm leading-relaxed sm:text-base md:text-lg lg:text-xl font-primary max-w-6xl mx-auto px-4 md:px-6 space-y-4 md:space-y-6">
             <p>
               The Institutional Review Committee (IRC) of NNJS is an independent
               ethical body comprising eleven members from medical and
@@ -204,14 +204,14 @@ export default function EthicalReview() {
           </div>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-bold font-secondary text-primary mt-10 md:mt-16 mb-6 md:mb-8 text-center px-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary text-primary mt-10 md:mt-16 mb-6 md:mb-8 text-center px-4">
           IRC's Objectives
         </h2>
         <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 px-4 sm:px-8 md:px-16 lg:px-28 mb-10 md:mb-18">
           {objectives.map((obj, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-white border border-gray-200 rounded-xl p-6 md:p-6 shadow-md hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start gap-3 md:gap-4">
                 <div
@@ -239,10 +239,10 @@ export default function EthicalReview() {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold font-secondary text-primary mt-12 md:mt-20 mb-6 md:mb-8 text-center px-4">
+          <h2 className="text-2xl leading-relaxed mb-4 sm:text-3xl md:text-4xl font-bold font-secondary text-primary mt-12 md:mt-20 sm:mb-6 md:mb-8 text-center px-4">
             Ethical Review Process
           </h2>
-          <p className="text-center font-primary text-sm md:text-lg px-4 sm:px-10 md:px-20 lg:px-32 mx-auto mb-6 md:mb-8">
+          <p className="text-center leading-relaxed font-primary text-sm md:text-lg px-4 sm:px-10 md:px-20 lg:px-32 mx-auto mb-6 md:mb-8">
             The ethical review process at NNJS ensures all research proposals
             undergo a structured and transparent evaluation before
             implementation. This multi-stage process involves internal and
@@ -258,7 +258,7 @@ export default function EthicalReview() {
         </div>
 
         <div className="bg-blue-50 py-10 md:py-16 px-4 sm:px-6 md:px-16">
-          <h2 className="text-2xl md:text-3xl font-bold font-secondary text-primary text-center mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:4xl font-bold font-secondary text-primary text-center mb-8 md:mb-12">
             Frequently Asked Questions - FAQs
           </h2>
           <div className="bg-white shadow-md md:shadow-lg rounded-lg p-4 md:p-8 max-w-4xl mx-auto">
@@ -288,7 +288,7 @@ export default function EthicalReview() {
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-primary text-white p-2 rounded-full z-50 hover:bg-opacity-90 transition-colors duration-300"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
           aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={24} />
