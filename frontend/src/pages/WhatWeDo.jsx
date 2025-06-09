@@ -73,7 +73,7 @@ export default function WhatWeDo() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="relative h-[50vh] sm:h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${for_location_page})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>

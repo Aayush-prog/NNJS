@@ -147,6 +147,29 @@ const GALLERY_ITEMS = [
 const AVAILABLE_YEARS = ["2025", "2024", "2023"];
 
 export default function PressAndMedia() {
+  // track viewport width
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // pagination current pages
+  const [currentPage, setCurrentPage] = useState(1);
+  const [releaseCurrentPage, setReleaseCurrentPage] = useState(1);
+  const [galleryCurrentPage, setGalleryCurrentPage] = useState(1);
+
+  // update width on resize
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // derive items-per-page dynamically
+  const articlesPerPage =
+    windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 3;
+  const releasesPerPage =
+    windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 4;
+  const galleryItemsPerPage =
+    windowWidth < 640 ? 4 : windowWidth < 1024 ? 6 : 8;
+
   const [showButton, setShowButton] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [pressArticles, setPressArticles] = useState([]);
@@ -154,18 +177,6 @@ export default function PressAndMedia() {
   const [galleryItems, setGalleryItems] = useState([]);
   const [mediaContacts, setMediaContacts] = useState([]);
   
-  // Add pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 3;
-
-  // Add pagination state for press releases
-  const [releaseCurrentPage, setReleaseCurrentPage] = useState(1);
-  const releasesPerPage = 4;
-
-  // Add pagination state for gallery
-  const [galleryCurrentPage, setGalleryCurrentPage] = useState(1);
-  const galleryItemsPerPage = 8;
-
   useEffect(() => {
     // Simulate API calls to fetch data
     const fetchData = async () => {
@@ -224,7 +235,10 @@ export default function PressAndMedia() {
   // Calculate pagination for press articles
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = pressArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+  const currentArticles = pressArticles.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle
+  );
   const totalPages = Math.ceil(pressArticles.length / articlesPerPage);
 
   // Handle page change
@@ -260,7 +274,7 @@ export default function PressAndMedia() {
       <main>
         {/* Hero Section */}
         <div
-          className="relative h-[50vh] sm:h-[60vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -274,16 +288,17 @@ export default function PressAndMedia() {
         {/* Latest Press Coverage */}
         <section id="news-section" className="py-10 sm:py-12 md:py-16 px-4 bg-gray-50">
           <div className="container mx-auto max-w-6xl">
-          <motion.div
-      variants={fadeInUp}
-      initial="hidden"
-      animate="visible"
-      viewport={{ once: true, amount: 0.1 }}
-    >
-      <h2 className="text-4xl font-bold text-center mb-12 font-secondary">
-        In the News
-      </h2>
-    </motion.div> 
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              {/* make H2 responsive */}
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
+                In the News
+              </h2>
+            </motion.div> 
  
 
             {pressArticles.length === 0 ? (
@@ -293,7 +308,7 @@ export default function PressAndMedia() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
                   {currentArticles.map((article) => (
                     <motion.div
                       key={article.id}
@@ -351,7 +366,7 @@ export default function PressAndMedia() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
             >
-              <h2 className="text-4xl font-bold text-center mb-12 font-secondary">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
                 Press Releases
               </h2>
             </motion.div>
@@ -453,7 +468,7 @@ export default function PressAndMedia() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
             >
-              <h2 className="text-4xl font-bold text-center mb-12 font-secondary">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
                 Photo & Video Library
               </h2>
             </motion.div>
@@ -465,7 +480,7 @@ export default function PressAndMedia() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {currentGalleryItems.map((item) => (
                     <motion.div
                       key={item.id}

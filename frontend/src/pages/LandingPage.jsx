@@ -109,7 +109,19 @@ export default function LandingPage() {
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
             src={mapImage}
-            className="w-full max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] h-auto max-h-[30vh] sm:max-h-[40vh] md:max-h-[50vh] lg:max-h-[75vh] object-contain"
+            className="w-full
+    max-w-[90vw]
+    landscape:max-w-[95vw]
+    sm:max-w-[200vw]
+    md:max-w-[80vw]
+    lg:max-w-[75vw]
+    h-auto
+    max-h-[30vh]
+    landscape:max-h-[80vh]
+    sm:max-h-[40vh]
+    md:max-h-[50vh]
+    lg:max-h-[75vh]
+    object-contain"
             alt="Map of services offered"
           />
         </motion.div>
