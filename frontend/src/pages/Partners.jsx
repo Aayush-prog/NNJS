@@ -174,7 +174,7 @@ export default function Partners() {
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition z-10"
           aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={24} />
