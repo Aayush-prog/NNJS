@@ -4,9 +4,6 @@ import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp } from "react-icons/fa";
-import heroImage from "../assets/Landing frame.png";
-import mapImage from "../assets/map.png";
-import profileImage from "../assets/profile.png";
 import CoreValues from "../components/CoreValues";
 import Impacts from "../components/Impacts";
 import Stories from "../components/Stories";
@@ -82,7 +79,6 @@ export default function LandingPage() {
               title={landing.subSection2.title}
               image={landing.subSection2.image}
               body={landing.subSection2.body}
-              
             />
           )}
           <Impacts />
@@ -96,7 +92,7 @@ export default function LandingPage() {
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
+          className="fixed bottom-5 right-5 z-10 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
           aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={24} />

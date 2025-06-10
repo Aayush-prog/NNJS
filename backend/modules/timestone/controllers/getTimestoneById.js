@@ -10,7 +10,7 @@ const getTimestoneById = async (req, res) => {
         message: "Timestones not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Timestones found successfully",
       data: timestone,

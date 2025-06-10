@@ -13,7 +13,7 @@ const createTimestone = async (req, res) => {
       year,
       image,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Timestones created successfully",
     });

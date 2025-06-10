@@ -4,10 +4,31 @@ import donate from "../assets/donate.png";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaHeart, FaUniversity } from "react-icons/fa";
-
+import axios from "axios";
+import Loading from "../components/Loading";
 export default function Donate() {
   const [showButton, setShowButton] = useState(false);
+  const [bank, setBank] = useState();
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchBank = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${api}/bank/`);
+        if (res.status === 200) {
+          setBank(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching bank: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching bank:", error);
+      }
+    };
 
+    fetchBank();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY > 200);
@@ -32,7 +53,7 @@ export default function Donate() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
+  if (loading) return <Loading />;
   return (
     <div>
       <Nav />
@@ -111,19 +132,19 @@ export default function Donate() {
             <div className="space-y-3 sm:space-y-4 md:space-y-6 text-gray-700 text-sm sm:text-base">
               <div>
                 <p className="font-semibold">Account Name:</p>
-                <p>Nepal Netra Jyoti Sangh</p>
+                <p>{bank?.accName}</p>
               </div>
               <div>
                 <p className="font-semibold">Account Number:</p>
-                <p className="break-words">05-0012211-54</p>
+                <p className="break-words">{bank?.accNum}</p>
               </div>
               <div>
                 <p className="font-semibold">Bank:</p>
-                <p>Standard Chartered Bank Nepal</p>
+                <p>{bank?.bank}</p>
               </div>
               <div>
                 <p className="font-semibold">SWIFT Code:</p>
-                <p>SCBLNPKA</p>
+                <p>{bank?.swiftCode}</p>
               </div>
             </div>
           </div>

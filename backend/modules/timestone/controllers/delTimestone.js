@@ -14,7 +14,7 @@ const delTimestone = async (req, res) => {
     const deletedEyeCareCenter = await TimestoneModel.findByIdAndDelete(
       timestoneId
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Timestones deleted successfully",
     });
