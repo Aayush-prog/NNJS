@@ -10,7 +10,7 @@ const getContactById = async (req, res) => {
         message: "Contact not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Contact found successfully",
       data: contactId,

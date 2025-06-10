@@ -16,7 +16,7 @@ const editContact = async (req, res) => {
       physicalAddress,
       reachUs,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Contact updated successfully",
     });

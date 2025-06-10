@@ -3,14 +3,36 @@ import Nav from "../components/Nav";
 import coveringEyes from "../assets/covering eyes.png";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaMap, FaYoast, FaYoutube } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 import { FaLinkedin } from "react-icons/fa";
 import { FaArrowCircleUp } from "react-icons/fa";
-
+import Loading from "../components/Loading";
+import axios from "axios";
 export default function Contact() {
   const [showButton, setShowButton] = useState(false);
+  const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchValue = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${api}/contact/`);
+        if (res.status === 200) {
+          console.log(res.data.data);
+          setContact(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching contact: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching contact:", error);
+      }
+    };
 
+    fetchValue();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -45,7 +67,7 @@ export default function Contact() {
       },
     },
   };
-
+  if (loading) return <Loading />;
   return (
     <div>
       <Nav />
@@ -127,61 +149,59 @@ export default function Contact() {
                 <div className="space-y-2 sm:w-1/3">
                   <p className="font-bold mb-1 md:mb-2">MAILING ADDRESS</p>
                   <div>
-                    <p>P.O. Box 335</p>
-                    <p>Netra Jyoti Bhawan</p>
+                    {contact?.mailingAddress?.map((item, i) => (
+                      <p key={i}>{item}</p>
+                    ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <p className="font-bold mb-1 md:mb-2">PHYSICAL ADDRESS</p>
                   <div>
-                    <p>Netra Jyoti Bhawan</p>
-                    <p>Tripureshwor, Kathmandu</p>
+                    {contact?.physicalAddress?.map((item, i) => (
+                      <p key={i}>{item}</p>
+                    ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <p className="font-bold mb-1 md:mb-2">REACH US</p>
                   <div>
-                    <p>+977-1-5361921 / 5361066</p>
-                    <p>nnjs@mos.com.np</p>
+                    {contact?.reachUs?.map((item, i) => (
+                      <p key={i}>{item}</p>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Social icons */}
-            <div className="flex space-x-5 text-xl md:text-2xl mt-5 text-primary">
+            <div className="flex space-x-5 text-xl md:text-2xl mt-5 text-primary items-center">
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=100064789866065#"
                 className="hover:text-accent transition-colors"
                 aria-label="Facebook"
               >
                 <FaFacebook />
               </a>
               <a
-                href="#"
-                className="hover:text-accent transition-colors"
-                aria-label="LinkedIn"
+                href="https://www.youtube.com/channel/UC4850z46i9u0mvs8SnWIEqQ/featured"
+                className="hover:text-accent transition-colors text-2xl md:text-3xl"
+                aria-label="Youtube"
               >
-                <FaLinkedin />
+                <FaYoutube />
               </a>
               <a
-                href="#"
+                href="https://www.google.com/maps/contrib/105016702714475758470/place/ChIJQ3PYtrIZ6zkRSxExsBQobC0/@27.692357,85.314105,15z?entry=ttu&g_ep=EgoyMDI1MDYwNC4wIKXMDSoASAFQAw%3D%3D"
                 className="hover:text-accent transition-colors"
-                aria-label="Twitter"
+                aria-label="Map"
               >
-                <RiTwitterXLine />
+                <FaMap />
               </a>
             </div>
           </div>
         </motion.div>
       </motion.div>
 
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">
         <Footer />
       </motion.div>
 

@@ -12,7 +12,7 @@ const delContact = async (req, res) => {
       });
     }
     const deletedContact = await ContactModel.findByIdAndDelete(contactId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Contact deleted successfully",
     });

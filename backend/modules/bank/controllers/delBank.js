@@ -13,7 +13,7 @@ const delBank = async (req, res) => {
     }
     const deletedBank = await BankModel.findByIdAndDelete(bankId);
     res
-      .satus(201)
+      .status(200)
       .json({ status: "success", message: "Bank deleted successfully" });
   } catch (error) {
     res.status(400).json({
