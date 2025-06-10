@@ -61,7 +61,7 @@ export default function CoreValues() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="min-h-[70vh] sm:min-h-[80vh] py-8 sm:py-12 md:py-16 lg:py-20 flex flex-col items-center justify-center bg-primary space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10"
+      className="min-h-[80vh] sm:min-h-[80vh] py-8 sm:py-12 md:py-16 lg:py-20 flex flex-col items-center justify-center bg-primary space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10"
     >
       <motion.h2
         variants={fadeInUp}
@@ -96,29 +96,27 @@ export default function CoreValues() {
         >
           {values?.map((value, index) => (
             <SwiperSlide key={index}>
-              <div className="flex items-center justify-center px-3 sm:px-6 md:px-8 lg:px-8 h-full">
-                <div className="bg-white rounded-lg sm:rounded-xl md:rounded-[20px] overflow-hidden shadow-md sm:shadow-lg md:shadow-xl flex flex-col md:flex-row w-full max-w-5xl h-full">
-                  {/* Text Section (Left) */}
-                  <div className="md:w-1/2 w-full p-4 sm:p-6 md:p-8 lg:p-10 flex items-start justify-center">
-                    <div>
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary font-secondary mb-4">
-                        {value.title}
-                      </h3>
-                      <p className="text-sm sm:text-base md:text-lg text-justify font-primary">
-                        {value.body}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Image Section (Right) */}
-                  <div className="md:w-1/2 w-full h-[250px] sm:h-[280px] md:h-auto">
+              <div className="flex items-center justify-center px-3 sm:px-4 md:px-6 lg:px-8 h-full">
+                <div className="bg-white rounded-lg sm:rounded-xl md:rounded-[20px] overflow-hidden shadow-md sm:shadow-lg md:shadow-xl flex flex-col md:flex-row w-full max-w-5xl h-[590px] sm:h-full">
+                  <div className="w-full md:w-1/2 h-64 aspect-[4/3] md:aspect-auto md:h-auto max-h-[400px]">
                     <img
                       src={`${api}/images/${value.image}`}
                       alt={`Illustration representing ${value.image}`}
                       className="w-full h-full object-cover md:rounded-r-[20px]"
-                      style={{ aspectRatio: aspectRatio }}
                       loading="lazy"
                     />
+                  </div>
+
+                  {/* Text Section (Below image on mobile, left on large) */}
+                  <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex items-start justify-center">
+                    <div>
+                      <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary font-secondary mb-3 sm:mb-4">
+                        {value.title}
+                      </h3>
+                      <p className="text-sm sm:text-base md:text-lg text-justify font-primary leading-relaxed">
+                        {value.body}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
