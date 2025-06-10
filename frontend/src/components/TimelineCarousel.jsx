@@ -10,6 +10,7 @@ import "swiper/css/autoplay";
 import { motion } from "motion/react";
 import axios from "axios";
 import Loading from "../components/Loading";
+
 const TimelineCarousel = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -23,23 +24,13 @@ const TimelineCarousel = () => {
         const res = await axios.get(`${api}/timeStone/`);
         if (res.status === 200) {
           const getGroupedSlides = (data) => {
-            // For mobile, show 1 per slide, for tablet 2, for desktop 3
-            if (typeof window !== "undefined" && window.innerWidth < 640) {
-              return data.map((item) => [item]);
-            } else if (
-              typeof window !== "undefined" &&
-              window.innerWidth < 1024
-            ) {
-              return [
-                data.slice(0, 2),
-                data.slice(2, 4),
-                data.slice(4, 6),
-                data.slice(6, 8),
-                data.slice(8),
-              ];
-            } else {
-              return [data.slice(0, 3), data.slice(3, 6), data.slice(6, 9)];
+            let itemsPerSlide = 3;
+
+            const grouped = [];
+            for (let i = 0; i < data.length; i += itemsPerSlide) {
+              grouped.push(data.slice(i, i + itemsPerSlide));
             }
+            return grouped;
           };
 
           const groupedSlides = getGroupedSlides(res.data.data);
@@ -136,9 +127,12 @@ const TimelineCarousel = () => {
               <div className="px-4 sm:px-8 md:px-12">
                 <div className="relative mb-6 sm:mb-10">
                   <div className="h-1 bg-primary absolute top-3 left-0 right-0 sm:top-4"></div>
-                  <div className="flex justify-around relative z-10">
+                  <div className="flex relative z-10">
                     {group?.map((item, i) => (
-                      <div key={i} className="text-center">
+                      <div
+                        key={i}
+                        className="text-center w-full sm:w-1/2 lg:w-1/3"
+                      >
                         <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary border-4 border-white mx-auto shadow-lg"></div>
                         <div className="mt-1 sm:mt-2 font-semibold text-sm sm:text-lg md:text-xl text-primary">
                           {item.year}
@@ -148,7 +142,7 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 mb-10 h-[260px] sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 sm:mb-10 sm:h-[350px]">
+                <div className="grid grid-cols-1 mb-10 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-1 md:gap-6 md:mb-10">
                   {group.map((item, i) => (
                     <div
                       key={i}
@@ -157,7 +151,7 @@ const TimelineCarousel = () => {
                       <img
                         src={timelineImage}
                         alt={item.title}
-                        className="w-full h-32 sm:h-40 md:h-48 object-cover"
+                        className="w-full object-cover"
                       />
                       <div className="p-4 sm:p-6">
                         <h3 className="text-lg sm:text-xl font-bold font-secondary text-primary mb-1 sm:mb-2">

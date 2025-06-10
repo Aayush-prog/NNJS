@@ -16,6 +16,9 @@ import EthicalReview from "./pages/EthicalReview";
 import Resources from "./pages/Resources";
 import PressAndMedia from "./pages/PressAndMedia";
 import AdminLandingPage from "../src copy/pages/LandingPage";
+import HospitalDetail from "./components/HospitalDetail";
+import CenterDetail from "./components/CenterDetail";
+import BranchDetail from "./components/BranchDetail";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,10 +31,16 @@ function App() {
         <Route path="/partners" element={<Partners />} />
         <Route path="/history" element={<History />} />
         <Route path="/team" element={<Team />} />
-        <Route path="/what_we_do" element={<Locations />} />
+        <Route path="/what_we_do" element={<Locations />}>
+          <Route path="hospital/:id" element={<HospitalDetail />} />
+          <Route path="care/:id" element={<CenterDetail />} />
+          <Route path="branch/:id" element={<BranchDetail />} />
+        </Route>
+      
         <Route path="/ethical" element={<EthicalReview />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/press" element={<PressAndMedia />} />
+        
         
         <Route path="/admin" element={<AdminLandingPage />}>
           {/* <Route index element={<AdminDashboard />} /> */}

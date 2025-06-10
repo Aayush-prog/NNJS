@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { Outlet, useMatch } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav.jsx";
 import for_location_page from "../assets/Locations.png";
@@ -7,6 +8,9 @@ import { motion } from "motion/react";
 import Footer from "../components/Footer.jsx";
 import { FaArrowCircleUp } from "react-icons/fa";
 import AllBranches from "../components/AllBranches.jsx";
+import HospitalDetail from "../components/HospitalDetail";
+import CenterDetail from "../components/CenterDetail";
+import BranchDetail from "../components/BranchDetail";
 
 export default function WhatWeDo() {
   const [selectedLists, setSelectedLists] = useState(["hospital"]);
@@ -56,9 +60,20 @@ export default function WhatWeDo() {
     );
   };
 
+  // Detect if a detail route is active
+  const matchHospital = useMatch("/what_we_do/hospital/:id");
+  const matchCare = useMatch("/what_we_do/care/:id");
+  const matchBranch = useMatch("/what_we_do/branch/:id");
+
   return (
     <div className="w-full overflow-x-hidden">
       <Nav />
+      {/* Conditionally render detail overlays */}
+      {matchHospital && <HospitalDetail />}
+      {matchCare && <CenterDetail />}
+      {matchBranch && <BranchDetail />}
+
+      {/* Keep rendering the rest of the page */}
       <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50"></div>
       <motion.div
         variants={fadeInUp}
@@ -79,33 +94,7 @@ export default function WhatWeDo() {
         <img src={eye_hospital} alt="Eye Hospital" className="w-full h-auto" />
       </div>
 
-      {/* Selection Buttons - Commented out in original code */}
-      {/* <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-        <button
-          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("hospital") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => toggleList("hospital")}
-        >
-          Eye Hospitals
-        </button>
-        <button
-          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("care") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => toggleList("care")}
-        >
-          Eye Care Centers
-        </button>
-        <button
-          className={`px-3 py-1 md:px-4 md:py-2 rounded text-sm md:text-base ${selectedLists.includes("president") ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => toggleList("president")}
-        >
-          District Presidents
-        </button>
-      </div> */}
-
-      {/* Conditionally Render Lists - Commented out in original code */}
-      {/* {selectedLists.includes("hospital") && <EyeHospitalList />}
-      {selectedLists.includes("care") && <EyeCareCenterList />}
-      {selectedLists.includes("president") && <DistrictPresidentList />} */}
-
+      
       <div className="px-4 sm:px-6 md:px-8">
         <AllBranches />
       </div>
