@@ -10,7 +10,7 @@ const createBank = async (req, res) => {
       swiftCode,
     });
     res
-      .satus(201)
+      .status(201)
       .json({ status: "success", message: "Bank created successfully" });
   } catch (error) {
     res.status(400).json({

@@ -18,7 +18,7 @@ const editBank = async (req, res) => {
       swiftCode,
     });
     res
-      .satus(201)
+      .status(200)
       .json({ status: "success", message: "Bank updated successfully" });
   } catch (error) {
     res.status(400).json({
