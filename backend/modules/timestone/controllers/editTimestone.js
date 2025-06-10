@@ -19,7 +19,7 @@ const editTimestone = async (req, res) => {
       timestoneId,
       { title, body, year, image }
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Timestones updated successfully",
     });
