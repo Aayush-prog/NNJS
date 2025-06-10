@@ -105,7 +105,7 @@ export default function History() {
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.05 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl font-primary text-left"
+            className="text-sm sm:text-base md:text-lg lg:text-xl font-primary text-left leading-relaxed"
           >
             What began as a vision among a few compassionate pioneers in 1978
             has grown into Nepal Netra Jyoti Sangh (NNJS) — a nationwide
@@ -115,10 +115,7 @@ export default function History() {
             programs. Our journey is a testament to what's possible when
             dedication meets purpose. And we're just getting started. Together,
             we can light the path ahead and ensure that no one in Nepal is left
-            in the dark.{" "}
-            <motion.span className="font-bold text-primary mt-2 sm:mt-3">
-              Join us, and be part of this vision.
-            </motion.span>
+            in the dark. Join us, and be part of this vision.
           </motion.p>
         </motion.div>
       </main>
