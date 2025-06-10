@@ -116,9 +116,9 @@ export default function History() {
             dedication meets purpose. And we're just getting started. Together,
             we can light the path ahead and ensure that no one in Nepal is left
             in the dark.{" "}
-            <motion.p className="font-bold text-primary mt-2 sm:mt-3">
+            <motion.span className="font-bold text-primary mt-2 sm:mt-3">
               Join us, and be part of this vision.
-            </motion.p>
+            </motion.span>
           </motion.p>
         </motion.div>
       </main>

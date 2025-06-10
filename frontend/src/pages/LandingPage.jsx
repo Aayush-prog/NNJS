@@ -79,7 +79,6 @@ export default function LandingPage() {
               title={landing.subSection2.title}
               image={landing.subSection2.image}
               body={landing.subSection2.body}
-              
             />
           )}
           <Impacts />
