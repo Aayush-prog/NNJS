@@ -1,81 +1,113 @@
-import React, { useState } from "react";
-import { Download, FileText } from "lucide-react"; // File icon
+import React, { useState, useEffect } from "react";
+import { Download, FileText } from "lucide-react";
+import axios from "axios";
+import Loading from "./Loading";
 
 const categories = [
   {
     group: "Notices & Reports",
-    includes: ["Notice Board", "Activity Report", "Workshop Report"],
+    includes: ["Notice & Reports"],
+    stateKey: "notices",
   },
   {
     group: "Guidelines & Protocols",
-    includes: ["Protocol", "NNJS Bidhan"],
+    includes: ["Guidelines & Protocols"],
+    stateKey: "guidelines",
   },
   {
     group: "Media & Bulletins",
-    includes: ["NNJS in Media", "Bulletins"],
+    includes: ["Media & Bulletins"],
+    stateKey: "media",
   },
   {
     group: "Publications",
-    includes: ["Publication"],
+    includes: ["Publications"],
+    stateKey: "publications",
   },
   {
     group: "CMEs & Conference",
-    includes: ["CME", "Conference"],
+    includes: ["CMEs & Conference"],
+    stateKey: "cmes",
   },
   {
     group: "RAAB Survey",
     includes: ["RAAB Survey"],
-  },
-];
-
-const data = [
-  {
-    id: 1,
-    category: "Workshop Report",
-    title: "Eye Health Workshop 2023",
-    description: "Detailed report from Kathmandu event on eye care strategies.",
-    fileUrl:
-      "https://www.nnjs.org.np/files/resources/1617622336.NNJS's%2043th%20annual%20day.pdf",
-  },
-  {
-    id: 2,
-    category: "Notice Board",
-    title: "Annual General Meeting Notice",
-    description: "Invitation to the annual general meeting of NNJS members.",
-    fileUrl: "/pdfs/agm-notice.pdf",
-  },
-  {
-    id: 3,
-    category: "Bulletins",
-    title: "NNJS Bulletin - Q1 2024",
-    description: "Quarterly highlights, updates, and achievements.",
-    fileUrl: "/pdfs/bulletin-q1-2024.pdf",
-  },
-  {
-    id: 4,
-    category: "Publication",
-    title: "Eye Care Awareness Booklet",
-    description: "Educational material on preventive eye care practices.",
-    fileUrl: "/pdfs/eye-care-booklet.pdf",
+    stateKey: "raab",
   },
 ];
 
 const ResourcesSection = () => {
   const [activeGroup, setActiveGroup] = useState("Notices & Reports");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notices, setNotices] = useState([]);
+  const [guidelines, setGuidelines] = useState([]);
+  const [media, setMedia] = useState([]);
+  const [publications, setPublications] = useState([]);
+  const [cmes, setCMEs] = useState([]);
+  const [raab, setRAAB] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL; // Define api here
 
-  const activeCategories =
-    categories.find((cat) => cat.group === activeGroup)?.includes || [];
+  useEffect(() => {
+    const fetchResource = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/resource`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setNotices(res.data.notices || []); // Initialize to empty array if undefined
+          setGuidelines(res.data.guidelines || []);
+          setMedia(res.data.media || []);
+          setPublications(res.data.publications || []);
+          setCMEs(res.data.cmes || []);
+          setRAAB(res.data.raab || []);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+          setLoading(false); // Ensure loading is set to false even on error
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+        setLoading(false); // Ensure loading is set to false even on error
+      }
+    };
 
-  const filteredResources = data.filter((item) =>
-    activeCategories.includes(item.category)
-  );
+    fetchResource();
+  }, [api]);
+
+  // Determine which state array corresponds to the active category.
+  const activeCategoryData = (() => {
+    const activeCategoryObject = categories.find(
+      (cat) => cat.group === activeGroup
+    );
+    if (!activeCategoryObject) return [];
+
+    switch (activeCategoryObject.stateKey) {
+      case "notices":
+        return notices;
+      case "guidelines":
+        return guidelines;
+      case "media":
+        return media;
+      case "publications":
+        return publications;
+      case "cmes":
+        return cmes;
+      case "raab":
+        return raab;
+      default:
+        return [];
+    }
+  })();
 
   // Function to handle category selection and close dropdown on mobile
   const handleCategorySelect = (group) => {
     setActiveGroup(group);
     setMenuOpen(false);
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="px-4 sm:px-6 md:px-12 lg:px-24 mt-1 mx-auto">
@@ -140,8 +172,8 @@ const ResourcesSection = () => {
       </div>
 
       <div className="grid grid-cols-1 mb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 p-2 sm:p-4 md:p-8">
-        {filteredResources.length > 0 ? (
-          filteredResources.map((item) => (
+        {activeCategoryData && activeCategoryData.length > 0 ? (
+          activeCategoryData.map((item) => (
             <div
               key={item.id}
               className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto md:h-[150px] flex flex-col justify-between"
@@ -154,13 +186,13 @@ const ResourcesSection = () => {
                   </h3>
                 </div>
                 <p className="text-xs md:text-sm text-gray-600 font-primary line-clamp-2 md:line-clamp-3 leading-relaxed">
-                  {item.description}
+                  {item.body}
                 </p>
               </div>
 
               <div>
                 <a
-                  href={item.fileUrl}
+                  href={item.file ? `${api}/files/${item.file}` : item.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"

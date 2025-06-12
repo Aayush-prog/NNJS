@@ -53,6 +53,7 @@ const app = express();
 app.use(cors("*"));
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/files", express.static(path.join(__dirname, "public/files")));
 // Database Connection
 mongoose
   .connect(process.env.mongo_connect, {})

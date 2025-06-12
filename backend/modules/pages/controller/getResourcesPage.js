@@ -4,7 +4,7 @@ const getResourcesPage = async (req, res) => {
   try {
     const resourcePage = await PageModel.findOne({
       type: "Resources",
-    }).populate();
+    }).populate("heroSection");
     res.status(200).json({ status: "success", data: resourcePage });
   } catch (e) {
     res.status(400).json({ msg: e.msg || "error" });

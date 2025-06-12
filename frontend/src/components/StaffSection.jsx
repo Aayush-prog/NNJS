@@ -11,49 +11,11 @@ import ranjan from "../assets/ranjan.jpg";
 import manish from "../assets/manish.jpg";
 import man from "../assets/man.jpeg";
 
-const staffMembers = [
-  {
-    name: "Dr. Sailesh Kumar Mishra",
-    title: "Executive Director",
-    email: "smishra@nnjs.org.np",
-    image: sailesh,
-  },
-  {
-    name: "Mrs. Sabita K.C.",
-    title: "Board Secretary",
-    email: "sabita@nnjs.org.np",
-    image: sabita,
-  },
-  {
-    name: "Mr. Sailendra Man Singh",
-    title: "IT Officer",
-    email: "sailendra@nnjs.org.np",
-    image: sailendra,
-  },
-  {
-    name: "Mr. Ranjan Shah",
-    title: "Program Manager",
-    email: "ranjan_shah@nnjs.org.np",
-    image: ranjan,
-  },
-  {
-    name: "Mr. Manish Sharma",
-    title: "Finance Officer",
-    email: "manish@nnjs.org.np",
-    image: manish,
-  },
-  {
-    name: "Mr. Man Bahadur Kunwar",
-    title: "Project Manager",
-    email: "manbahadurk@nnjs.org.np",
-    image: man,
-  },
-];
-
-export default function StaffSection() {
+export default function StaffSection(props) {
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [groupSize, setGroupSize] = useState(1);
-
+  const person = props.person;
+  const api = import.meta.env.VITE_URL;
   // Adjust slides based on screen size
   useEffect(() => {
     const handleResize = () => {
@@ -76,8 +38,8 @@ export default function StaffSection() {
 
   // Create grouped staff arrays based on responsive group size
   const groupedStaff = [];
-  for (let i = 0; i < staffMembers.length; i += groupSize) {
-    groupedStaff.push(staffMembers.slice(i, i + groupSize));
+  for (let i = 0; i < person.length; i += groupSize) {
+    groupedStaff.push(person.slice(i, i + groupSize));
   }
 
   const prevRef = useRef(null);
@@ -122,7 +84,7 @@ export default function StaffSection() {
                     className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px]"
                   >
                     <img
-                      src={staff.image}
+                      src={`${api}/images/${staff.image}`}
                       alt={staff.name}
                       className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 object-cover rounded-full mx-auto mb-3 sm:mb-4 border-2 border-gray-300 shadow-sm"
                     />
@@ -130,10 +92,10 @@ export default function StaffSection() {
                       {staff.name}
                     </h3>
                     <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">
-                      {staff.title}
+                      {staff.designation}
                     </p>
                     <p className="text-xs sm:text-sm text-primary break-words">
-                      {staff.email}
+                      {staff.body}
                     </p>
                   </div>
                 ))}

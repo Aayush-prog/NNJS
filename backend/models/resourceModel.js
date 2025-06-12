@@ -3,6 +3,7 @@ const resourceSchema = new mongoose.Schema({
   title: { type: String, require: true },
   body: { type: String },
   link: { type: String },
+  file: { type: String },
   type: {
     type: String,
     enum: [
@@ -10,6 +11,8 @@ const resourceSchema = new mongoose.Schema({
       "Guidelines & Protocols",
       "Media & Bulletins",
       "Publications",
+      "CMEs & Conference",
+      "RAAB Survey",
     ],
     required: true,
   },

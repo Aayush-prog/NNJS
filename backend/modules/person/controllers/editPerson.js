@@ -23,7 +23,7 @@ const editPerson = async (req, res) => {
       image,
       type,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Person updated successfully",
     });

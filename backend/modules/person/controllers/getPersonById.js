@@ -10,7 +10,7 @@ const getPersonById = async (req, res) => {
         message: "Person not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Person found successfully",
       data: person,

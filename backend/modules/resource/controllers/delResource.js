@@ -12,7 +12,7 @@ const delResource = async (req, res) => {
       });
     }
     const deletedResource = await ResourceModel.findByIdAndDelete(resourceId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Resources deleted successfully",
     });
