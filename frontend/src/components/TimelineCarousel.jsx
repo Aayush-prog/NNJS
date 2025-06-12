@@ -16,36 +16,72 @@ const TimelineCarousel = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
+
+  // State to hold the number of items per slide based on screen size
+  const [itemsPerSlide, setItemsPerSlide] = useState(3);
+
   useEffect(() => {
     const fetchTimestone = async () => {
       try {
         setLoading(true);
         const res = await axios.get(`${api}/timeStone/`);
         if (res.status === 200) {
-          const getGroupedSlides = (data) => {
-            let itemsPerSlide = 3;
-
-            const grouped = [];
-            for (let i = 0; i < data.length; i += itemsPerSlide) {
-              grouped.push(data.slice(i, i + itemsPerSlide));
-            }
-            return grouped;
-          };
-
-          const groupedSlides = getGroupedSlides(res.data.data);
-          console.log(groupedSlides);
-          setData(groupedSlides);
+          setData(res.data.data); // Store the original data
           setLoading(false);
         } else {
           console.error("Error fetching timestone: Status code", res.status);
+          setLoading(false); // Ensure loading is set to false even on error
         }
       } catch (error) {
         console.error("Error fetching timestone:", error);
+        setLoading(false); // Ensure loading is set to false even on error
       }
     };
 
     fetchTimestone();
   }, [api]);
+
+  // Function to group the slides based on the current itemsPerSlide value
+  const getGroupedSlides = (data, itemsPerSlide) => {
+    const grouped = [];
+    for (let i = 0; i < data.length; i += itemsPerSlide) {
+      grouped.push(data.slice(i, i + itemsPerSlide));
+    }
+    return grouped;
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 500) {
+        // Small screens (mobile)
+        setItemsPerSlide(1);
+      } else if (window.innerWidth < 769) {
+        // Medium screens (tablets)
+        setItemsPerSlide(2);
+      } else {
+        // Large screens (desktops)
+        setItemsPerSlide(3);
+      }
+    };
+
+    // Initial call to set the initial value
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Re-group the slides whenever `itemsPerSlide` or `data` changes
+  const [groupedSlides, setGroupedSlides] = useState([]);
+  useEffect(() => {
+    if (data) {
+      setGroupedSlides(getGroupedSlides(data, itemsPerSlide));
+    }
+  }, [data, itemsPerSlide]);
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -54,9 +90,9 @@ const TimelineCarousel = () => {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-  // Adjust grouped slides based on screen size
 
   if (loading) return <Loading />;
+
   return (
     <motion.div
       variants={fadeInUp}
@@ -121,7 +157,7 @@ const TimelineCarousel = () => {
           className="mySwiper"
           style={{ width: "100%", maxWidth: "100%" }}
         >
-          {data?.map((group, index) => (
+          {groupedSlides?.map((group, index) => (
             <SwiperSlide key={index}>
               <div className="px-4 sm:px-8 md:px-12">
                 <div className="relative mb-6 sm:mb-10">
@@ -141,7 +177,7 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 mb-10 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-1 md:gap-6 md:mb-10">
+                <div className="grid grid-cols-1 mb-10 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-1 md:gap-6 md:mb-10">
                   {group.map((item, i) => (
                     <div
                       key={i}
