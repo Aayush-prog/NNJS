@@ -541,8 +541,7 @@ export default function PressAndMedia() {
           onClick={scrollToTop}
           className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
           aria-label="Scroll to top"
-        >
-          <FaArrowCircleUp size={24} className="sm:w-6 sm:h-6" />
+        ><FaArrowCircleUp size={24} />
         </button>
       )}
     </div>

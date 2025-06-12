@@ -15,8 +15,8 @@ export default function HospitalDetail() {
   if (!hospital) return <p>Hospital not found</p>;
 
   return (
-    <div className="fixed inset-0 z-50  bg-primary bg-opacity-10 backdrop-blur-md flex justify-center items-start overflow-auto p-4">
-      <div className="bg-white rounded-lg overflow-auto max-w-2xl w-full space-y-4 p-6 relative border border-gray-200 shadow-lg">
+    <div className="fixed inset-0 z-50  bg-primary/50 backdrop-blur-md flex justify-center items-start overflow-auto p-4">
+      <div className="bg-white rounded-lg overflow-auto max-w-4xl w-full space-y-4 p-6 relative border border-gray-200 shadow-lg">
         <Link to="/what_we_do" className="absolute top-4 right-4 text-gray-500 text-2xl">×</Link>
         <h1 className="text-3xl font-bold">{hospital.name}</h1>
         {hospital.images && (
@@ -39,7 +39,9 @@ export default function HospitalDetail() {
             className="text-sky-600 underline"
           >
             {hospital.website}
+
           </a>
+          <p>{hospital.description}</p>
         </p>
       </div>
     </div>

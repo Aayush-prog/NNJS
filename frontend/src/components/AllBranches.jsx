@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
 import { motion } from "framer-motion";
@@ -22,10 +22,10 @@ export const dummyHospitals = [
     phone: "01-4493775",
     email: "info@tilganga.org",
     website: "www.tilganga.org",
+    description: "Mid-Western Regional Eye Care Centre, Fateh-Bal Eye Hospital (FBEH) is an eye care institution managed and run by Nepal Netra Jyoti Sangh Banke (NNJS, B). It was established in cooperation with Swiss Red Cross and Lions Club MD 102 Switzerland and Liechtenstein in 1986 A.D. Nepal Netra Jyoti Sangh Banke (NNJS, B) is one of the branches of Nepal Netra Jyoti Sangh (National society for comprehensive eye care), which has its head office in Tripureshwor, Kathmandu. Nepal Netra Jyoti Sangh (NNJS) was established in 1978 A.D. (2035 B.S.) and is registered under the Society Registration Act, 1977 (2034 B.S.). This is a non-government, non-profit making, beneficent genuine social organization affiliated with Social Welfare Council (SWC). Fateh-Bal Eye Hospital started its services in the mid-west region of Nepal since 1986 in collaboration with Swiss Red Cross. Later on, Lions Club MD 102 Switzerland and Liechtenstein also participated in the development of the hospital. The construction of outpatient department, operation theater, In-patient department and doctor quarters of the hospital was funded by the Lions Club MD 102 Switzerland and Liechtenstein. Since March 2001, the financial support from the donor agencies has been phased out and the hospital is running with its own resources. The hospital is in Nepalganj, a famous city of the Mid-west region of Nepal. This is a 150 bedded, well-equipped, secondary level eye hospital with appropriate infrastructure. The hospital is recognized as a highly qualified eye hospital for all kinds of ophthalmic activities by Nepal government, the Ministry of Health. The hospital has recently started 3 year PCL level course in Ophthalmic Science.  This is also recognized as a training centre for MBBS internship on ophthalmology by Nepal Medical Council. Similarly, it is also acknowledged for Tertiary level comprehensive Low Vision Programme. Aim And Objective: The main objective / Mission of Fateh-Bal Eye Hospital is to reduce the blindness problem in this region by providing curative and preventive eye care services as per the guiding principles of the global WHO initiative “VISION 2020, The Right to Sight”. Coverage Area: Bheri Zone, Partly in Karnali and neighboring district of india Available Services, Activities and service Time: MAJOR TEST & TREATMENT - A-Scan - B-Scan - Humphry  Perimetry - Yag Laser Iridectomy & Capsulotomy - Argon Laser including PRP Sectoral and focal. - Green Laser Treatment - Ocular Pathology - Low Vision Service - Orthoptics  Service SURGICAL SERVICES: - Cataract including Phaco  and  sutureless. - Congenital cataract. - Glaucoma - DCR/DCT - Squint - And other minor surgery Community Outreach Service: - Screening Eye Camp - Free and Subsidized Surgical Eye Camp - Education and Training - Primary eye care training to Health Post In- charges. - Awareness training to traditional healers. - Vision screening training to school teachers. - Training to drug retailers. - Training to FCHV. - Training to other community volunteers. - Awareness through F.M., Pamphlets, Posters etc. Future Plan: - Further expansion and strengthen the Community  Outreach Programme including Health Education. - Establish/ Collaborate Community Eye Care Centre in Jajarkot under guidelines of NNJS Centre. - Develop and expand physical infrastructure under support from Indian Embassy. - Establish specialty clinics: Retina, Glaucoma and Cornea. - Gradually develop the hospital as an teaching institute. Data in 2023 Total OPD :  1,34,709 Total Surgery : 9,179",
     images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
   },
   {
-    
     name: "Lumbini Eye Institute",
     address: "Bhairahawa, Rupandehi",
     phone: "071-522921",
@@ -118,7 +118,7 @@ export { dummyCenters }; // export centers for detail view
 // export { dummyPresidents }; // export for detail pages
 
 // Improved sort function that handles different data types
-const sortByProperty = (array, property, direction = 'asc') => {
+const sortByProperty = useCallback((array, property, direction = 'asc') => {
   return [...array].sort((a, b) => {
     // Handle missing values
     const valueA = a[property] === undefined ? '' : a[property];
@@ -139,10 +139,10 @@ const sortByProperty = (array, property, direction = 'asc') => {
     
     return direction === 'asc' ? compResult : -compResult;
   });
-};
+}, []);
 
 // Multi-criteria sort function
-const multiSort = (array, sortCriteria) => {
+const multiSort = useCallback((array, sortCriteria) => {
   return [...array].sort((a, b) => {
     for (const { property, direction } of sortCriteria) {
       const valueA = a[property] === undefined ? '' : a[property];
@@ -167,7 +167,7 @@ const multiSort = (array, sortCriteria) => {
     }
     return 0;
   });
-};
+}, []);
 
 export default function NNJSCombinedList({
   hospitals = dummyHospitals,
@@ -271,6 +271,34 @@ export default function NNJSCombinedList({
     { label: "Committee", value: "committee" },
   ];
 
+  const handleSortChange = useCallback((category, sortBy) => {
+    switch (category) {
+      case 'centers':
+        setCenterSortBy(sortBy);
+        break;
+      case 'presidents':
+        setPresidentSortBy(sortBy);
+        break;
+      default:
+        setHospitalSortBy(sortBy);
+        break;
+    }
+  }, []);
+
+  const handleSortDirectionChange = useCallback((category) => {
+    switch (category) {
+      case 'centers':
+        setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+        break;
+      case 'presidents':
+        setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+        break;
+      default:
+        setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+        break;
+    }
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-primary">
       {/* Category Filter and Search/Sort Panel */}
@@ -342,7 +370,7 @@ export default function NNJSCombinedList({
             </div>
 
             {/* Sort */}
-            <div className="flex-shrink-0 flex items-center gap-3">
+           <div className="flex-shrink-0 flex items-center gap-3">
               <span className="text-slate-700 font-secondary">Sort:</span>
               <select
                 value={
@@ -352,12 +380,7 @@ export default function NNJSCombinedList({
                       ? presidentSortBy
                       : hospitalSortBy
                 }
-                onChange={(e) => {
-                  const v = e.target.value;
-                  if (activeCategory === 'centers') setCenterSortBy(v);
-                  else if (activeCategory === 'presidents') setPresidentSortBy(v);
-                  else setHospitalSortBy(v);
-                }}
+                onChange={(e) => handleSortChange(activeCategory, e.target.value)}
                 className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800
                            focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
               >
@@ -373,13 +396,7 @@ export default function NNJSCombinedList({
               </select>
 
               <button
-                onClick={() => {
-                  if (activeCategory === 'centers')
-                    setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-                  else if (activeCategory === 'presidents')
-                    setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-                  else setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-                }}
+                onClick={() => handleSortDirectionChange(activeCategory)}
                 className="flex-shrink-0 bg-white border border-slate-200 rounded-lg w-10 h-10
                            flex items-center justify-center text-slate-700 hover:bg-slate-50
                            focus:ring-2 focus:ring-sky-500 outline-none"
@@ -425,7 +442,7 @@ export default function NNJSCombinedList({
                        className="w-full h-48 object-cover"
                      />
                    )}
-                   <div className="p-6">
+                   <div className="p-6 h-70">
                      <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
                        {h.name}
                      </h3>
@@ -473,14 +490,14 @@ export default function NNJSCombinedList({
           <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Care Centers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedCenters.length > 0 ? paginatedCenters.map((center, i) => (
-              <Link to={`care/${i}`} key={i} className="block">
+              // <Link to={`care/${i}`} key={i} className="block">
                 <motion.div 
                   variants={fadeInUp}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.1 }}
                   key={i}
-                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
+                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
                 >
                    <h2 className="text-xl font-bold text-blue-900 font-secondary">
                      {center.name}
@@ -489,7 +506,7 @@ export default function NNJSCombinedList({
                    {center.contactPerson && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {center.contactPerson}</p>}
                    {center.contactNumber && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Number:</span> {center.contactNumber}</p>}
                 </motion.div>
-              </Link>
+              // </Link>
             )) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No eye care centers found</p>
@@ -519,7 +536,7 @@ export default function NNJSCombinedList({
                    initial="hidden"
                    whileInView="visible"
                    viewport={{ once: true, amount: 0.1 }}
-                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
+                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
                 >
                   {/* <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
                     {president.profilePic ? (
