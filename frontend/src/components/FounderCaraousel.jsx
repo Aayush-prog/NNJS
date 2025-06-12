@@ -10,89 +10,15 @@ import raj from "../assets/raj.png";
 import kamal from "../assets/kamal.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const founders = [
-  {
-    id: 1,
-    name: "Late General Rabi Shamsher Rana",
-    position: "Chaiperson",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${rabi}`,
-  },
-  {
-    id: 2,
-    name: "Dr. R. P. Pokhrel",
-    position: "Secretary General",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${pokhrel}`,
-  },
-  {
-    id: 3,
-    name: "Late Mr. Mani Harsh Jyoti",
-    position: "Treasurer",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${Mani}`,
-  },
-  {
-    id: 4,
-    name: "Late Mr. Badri Bikram Thapa",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${badri}`,
-  },
-  {
-    id: 5,
-    name: "Late Mr. Anang Man Sherchan",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${anang}`,
-  },
-  {
-    id: 6,
-    name: "Late Mr. Banwari Lal Mittal",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${banwari}`,
-  },
-  {
-    id: 7,
-    name: "Late Mr. Tola Ram Duggar",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${tola}`,
-  },
-  {
-    id: 8,
-    name: "Late Mr. Raj Krishna Shrestha",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${raj}`,
-  },
-  {
-    id: 9,
-    name: "Late Mr. Kamal Mani Dixit",
-    position: "Member",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in purus sed odio dignissim volutpat. Sed bibendum, lorem nec tincidunt vehicula, justo sem tristique eros, nec ullamcorper felis sapien vitae est. Curabitur vel lacus ut erat luctus pretium. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    image: `${kamal}`,
-  },
-];
-
-export default function FoundersCarousel() {
+export default function FoundersCarousel(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const api = import.meta.env.VITE_URL;
+  const person = props.person;
   const goToIndex = (index) => setCurrentIndex(index);
   const prevSlide = () =>
-    setCurrentIndex((prev) => (prev === 0 ? founders.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? person.length - 1 : prev - 1));
   const nextSlide = () =>
-    setCurrentIndex((prev) => (prev === founders.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === person.length - 1 ? 0 : prev + 1));
 
   return (
     <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 bg-blue-50 text-left">
@@ -110,7 +36,7 @@ export default function FoundersCarousel() {
           <FaArrowLeft />
         </button>
         <span className="text-sm font-medium">
-          {currentIndex + 1} / {founders.length}
+          {currentIndex + 1} / {person.length}
         </span>
         <button
           onClick={nextSlide}
@@ -123,10 +49,10 @@ export default function FoundersCarousel() {
 
       {/* Thumbnails */}
       <div className="hidden sm:flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-5 sm:mb-7 md:mb-9 justify-center sm:justify-start">
-        {founders.map((founder, index) => (
+        {person.map((founder, index) => (
           <img
             key={founder.id}
-            src={founder.image}
+            src={`${api}/images/${founder.image}`}
             alt={founder.name}
             className={`h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-full cursor-pointer border-4 transition-transform duration-300 ${
               currentIndex === index
@@ -141,19 +67,19 @@ export default function FoundersCarousel() {
       <div className="mx-auto">
         <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
           <img
-            src={founders[currentIndex].image}
-            alt={founders[currentIndex].name}
+            src={`${api}/images/${person[currentIndex].image}`}
+            alt={person[currentIndex].name}
             className="w-full sm:w-48 md:w-64 lg:w-72 h-64 sm:h-auto object-cover object-top"
           />
           <div className="p-4 sm:p-8 md:p-12">
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1 sm:mb-2 font-secondary">
-              {founders[currentIndex].name}
+              {person[currentIndex].name}
             </h3>
             <p className="text-md sm:text-lg font-semibold text-gray-600 mb-2 sm:mb-4 font-primary">
-              {founders[currentIndex].position}
+              {person[currentIndex].designation}
             </p>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-primary">
-              {founders[currentIndex].description}
+              {person[currentIndex].body}
             </p>
           </div>
         </div>
@@ -161,7 +87,7 @@ export default function FoundersCarousel() {
 
       {/* Pagination dots for mobile */}
       <div className="flex justify-center mt-4 sm:hidden">
-        {founders.map((_, index) => (
+        {person.map((_, index) => (
           <button
             key={index}
             onClick={() => goToIndex(index)}

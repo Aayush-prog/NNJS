@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const createPerson = async (req, res) => {
   const Person = mongoose.model("Person");
+  console.log(req.body);
   const { name, designation, body, duration, type } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
@@ -15,7 +16,7 @@ const createPerson = async (req, res) => {
       image,
       type,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Person created successfully",
     });

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 export default function LogoSlider(props) {
   const { logos } = props;
-  console.log(logos);
+  const api = import.meta.env.VITE_URL;
   const duplicatedSlides = [...logos, ...logos];
 
   return (
@@ -27,7 +27,7 @@ export default function LogoSlider(props) {
             style={{ width: `${100 / logos.length}%` }}
           >
             <div className="flex items-center justify-center h-full">
-              <img src={slide}></img>
+              <img src={`${api}/images/${slide.image}`}></img>
             </div>
           </div>
         ))}

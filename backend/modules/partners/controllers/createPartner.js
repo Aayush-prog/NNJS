@@ -8,7 +8,7 @@ const createPartner = async (req, res) => {
     : null;
   try {
     const newPartner = await PartnerModel.create({ name, image, type });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Partners created successfully",
     });

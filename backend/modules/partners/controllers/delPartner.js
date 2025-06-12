@@ -12,7 +12,7 @@ const delPartner = async (req, res) => {
       });
     }
     const deletedPartner = await PartnerModel.findByIdAndDelete(partnerId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Partners deleted successfully",
     });

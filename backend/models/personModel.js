@@ -8,7 +8,7 @@ const personSchema = new mongoose.Schema(
     image: { type: String },
     type: {
       type: String,
-      enum: ["Past", "Current", "Founder"],
+      enum: ["Past", "Board", "Founder", "Staff"],
       required: true,
     },
   },
