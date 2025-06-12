@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const editResource = async (req, res) => {
   const ResourceModel = mongoose.model("Resources");
   const { title, body, link, type } = req.body;

@@ -8,6 +8,8 @@ const getResource = async (req, res) => {
     });
     const media = await ResourceModel.find({ type: "Media & Bulletins" });
     const publications = await ResourceModel.find({ type: "Publications" });
+    const cmes = await ResourceModel.find({ type: "CMEs & Conference" });
+    const raab = await ResourceModel.find({ type: "RAAB Survey" });
     res.status(200).json({
       status: "success",
       message: "Resources found successfully",
@@ -15,6 +17,8 @@ const getResource = async (req, res) => {
       guidelines,
       media,
       publications,
+      cmes,
+      raab,
     });
   } catch (error) {
     res.status(400).json({
