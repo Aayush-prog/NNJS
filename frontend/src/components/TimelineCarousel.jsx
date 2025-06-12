@@ -129,10 +129,7 @@ const TimelineCarousel = () => {
                   <div className="h-1 bg-primary absolute top-3 left-0 right-0 sm:top-4"></div>
                   <div className="flex relative z-10">
                     {group?.map((item, i) => (
-                      <div
-                        key={i}
-                        className="text-center w-full sm:w-1/2 lg:w-1/3"
-                      >
+                      <div key={i} className="text-center w-full lg:w-1/3">
                         <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary border-4 border-white mx-auto shadow-lg"></div>
                         <div className="mt-1 sm:mt-2 font-semibold text-sm sm:text-lg md:text-xl text-primary">
                           {item.year}
@@ -142,7 +139,7 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 mb-10 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-1 md:gap-6 md:mb-10">
+                <div className="grid grid-cols-1 mb-10 md:grid-cols-3 gap-4 sm:gap-1 md:gap-6 md:mb-10">
                   {group.map((item, i) => (
                     <div
                       key={i}
