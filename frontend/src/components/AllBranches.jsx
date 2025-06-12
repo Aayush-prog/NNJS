@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
 import { motion } from "framer-motion";
@@ -26,6 +26,7 @@ export const dummyHospitals = [
     images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
   },
   {
+    
     name: "Lumbini Eye Institute",
     address: "Bhairahawa, Rupandehi",
     phone: "071-522921",
@@ -118,7 +119,7 @@ export { dummyCenters }; // export centers for detail view
 // export { dummyPresidents }; // export for detail pages
 
 // Improved sort function that handles different data types
-const sortByProperty = useCallback((array, property, direction = 'asc') => {
+const sortByProperty = (array, property, direction = 'asc') => {
   return [...array].sort((a, b) => {
     // Handle missing values
     const valueA = a[property] === undefined ? '' : a[property];
@@ -139,10 +140,10 @@ const sortByProperty = useCallback((array, property, direction = 'asc') => {
     
     return direction === 'asc' ? compResult : -compResult;
   });
-}, []);
+};
 
 // Multi-criteria sort function
-const multiSort = useCallback((array, sortCriteria) => {
+const multiSort = (array, sortCriteria) => {
   return [...array].sort((a, b) => {
     for (const { property, direction } of sortCriteria) {
       const valueA = a[property] === undefined ? '' : a[property];
@@ -167,7 +168,7 @@ const multiSort = useCallback((array, sortCriteria) => {
     }
     return 0;
   });
-}, []);
+};
 
 export default function NNJSCombinedList({
   hospitals = dummyHospitals,
@@ -271,34 +272,6 @@ export default function NNJSCombinedList({
     { label: "Committee", value: "committee" },
   ];
 
-  const handleSortChange = useCallback((category, sortBy) => {
-    switch (category) {
-      case 'centers':
-        setCenterSortBy(sortBy);
-        break;
-      case 'presidents':
-        setPresidentSortBy(sortBy);
-        break;
-      default:
-        setHospitalSortBy(sortBy);
-        break;
-    }
-  }, []);
-
-  const handleSortDirectionChange = useCallback((category) => {
-    switch (category) {
-      case 'centers':
-        setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-        break;
-      case 'presidents':
-        setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-        break;
-      default:
-        setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-        break;
-    }
-  }, []);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-primary">
       {/* Category Filter and Search/Sort Panel */}
@@ -370,7 +343,7 @@ export default function NNJSCombinedList({
             </div>
 
             {/* Sort */}
-           <div className="flex-shrink-0 flex items-center gap-3">
+            <div className="flex-shrink-0 flex items-center gap-3">
               <span className="text-slate-700 font-secondary">Sort:</span>
               <select
                 value={
@@ -380,7 +353,12 @@ export default function NNJSCombinedList({
                       ? presidentSortBy
                       : hospitalSortBy
                 }
-                onChange={(e) => handleSortChange(activeCategory, e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (activeCategory === 'centers') setCenterSortBy(v);
+                  else if (activeCategory === 'presidents') setPresidentSortBy(v);
+                  else setHospitalSortBy(v);
+                }}
                 className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800
                            focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
               >
@@ -396,7 +374,13 @@ export default function NNJSCombinedList({
               </select>
 
               <button
-                onClick={() => handleSortDirectionChange(activeCategory)}
+                onClick={() => {
+                  if (activeCategory === 'centers')
+                    setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                  else if (activeCategory === 'presidents')
+                    setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                  else setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                }}
                 className="flex-shrink-0 bg-white border border-slate-200 rounded-lg w-10 h-10
                            flex items-center justify-center text-slate-700 hover:bg-slate-50
                            focus:ring-2 focus:ring-sky-500 outline-none"
