@@ -3,80 +3,44 @@ import partnerImage from "../assets/partners.png";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp } from "react-icons/fa";
 import LogoSlider from "../components/LogoSlider";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
-import proctor from "../assets/Proctor Foundation.png";
-import ranzco from "../assets/ranzco foundation.png";
-import restoring from "../assets/restoring visio foundation.png";
-import ridley from "../assets/ridley eye foundation.png";
-import see from "../assets/see foundation.png";
-import norges from "../assets/norges foundation.png";
-import nihr from "../assets/nihr.png";
-import peekvision from "../assets/peekvision.png";
-import qatarcharity from "../assets/qatarcharity.png";
-import seva from "../assets/seva.png";
-import sightlife from "../assets/sightlife.png";
-import socialeye from "../assets/socialeye.png";
-import johnhopkins from "../assets/johnhopkins.png";
-import cbm from "../assets/cbm.png";
-import champalimaud from "../assets/champalimaud.png";
-import disvi from "../assets/disvi.png";
-import helenkeller from "../assets/helenkeller.png";
-import helpage from "../assets/helpage.png";
-import helpmesee from "../assets/helpmesee.png";
-import iris from "../assets/iris.png";
-import iti from "../assets/iti.png";
-import jica from "../assets/jica.png";
-import lightfortheworld from "../assets/lightfortheworld.png";
-import nippontv from "../assets/nippontv.png";
-import opcfoundation from "../assets/opcfoundation.png";
-import openeyes from "../assets/openeyes.png";
-import redcross from "../assets/redcross.png";
-import usaid from "../assets/usaid.png";
-import nepal from "../assets/nepal.png";
-import india from "../assets/india.png";
-import pakistan from "../assets/pakistan.png";
-import japan from "../assets/japan.png";
+import Loading from "../components/Loading";
+import HeroSection from "../components/HeroSection";
+import SubSection from "../components/SubSection";
+import axios from "axios";
 export default function Partners() {
   const [showButton, setShowButton] = useState(false);
-  const special = [nepal, india, pakistan, japan];
-  const past = [
-    champalimaud,
-    disvi,
-    helenkeller,
-    helpage,
-    helpmesee,
-    iris,
-    iti,
-    jica,
-    lightfortheworld,
-    nippontv,
-    opcfoundation,
-    openeyes,
-    redcross,
-    usaid,
-  ];
-  const partners = [
-    ridley,
-    see,
-    restoring,
-    ranzco,
-    proctor,
-    qatarcharity,
-    seva,
-    sightlife,
-    socialeye,
-    johnhopkins,
-    cbm,
-    norges,
-    nihr,
-  ];
+  const api = import.meta.env.VITE_URL;
+  const [loading, setLoading] = useState(false);
+  const [partner, setPartner] = useState();
+  const [logos, setLogos] = useState();
+  useEffect(() => {
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/partners`);
+        const response = await axios.get(`${api}/partners`);
+        console.log(res.data.data);
+        console.log(response.data);
+        if (res.status === 200) {
+          setPartner(res.data.data);
+          setLogos(response.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
+    fetchPage();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY > 200);
@@ -97,70 +61,41 @@ export default function Partners() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  if (loading) return <Loading />;
   return (
     <div>
       <Nav />
 
-      <main>
-        <div
-          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${partnerImage})` }}
-        >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
-            <h1 className="text-4xl md:text-6xl font-bold font-secondary">
-              Partners
-            </h1>
-          </div>
-        </div>
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col items-center justify-center py-12 md:h-[60vh] text-center space-y-4 bg-blue-50 px-4"
-        >
-          <motion.h1
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-2 sm:p-3 md:p-5"
-          >
-            Together, We Bring Vision to Life
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-base font-primary w-full md:w-[75vw] lg:w-[55vw] leading-relaxed md:leading-loose"
-          >
-            We've always believed that lasting change happens when we work
-            together.
-            <br></br> Our partners help us reach more communities, deliver
-            critical eye care services, and share our story with the world.
-            <br></br> From local clinics to global supporters, every partnership
-            brings us one step closer to a Nepal where no one is blind from
-            avoidable causes.
-            <br></br> To all our partners — thank you. Your support, trust, and
-            collaboration make this journey possible.
-          </motion.p>
-        </motion.div>
-        <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">
-          <div className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
-              Partner Organizations
-            </h2>
-            <div className="w-full flex justify-center items-center">
-              <LogoSlider logos={partners} />
+      {partner && (
+        <main>
+          <HeroSection
+            title={partner?.heroSection.title}
+            body={partner?.heroSection.body}
+            image={partner?.heroSection.image}
+          />
+          <SubSection
+            title={partner?.subSection1.title}
+            body={partner?.subSection1.body}
+            image={partner?.subSection1.image}
+          />
+          <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
+                Partner Organizations
+              </h2>
+              <div className="w-full flex justify-center items-center">
+                <LogoSlider logos={logos.current} />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
-              Past Supporters
-            </h2>
-            <div className="w-full flex justify-center items-center">
-              <LogoSlider logos={past} />
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
+                Past Supporters
+              </h2>
+              <div className="w-full flex justify-center items-center">
+                <LogoSlider logos={logos.past} />
+              </div>
             </div>
-          </div>
-          {/* <div className="flex flex-col justify-center items-center">
+            {/* <div className="flex flex-col justify-center items-center">
             <h2 className="text-3xl md:text-4xl font-bold text-primary font-secondary mb-6">
               Special Thanks
             </h2>
@@ -168,13 +103,14 @@ export default function Partners() {
               <LogoSlider logos={special} />
             </div>
           </div> */}
-        </div>
-      </main>
+          </div>
+        </main>
+      )}
       <Footer />
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition"
+          className="fixed bottom-5 right-5 bg-accent text-white p-2 rounded-full shadow-lg hover:bg-support transition z-10"
           aria-label="Scroll to top"
         >
           <FaArrowCircleUp size={24} />

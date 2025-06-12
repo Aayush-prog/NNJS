@@ -10,7 +10,7 @@ const getPartnerById = async (req, res) => {
         message: "Partners not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Partners found successfully",
       data: partner,

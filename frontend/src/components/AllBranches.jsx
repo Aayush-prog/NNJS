@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Define the fadeInUp animation variant
 const fadeInUp = {
@@ -14,7 +15,7 @@ const fadeInUp = {
 };
 
 // Dummy data for hospitals
-const dummyHospitals = [
+export const dummyHospitals = [
   {
     name: "Tilganga Institute of Ophthalmology",
     address: "Gaushala, Kathmandu",
@@ -24,6 +25,7 @@ const dummyHospitals = [
     images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
   },
   {
+    
     name: "Lumbini Eye Institute",
     address: "Bhairahawa, Rupandehi",
     phone: "071-522921",
@@ -76,9 +78,10 @@ const dummyCenters = [
     contactNumber: "021-441122",
   },
 ];
+export { dummyCenters }; // export centers for detail view
 
 // Dummy data for presidents
-const dummyPresidents = [
+ export const dummyPresidents = [
   {
     name: "Ram Bahadur Thapa",
     district: "Kathmandu",
@@ -112,6 +115,7 @@ const dummyPresidents = [
     contactPerson: "Ramesh Shrestha",
   },
 ];
+// export { dummyPresidents }; // export for detail pages
 
 // Improved sort function that handles different data types
 const sortByProperty = (array, property, direction = 'asc') => {
@@ -405,49 +409,51 @@ export default function NNJSCombinedList({
           <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Hospitals</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedHospitals.length > 0 ? paginatedHospitals.map((h, i) => (
-              <motion.div
-                key={i}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                {h.images && (
-                  <img
-                    src={h.images}
-                    alt={h.name}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
-                    {h.name}
-                  </h3>
-                  {h.address && (
-                    <p className="text-sm text-gray-600 mb-3 font-primary">
-                      {h.address}
-                    </p>
-                  )}
-                  <div className="text-gray-700 mb-4 font-primary">
-                    {h.phone && <p><span className="font-semibold">Phone:</span> {h.phone}</p>}
-                    {h.email && <p><span className="font-semibold">Email:</span> {h.email}</p>}
-                  </div>
-                  {h.website && (
-                    <a
-                      className="text-primary font-secondary hover:text-accent transition-colors duration-colors inline-flex items-center"
-                      href={h.website.startsWith('http') ? h.website : `http://${h.website}`}
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      Visit Website <span className="ml-1">→</span>
-                    </a>
-                  )}
-                </div>
-              </motion.div>
+              <Link to={`hospital/${i}`} key={i} className="block">
+                <motion.div 
+                  key={i} 
+                   variants={fadeInUp}
+                   initial="hidden"
+                   whileInView="visible"
+                   viewport={{ once: true, amount: 0.1 }}
+                   className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                >
+                   {h.images && (
+                     <img
+                       src={h.images}
+                       alt={h.name}
+                       className="w-full h-48 object-cover"
+                     />
+                   )}
+                   <div className="p-6">
+                     <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
+                       {h.name}
+                     </h3>
+                     {h.address && (
+                       <p className="text-sm text-gray-600 mb-3 font-primary">
+                         {h.address}
+                       </p>
+                     )}
+                     <div className="text-gray-700 mb-4 font-primary">
+                       {h.phone && <p><span className="font-semibold">Phone:</span> {h.phone}</p>}
+                       {h.email && <p><span className="font-semibold">Email:</span> {h.email}</p>}
+                     </div>
+                     {h.website && (
+                       <a
+                         className="text-primary font-secondary hover:text-accent transition-colors duration-colors inline-flex items-center"
+                         href={h.website.startsWith('http') ? h.website : `http://${h.website}`}
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                       >
+                         Visit Website <span className="ml-1">→</span>
+                       </a>
+                     )}
+                   </div>
+                </motion.div>
+              </Link>
             )) : (
               <div className="col-span-3 text-center py-8">
-                <p className="text-gray-500">No hospitals found</p>
+                <p className="text-gray-500">No Hospitals found</p>
               </div>
             )}
           </div>
@@ -467,31 +473,23 @@ export default function NNJSCombinedList({
           <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Care Centers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedCenters.length > 0 ? paginatedCenters.map((center, i) => (
-              <motion.div 
-                key={i} 
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-                className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2"
-              >
-                <h2 className="text-xl font-bold text-blue-900 font-secondary">
-                  {center.name}
-                </h2>
-                <p className="text-gray-700 font-primary">
-                  <span className="font-semibold">District:</span> {center.district}
-                </p>
-                {center.contactPerson && (
-                  <p className="text-gray-700 font-primary">
-                    <span className="font-semibold">Contact Person:</span> {center.contactPerson}
-                  </p>
-                )}
-                {center.contactNumber && (
-                  <p className="text-gray-700 font-primary">
-                    <span className="font-semibold">Contact Number:</span> {center.contactNumber}
-                  </p>
-                )}
-              </motion.div>
+              <Link to={`care/${i}`} key={i} className="block">
+                <motion.div 
+                  variants={fadeInUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.1 }}
+                  key={i}
+                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
+                >
+                   <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                     {center.name}
+                   </h2>
+                   <p className="text-gray-700 font-primary"><span className="font-semibold">District:</span> {center.district}</p>
+                   {center.contactPerson && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {center.contactPerson}</p>}
+                   {center.contactNumber && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Number:</span> {center.contactNumber}</p>}
+                </motion.div>
+              </Link>
             )) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No eye care centers found</p>
@@ -514,29 +512,31 @@ export default function NNJSCombinedList({
           <h2 className="text-2xl font-bold mb-4 font-secondary">Branches</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {paginatedPresidents.length > 0 ? paginatedPresidents.map((president, i) => (
-              <motion.div 
-                key={i} 
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-                className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
-              >
-                {/* <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
-                  {president.profilePic ? (
-                    <img src={president.profilePic} alt={president.name} className="w-20 h-20 rounded-full object-cover" />
-                  ) : (
-                    "Profile Pic"
-                  )}
-                </div> */}
-                <h2 className="text-xl font-bold text-blue-900 font-secondary">
-                  {president.district}
-                </h2>
-                <p className="text-gray-700 font-primary"><span className="font-semibold">President:</span> {president.name}</p>
-                <p className="text-gray-700 font-primary"><span className="font-semibold">Committee:</span> {president.committee}</p>
-                <p className="text-gray-700 font-primary"><span className="font-semibold">Contact:</span> {president.contact}</p>
-                <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
-              </motion.div>
+              <Link to={`branch/${i}`} key={i} className="block">
+                <motion.div 
+                  key={i} 
+                   variants={fadeInUp}
+                   initial="hidden"
+                   whileInView="visible"
+                   viewport={{ once: true, amount: 0.1 }}
+                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center"
+                >
+                  {/* <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
+                    {president.profilePic ? (
+                      <img src={president.profilePic} alt={president.name} className="w-20 h-20 rounded-full object-cover" />
+                    ) : (
+                      "Profile Pic"
+                    )}
+                  </div> */}
+                  <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                    {president.district}
+                  </h2>
+                  <p className="text-gray-700 font-primary"><span className="font-semibold">President:</span> {president.name}</p>
+                  <p className="text-gray-700 font-primary"><span className="font-semibold">Committee:</span> {president.committee}</p>
+                  <p className="text-gray-700 font-primary"><span className="font-semibold">Contact:</span> {president.contact}</p>
+                  <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
+                </motion.div>
+              </Link>
             )) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No Branches found</p>

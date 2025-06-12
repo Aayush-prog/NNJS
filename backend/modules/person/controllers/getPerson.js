@@ -3,16 +3,19 @@ const getPerson = async (req, res) => {
   const PersonModel = mongoose.model("Person");
   try {
     const past = await PersonModel.find({ type: "Past" });
-    const current = await PersonModel.find({ type: "Current" });
+    const board = await PersonModel.find({ type: "Board" });
     const founder = await PersonModel.find({ type: "Founder" });
-    res.satus(201).json({
+    const staff = await PersonModel.find({ type: "Staff" });
+    res.status(200).json({
       status: "success",
       message: "Person found successfully",
       past,
-      current,
+      board,
       founder,
+      staff,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       status: "error",
       message: error.message || error,

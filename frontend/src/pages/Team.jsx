@@ -1,17 +1,45 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import team from "../assets/team.jpg";
 import { motion } from "motion/react";
 import FounderCaraousel from "../components/FounderCaraousel";
 import PastChairpersons from "../components/PastChairperson";
 import Board from "../components/Board";
 import StaffSection from "../components/StaffSection";
 import { FaArrowCircleUp } from "react-icons/fa";
-
+import HeroSection from "../components/HeroSection";
+import SubSection from "../components/SubSection";
+import Loading from "../components/Loading";
+import axios from "axios";
 export default function Team() {
   const [showButton, setShowButton] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [team, setTeam] = useState();
+  const [people, setPeople] = useState();
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/team`);
+        const response = await axios.get(`${api}/person`);
+        console.log(res.data.data);
+        console.log(response.data);
+        if (res.status === 200) {
+          setTeam(res.data.data);
+          setPeople(response.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
+    fetchPage();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -46,75 +74,31 @@ export default function Team() {
       },
     },
   };
-
+  if (loading) return <Loading />;
   return (
     <div className="overflow-x-hidden">
       <Nav />
-      <main>
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${team})` }}
-        >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-white text-center px-4">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
-              Meet Our Team
-            </h1>
-          </div>
-        </motion.div>
+      {team && (
+        <main>
+          <HeroSection
+            title={team?.heroSection.title}
+            body={team?.heroSection.body}
+            image={team?.heroSection.image}
+          />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="items-center justify-center flex flex-col text-center py-8 sm:py-12 md:py-16"
-        >
-          <h1 className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-3 sm:p-4 md:p-5">
-            The Eyes Behind the Vision
-          </h1>
-          <div className="text-sm leading-relaxed sm:text-base md:text-lg font-primary max-w-6xl mx-auto px-4 space-y-4 sm:space-y-5 md:space-y-6">
-            <p>
-              Nepal Netra Jyoti Sangh began as the shared dream of a few
-              passionate individuals — but it is the strength, compassion, and
-              unity of an incredible team that carries that dream forward every
-              day.
-            </p>
+          <SubSection
+            title={team?.subSection1.title}
+            body={team?.subSection1.body}
+            image={team?.subSection1.image}
+          />
 
-            <p>
-              From the doctors, nurses, and technicians who restore sight, to
-              the outreach workers and volunteers who bring care to the most
-              remote corners of Nepal — every hand plays a vital role. From the
-              support staff who keep our centers running smoothly, to the
-              visionary leaders guiding our mission, NNJS is powered by people
-              committed to making a difference.
-            </p>
-
-            <p>
-              With board members, partners, and dedicated staff across the
-              country, our team reflects the spirit of service and the heart of
-              the communities we serve. Together, we are building a future where
-              no one has to live in the dark.
-            </p>
-
-            <p className="text-primary font-bold">
-              We are NNJS — united by purpose, driven by care.
-            </p>
-          </div>
-        </motion.div>
-
-        <FounderCaraousel />
-        <PastChairpersons />
-        <Board />
-        <StaffSection />
-      </main>
-
+          <FounderCaraousel person={people.founder} />
+          <PastChairpersons person={people.past} />
+          <Board person={people.board} />
+          <StaffSection person={people.staff} />
+        </main>
+      )}
       <Footer />
-
       {showButton && (
         <button
           onClick={scrollToTop}

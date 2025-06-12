@@ -12,7 +12,7 @@ const delPerson = async (req, res) => {
       });
     }
     const deletedPerson = await PersonModel.findByIdAndDelete(personId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Person deleted successfully",
     });

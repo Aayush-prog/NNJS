@@ -10,7 +10,7 @@ const getResourceById = async (req, res) => {
         message: "Resources not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Resources found successfully",
       data: resource,

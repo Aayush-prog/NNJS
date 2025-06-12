@@ -20,7 +20,7 @@ const editPartner = async (req, res) => {
       image,
       type,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Partners updated successfully",
     });

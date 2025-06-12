@@ -8,7 +8,7 @@ const getResource = async (req, res) => {
     });
     const media = await ResourceModel.find({ type: "Media & Bulletins" });
     const publications = await ResourceModel.find({ type: "Publications" });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Resources found successfully",
       notices,
