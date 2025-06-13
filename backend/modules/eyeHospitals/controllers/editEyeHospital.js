@@ -10,7 +10,7 @@ const editEyeHospital = async (req, res) => {
     website,
     address,
     aim,
-    coerageArea,
+    coverageArea,
     availableServices,
     communityServices,
     futurePlans,
@@ -40,7 +40,7 @@ const editEyeHospital = async (req, res) => {
         address,
         image,
         aim,
-        coerageArea,
+        coverageArea,
         availableServices,
         communityServices,
         futurePlans,
@@ -48,7 +48,7 @@ const editEyeHospital = async (req, res) => {
         totalSurgery,
       }
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "EyeHospitals updated successfully",
     });

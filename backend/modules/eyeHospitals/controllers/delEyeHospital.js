@@ -14,7 +14,7 @@ const delEyeHospital = async (req, res) => {
     const deletedEyeHospital = await EyeHospitalModel.findByIdAndDelete(
       eyeHospitalId
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "EyeHospitals deleted successfully",
     });

@@ -10,7 +10,7 @@ const getEyeHospitalById = async (req, res) => {
         message: "EyeHospitals not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "EyeHospitals found successfully",
       data: eyeHospital,

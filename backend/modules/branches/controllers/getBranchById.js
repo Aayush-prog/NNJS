@@ -10,7 +10,7 @@ const getBranchById = async (req, res) => {
         message: "Branches not found",
       });
     }
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Branches found successfully",
       data: branch,

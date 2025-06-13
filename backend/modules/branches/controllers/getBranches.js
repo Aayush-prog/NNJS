@@ -3,7 +3,7 @@ const getBranches = async (req, res) => {
   const EyeCareCenterModel = mongoose.model("Branches");
   try {
     const branches = await EyeCareCenterModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Branches found successfully",
       data: branches,

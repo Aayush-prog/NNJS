@@ -23,7 +23,7 @@ const editBranch = async (req, res) => {
       image,
       committee,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Branches updated successfully",
     });

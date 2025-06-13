@@ -15,7 +15,7 @@ const createEyeCareCenter = async (req, res) => {
       contactPerson,
       image,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "EyeCareCenters created successfully",
     });

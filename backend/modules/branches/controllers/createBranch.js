@@ -15,7 +15,7 @@ const createBranch = async (req, res) => {
       image,
       committee,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "Branches created successfully",
     });

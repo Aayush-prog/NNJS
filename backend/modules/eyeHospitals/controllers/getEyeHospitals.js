@@ -3,7 +3,7 @@ const getEyeHospitals = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
   try {
     const eyeHospital = await EyeHospitalModel.find();
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "EyeHospitals found successfully",
       data: eyeHospital,

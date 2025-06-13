@@ -37,7 +37,7 @@ const createEyeHospital = async (req, res) => {
       totalOPD,
       totalSurgery,
     });
-    res.satus(201).json({
+    res.status(201).json({
       status: "success",
       message: "EyeHospitals created successfully",
     });

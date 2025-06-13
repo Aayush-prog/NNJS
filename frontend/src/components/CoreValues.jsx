@@ -102,7 +102,7 @@ export default function CoreValues() {
                     <img
                       src={`${api}/images/${value.image}`}
                       alt={`Illustration representing ${value.image}`}
-                      className="w-full h-full object-cover md:rounded-r-[20px]"
+                      className="w-full h-full object-cover md:rounded-l-[20px]"
                       loading="lazy"
                     />
                   </div>

@@ -11,7 +11,7 @@ const delBranch = async (req, res) => {
       });
     }
     const deletedBranch = await BranchModel.findByIdAndDelete(branchId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Branches deleted successfully",
     });
