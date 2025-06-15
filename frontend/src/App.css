@@ -17,7 +17,10 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
-
+.swiper-pagination {
+  bottom: 0 !important;
+  margin-top: 2rem; /* gap below content */
+}
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
