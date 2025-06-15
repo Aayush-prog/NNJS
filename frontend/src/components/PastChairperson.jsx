@@ -26,6 +26,7 @@ export default function PastChairpersons(props) {
             <img
               src={`${api}/images/${chair.image}`}
               alt={chair.name}
+              loading="lazy"
               className="h-28 w-28 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-40 lg:w-40 object-cover rounded-full mb-4 sm:mb-5 md:mb-6"
             />
             <h3 className="text-lg sm:text-xl font-bold text-primary font-secondary mb-1">

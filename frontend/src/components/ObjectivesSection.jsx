@@ -1,11 +1,24 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as ReactIcons from "react-icons/fa";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import axios from "axios";
 import Loading from "./Loading";
 
 export default function ObjectivesSection() {
   const [loading, setLoading] = useState(false);
+  const [objectives, setObjectives] = useState(null);
+  const api = import.meta.env.VITE_URL;
+
+  // Variants for container to stagger children animation
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -14,44 +27,46 @@ export default function ObjectivesSection() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+
   const iconMap = {
     ...ReactIcons,
   };
 
   function IconRenderer({ iconName, color }) {
     const IconComponent = iconMap[iconName];
-
     if (!IconComponent) {
-      return <span>Icon not found: {iconName}</span>; // Include iconName for debugging
+      return <span>Icon not found: {iconName}</span>;
     }
-
     return <IconComponent className={`${color} text-2xl sm:text-3xl`} />;
   }
-  const [objectives, setObjectives] = useState(null);
-  const api = import.meta.env.VITE_URL;
+
   useEffect(() => {
     const fetchObjective = async () => {
       try {
         setLoading(true);
-        console.log(api);
         const res = await axios.get(`${api}/strategicObjectives/`);
-        console.log(res.data);
         if (res.status === 200) {
           setObjectives(res.data.data);
-          setLoading(false);
         } else {
           console.error("Error fetching objectives: Status code", res.status);
         }
       } catch (error) {
         console.error("Error fetching objectives:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchObjective();
   }, [api]);
+
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
+
+  if (!objectives) {
+    return null; // Or some placeholder if needed
+  }
+
   return (
     <motion.div
       variants={fadeInUp}
@@ -78,12 +93,17 @@ export default function ObjectivesSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {objectives?.map((obj, index) => (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+        >
+          {objectives.map((obj, index) => (
             <motion.div
-              variants={fadeInUp}
-              viewport={{ once: true, amount: 0.2 }}
               key={index}
+              variants={fadeInUp}
               className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="flex items-start gap-3 sm:gap-4">
@@ -101,7 +121,7 @@ export default function ObjectivesSection() {
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

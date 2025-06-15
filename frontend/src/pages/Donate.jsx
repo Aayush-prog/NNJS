@@ -6,11 +6,13 @@ import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaHeart, FaUniversity } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
+
 export default function Donate() {
   const [showButton, setShowButton] = useState(false);
   const [bank, setBank] = useState();
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
+
   useEffect(() => {
     const fetchBank = async () => {
       try {
@@ -18,17 +20,19 @@ export default function Donate() {
         const res = await axios.get(`${api}/bank/`);
         if (res.status === 200) {
           setBank(res.data.data);
-          setLoading(false);
         } else {
           console.error("Error fetching bank: Status code", res.status);
         }
       } catch (error) {
         console.error("Error fetching bank:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchBank();
   }, [api]);
+
   useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY > 200);
@@ -52,12 +56,24 @@ export default function Donate() {
       y: 0,
       transition: { duration: 0.6, ease: "easeOut" },
     },
+    exit: {
+      opacity: 0,
+      y: 50,
+      transition: { duration: 0.4, ease: "easeIn" },
+    },
   };
+
   if (loading) return <Loading />;
+
   return (
     <div>
       <Nav />
+
+      {/* Hero Section with background image */}
       <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="exit"
         className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${donate})` }}
       >
@@ -69,14 +85,16 @@ export default function Donate() {
         </div>
       </motion.div>
 
+      {/* Main content section */}
       <div className="bg-primary py-8 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-6 md:px-12">
         <motion.div
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 font-primary"
         >
+          {/* Donation message and details */}
           <div className="bg-white rounded-xl md:rounded-2xl p-5 sm:p-6 md:p-8 flex-1 space-y-3 sm:space-y-4 md:space-y-5">
             <div className="flex justify-center">
               <FaHeart className="text-red-600 text-2xl sm:text-3xl md:text-4xl" />
@@ -122,6 +140,7 @@ export default function Donate() {
             </p>
           </div>
 
+          {/* Bank details */}
           <div className="bg-white rounded-xl md:rounded-2xl p-5 sm:p-6 md:p-8 w-full md:w-1/3 flex flex-col justify-center space-y-4 sm:space-y-5 md:space-y-6 mt-4 md:mt-0">
             <div className="flex items-center gap-2 sm:gap-3">
               <FaUniversity className="text-primary text-xl sm:text-2xl md:text-3xl" />
@@ -132,34 +151,36 @@ export default function Donate() {
             <div className="space-y-3 sm:space-y-4 md:space-y-6 text-gray-700 text-sm sm:text-base">
               <div>
                 <p className="font-semibold">Account Name:</p>
-                <p>{bank?.accName}</p>
+                <p>{bank?.accName || "Loading..."}</p>
               </div>
               <div>
                 <p className="font-semibold">Account Number:</p>
-                <p className="break-words">{bank?.accNum}</p>
+                <p className="break-words">{bank?.accNum || "Loading..."}</p>
               </div>
               <div>
                 <p className="font-semibold">Bank:</p>
-                <p>{bank?.bank}</p>
+                <p>{bank?.bank || "Loading..."}</p>
               </div>
               <div>
                 <p className="font-semibold">SWIFT Code:</p>
-                <p>{bank?.swiftCode}</p>
+                <p>{bank?.swiftCode || "Loading..."}</p>
               </div>
             </div>
           </div>
         </motion.div>
       </div>
 
+      {/* Footer */}
       <motion.div
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <Footer />
       </motion.div>
 
+      {/* Scroll to top button */}
       {showButton && (
         <button
           onClick={scrollToTop}

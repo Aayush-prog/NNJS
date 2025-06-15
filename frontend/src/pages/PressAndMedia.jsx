@@ -101,7 +101,10 @@ export default function PressAndMedia() {
   const filteredReleases =
     activeFilter === "all"
       ? pressReleases
-      : pressReleases.filter((release) => release.year === activeFilter);
+      : pressReleases.filter(
+          (release) =>
+            format(new Date(release.createdAt), "yyyy") === activeFilter
+        );
 
   const indexOfLastRelease = releaseCurrentPage * releasesPerPage;
   const indexOfFirstRelease = indexOfLastRelease - releasesPerPage;

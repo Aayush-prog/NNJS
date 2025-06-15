@@ -86,6 +86,7 @@ export default function StaffSection(props) {
                     <img
                       src={`${api}/images/${staff.image}`}
                       alt={staff.name}
+                      loading="lazy"
                       className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 object-cover rounded-full mx-auto mb-3 sm:mb-4 border-2 border-gray-300 shadow-sm"
                     />
                     <h3 className="text-base sm:text-lg font-bold text-primary font-secondary mb-1">

@@ -1,22 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
-export default function SubSection(props) {
-  const { title, body, image } = props;
+export default function SubSection({ title, body, image }) {
   const api = import.meta.env.VITE_URL;
 
-  const fadeInUp = {
+  const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4 },
     },
   };
 
   return (
     <motion.div
-      variants={fadeInUp}
+      variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -24,8 +37,7 @@ export default function SubSection(props) {
     >
       {title && (
         <motion.h2
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
+          variants={childVariants}
           className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary"
         >
           {title}
@@ -33,8 +45,7 @@ export default function SubSection(props) {
       )}
       {body && (
         <motion.p
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
+          variants={childVariants}
           className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]"
         >
           {body}
@@ -42,11 +53,11 @@ export default function SubSection(props) {
       )}
       {image && (
         <motion.img
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
+          variants={childVariants}
           src={`${api}/images/${image}`}
-          className="w-full sm:w-[110vw] md:w-[100vw] lg:w-[60vw] "
-          alt={`${image}`}
+          loading="lazy"
+          className="w-full sm:w-[110vw] md:w-[100vw] lg:w-[60vw]"
+          alt={image}
         />
       )}
     </motion.div>

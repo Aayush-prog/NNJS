@@ -2,6 +2,7 @@ const HeroSection = ({ image, title, body }) => {
   const api = import.meta.env.VITE_URL;
   return (
     <div
+      loading="lazy"
       className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{ backgroundImage: `url(${api}/images/${image})` }}
     >

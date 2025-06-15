@@ -27,7 +27,7 @@ export default function LogoSlider(props) {
             style={{ width: `${100 / logos.length}%` }}
           >
             <div className="flex items-center justify-center h-full">
-              <img src={`${api}/images/${slide.image}`}></img>
+              <img src={`${api}/images/${slide.image}`} loading="lazy"></img>
             </div>
           </div>
         ))}

@@ -1,11 +1,25 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import axios from "axios";
 import Loading from "../components/Loading";
 
 export default function SpecificObjectives() {
   const [loading, setLoading] = useState(false);
+  const [objectives, setObjectives] = useState(null);
+  const api = import.meta.env.VITE_URL;
+
+  // Variants for staggered container
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  // Common fadeInUp variant
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -14,44 +28,36 @@ export default function SpecificObjectives() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-  const [objectives, setObjectives] = useState(null);
-  const api = import.meta.env.VITE_URL;
 
   useEffect(() => {
     const fetchObjective = async () => {
       try {
         setLoading(true);
-        console.log(api);
         const res = await axios.get(`${api}/specificObjectives/`);
-        console.log(res.data);
         if (res.status === 200) {
-          // Sort the data here, after it's fetched
-          const sortedData = [...res.data.data].sort((a, b) => {
-            const titleA = a.title.toUpperCase();
-            const titleB = b.title.toUpperCase();
-            if (titleA < titleB) {
-              return -1;
-            }
-            if (titleA > titleB) {
-              return 1;
-            }
-            return 0;
-          });
+          // Sort alphabetically by title
+          const sortedData = [...res.data.data].sort((a, b) =>
+            a.title.localeCompare(b.title)
+          );
           setObjectives(sortedData);
-          setLoading(false);
         } else {
           console.error("Error fetching objectives: Status code", res.status);
         }
       } catch (error) {
         console.error("Error fetching objectives:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchObjective();
   }, [api]);
 
   if (loading) {
-    return <Loading />; //  Return Loading component when loading
+    return <Loading />;
+  }
+
+  if (!objectives) {
+    return null;
   }
 
   return (
@@ -84,17 +90,21 @@ export default function SpecificObjectives() {
         <div className="relative">
           <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 h-full border-l-4 border-primary"></div>
 
+          {/* Container with staggerChildren */}
           <motion.div
-            variants={fadeInUp}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             className="space-y-8 sm:space-y-12"
           >
-            {objectives?.map((item, index) => {
+            {objectives.map((item, index) => {
               const isLeft = index % 2 === 0;
 
               return (
-                <div
+                <motion.div
                   key={index}
+                  variants={fadeInUp}
                   className={`flex flex-col md:flex-row ${
                     isLeft ? "md:justify-start" : "md:justify-end"
                   } relative`}
@@ -126,7 +136,7 @@ export default function SpecificObjectives() {
                   <div className="flex items-center justify-center absolute left-2 md:left-1/2 transform md:-translate-x-1/2 top-4 z-10">
                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-white border-4 border-primary rounded-full"></div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>

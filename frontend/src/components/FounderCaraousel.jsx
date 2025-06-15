@@ -54,6 +54,7 @@ export default function FoundersCarousel(props) {
             key={founder.id}
             src={`${api}/images/${founder.image}`}
             alt={founder.name}
+            loading="lazy"
             className={`h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-full cursor-pointer border-4 transition-transform duration-300 ${
               currentIndex === index
                 ? "border-primary scale-110"
@@ -68,6 +69,7 @@ export default function FoundersCarousel(props) {
         <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
           <img
             src={`${api}/images/${person[currentIndex].image}`}
+            loading="lazy"
             alt={person[currentIndex].name}
             className="w-full sm:w-48 md:w-64 lg:w-72 h-64 sm:h-auto object-cover object-top"
           />

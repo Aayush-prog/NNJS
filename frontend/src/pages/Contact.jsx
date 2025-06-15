@@ -1,19 +1,19 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import coveringEyes from "../assets/covering eyes.png";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { FaFacebook, FaMap, FaYoast, FaYoutube } from "react-icons/fa";
-import { RiTwitterXLine } from "react-icons/ri";
-import { FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaMap, FaYoutube } from "react-icons/fa";
 import { FaArrowCircleUp } from "react-icons/fa";
 import Loading from "../components/Loading";
 import axios from "axios";
+
 export default function Contact() {
   const [showButton, setShowButton] = useState(false);
   const [contact, setContact] = useState(null);
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
+
   useEffect(() => {
     const fetchValue = async () => {
       try {
@@ -33,6 +33,7 @@ export default function Contact() {
 
     fetchValue();
   }, [api]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -43,10 +44,7 @@ export default function Contact() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
@@ -67,13 +65,20 @@ export default function Contact() {
       },
     },
   };
+
   if (loading) return <Loading />;
+
   return (
     <div>
       <Nav />
+      {/* Hero Section */}
       <motion.div
         className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${coveringEyes})` }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeInUp}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
@@ -83,6 +88,7 @@ export default function Contact() {
         </div>
       </motion.div>
 
+      {/* Main content wrapper - apply animation once here */}
       <motion.div
         variants={fadeInUp}
         initial="hidden"
@@ -90,11 +96,8 @@ export default function Contact() {
         viewport={{ once: true, amount: 0.2 }}
         className="min-h-screen bg-blue-50 p-4 sm:p-8 md:p-12 lg:p-20 flex items-center justify-center py-16"
       >
-        <motion.div
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-col lg:flex-row bg-white rounded-2xl overflow-hidden shadow-lg w-full max-w-5xl"
-        >
+        <div className="flex flex-col lg:flex-row bg-white rounded-2xl overflow-hidden shadow-lg w-full max-w-5xl">
+          {/* Left Form Section */}
           <div className="flex flex-col justify-center items-left text-left w-full lg:w-1/2 space-y-4 md:space-y-5 text-white bg-primary p-6 sm:p-8 md:p-10">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold font-secondary">
@@ -126,7 +129,7 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* Info Section - Full width on mobile, right side on desktop */}
+          {/* Right Info Section */}
           <div className="w-full lg:w-1/2 p-6 sm:p-8 md:p-10 bg-white text-black flex flex-col justify-between">
             <div className="space-y-4 md:space-y-5">
               <p className="font-bold text-sm md:text-base">
@@ -137,14 +140,14 @@ export default function Contact() {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.8064616406664!2d85.3115335749225!3d27.69237602615263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19b2b6d87343%3A0x2d6c2814b031114b!2sNepal%20Netra%20Jyoti%20Sangh%2C%20Tripureshwor!5e0!3m2!1sen!2snp!4v1748617431017!5m2!1sen!2snp"
                 width="100%"
                 height="180"
-                style={{ border: "0" }}
+                style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="rounded-lg"
               ></iframe>
 
-              {/* Contact info - Stacked on mobile, flex on desktop */}
+              {/* Contact info */}
               <div className="flex flex-col sm:flex-row text-xs sm:text-sm gap-5 sm:gap-3">
                 <div className="space-y-2 sm:w-1/3">
                   <p className="font-bold mb-1 md:mb-2">MAILING ADDRESS</p>
@@ -198,13 +201,20 @@ export default function Contact() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
 
-      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">
+      {/* Footer with animation */}
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
         <Footer />
       </motion.div>
 
+      {/* Scroll to top button */}
       {showButton && (
         <button
           onClick={scrollToTop}

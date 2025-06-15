@@ -48,6 +48,7 @@ export default function BoardMembers(props) {
           <img
             key={founder.id}
             src={`${api}/images/${founder.image}`}
+            loading="lazy"
             alt={founder.name}
             className={`h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-full cursor-pointer border-4 transition-transform duration-300 ${
               currentIndex === index
@@ -64,6 +65,7 @@ export default function BoardMembers(props) {
           <img
             src={`${api}/images/${person[currentIndex].image}`}
             alt={person[currentIndex].name}
+            loading="lazy"
             className="w-full sm:w-48 md:w-64 lg:w-72 h-64 sm:h-auto object-cover object-top"
           />
           <div className="p-4 sm:p-8 md:p-12">

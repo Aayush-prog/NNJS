@@ -38,39 +38,6 @@ const sortByProperty = (array, property, direction = "asc") => {
   });
 };
 
-// Multi-criteria sort function
-const multiSort = (array, sortCriteria) => {
-  return [...array].sort((a, b) => {
-    for (const { property, direction } of sortCriteria) {
-      const valueA = a[property] === undefined ? "" : a[property];
-      const valueB = b[property] === undefined ? "" : b[property];
-
-      // Sort by number if both values are numeric
-      if (!isNaN(valueA) && !isNaN(valueB)) {
-        const numResult =
-          direction === "asc"
-            ? Number(valueA) - Number(valueB)
-            : Number(valueB) - Number(valueA);
-        if (numResult !== 0) return numResult;
-      } else {
-        // Otherwise sort alphabetically (case-insensitive)
-        const compResult = String(valueA).localeCompare(
-          String(valueB),
-          undefined,
-          {
-            sensitivity: "base",
-            numeric: true,
-          }
-        );
-
-        const result = direction === "asc" ? compResult : -compResult;
-        if (result !== 0) return result;
-      }
-    }
-    return 0;
-  });
-};
-
 export default function NNJSCombinedList({ hospitals, centers, presidents }) {
   // Hospital/Eye Center search and sort
   const [search, setSearch] = useState("");
@@ -360,6 +327,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                       src={`${api}/images/${h.image}`}
                       alt={h.title}
                       className="w-full h-48 object-cover"
+                      loading="lazy"
                     />
                   )}
                   <div className="p-6 ">
@@ -495,6 +463,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                       <img
                         src={`${api}/images/${president.image}`}
                         alt={president.president}
+                        loading="lazy"
                         className="w-20 h-20 rounded-full object-cover"
                       />
                     )}

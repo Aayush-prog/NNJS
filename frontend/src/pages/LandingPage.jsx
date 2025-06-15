@@ -85,7 +85,12 @@ export default function LandingPage() {
           <Stories />
         </main>
       )}
-      <motion.div variants={fadeInUp} initial="hidden" whileInView="visible">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <Footer />
       </motion.div>
 

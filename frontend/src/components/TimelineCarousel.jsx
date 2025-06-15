@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import timelineImage from "../assets/history-pic.webp";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import axios from "axios";
 import Loading from "../components/Loading";
 
@@ -24,37 +24,47 @@ const TimelineCarousel = () => {
         setLoading(true);
         const res = await axios.get(`${api}/timeStone/`);
         if (res.status === 200) {
-          const getGroupedSlides = (data) => {
-            let itemsPerSlide = 3;
-
+          const groupSlides = (data) => {
             const grouped = [];
-            for (let i = 0; i < data.length; i += itemsPerSlide) {
-              grouped.push(data.slice(i, i + itemsPerSlide));
+            for (let i = 0; i < data.length; i += 3) {
+              grouped.push(data.slice(i, i + 3));
             }
             return grouped;
           };
-
-          const groupedSlides = getGroupedSlides(res.data.data);
-          console.log(groupedSlides);
-          setData(groupedSlides);
-          setLoading(false);
+          setData(groupSlides(res.data.data));
         } else {
-          console.error("Error fetching timestone: Status code", res.status);
+          console.error("Error fetching timestone:", res.status);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching timestone:", error);
+        setLoading(false);
       }
     };
 
     fetchTimestone();
   }, [api]);
 
-  const fadeInUp = {
+  const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4 },
     },
   };
 
@@ -62,22 +72,20 @@ const TimelineCarousel = () => {
 
   return (
     <motion.div
-      variants={fadeInUp}
+      variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       className="py-16 px-4 max-w-7xl mx-auto min-h-screen"
     >
       <motion.h2
-        variants={fadeInUp}
-        viewport={{ once: true, amount: 0.2 }}
+        variants={childVariants}
         className="text-4xl font-secondary font-bold text-center text-primary mb-12"
       >
         Our Journey Through Time
       </motion.h2>
 
-      <motion.div variants={fadeInUp} className="relative">
-        {/* nav hidden on mobile, shown md+ */}
+      <motion.div variants={childVariants} className="relative">
         <button
           ref={prevRef}
           aria-label="Previous slide"
@@ -98,9 +106,9 @@ const TimelineCarousel = () => {
           slidesPerView={1}
           spaceBetween={30}
           breakpoints={{
-            640: { slidesPerView: 1, spaceBetween: 40 }, // tablet
+            640: { slidesPerView: 1, spaceBetween: 40 },
             768: { slidesPerView: 1, spaceBetween: 60 },
-            1024: { slidesPerView: 1, spaceBetween: 100 }, // desktop
+            1024: { slidesPerView: 1, spaceBetween: 100 },
           }}
           navigation={{
             prevEl: prevRef.current,
@@ -123,7 +131,7 @@ const TimelineCarousel = () => {
           {data?.map((group, index) => (
             <SwiperSlide key={index}>
               <div>
-                {/* timeline dots & years */}
+                {/* Timeline dots and years */}
                 <div className="relative mb-6 sm:mb-8">
                   <div className="h-1 bg-primary absolute top-4 left-0 right-0"></div>
                   <div className="flex justify-between md:justify-around relative z-10 px-4 md:px-0">
@@ -138,15 +146,17 @@ const TimelineCarousel = () => {
                   </div>
                 </div>
 
-                {/* cards grid */}
+                {/* Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8 sm:mb-12">
                   {group.map((item, i) => (
-                    <div
+                    <motion.div
+                      variants={childVariants}
                       key={i}
                       className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 min-h-[340px]"
                     >
                       <img
                         src={timelineImage}
+                        loading="lazy"
                         alt={item.title}
                         className="w-full h-48 object-cover"
                       />
@@ -158,7 +168,7 @@ const TimelineCarousel = () => {
                           {item.description ?? item.body}
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>

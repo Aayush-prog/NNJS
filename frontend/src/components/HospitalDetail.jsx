@@ -50,6 +50,7 @@ export default function HospitalDetail() {
         <h1 className="text-3xl font-bold">{hospital.title}</h1>
         {hospital.image && (
           <img
+            loading="lazy"
             src={`${api}/images/${hospital.image}`}
             alt={hospital.title}
             className="w-full h-64 object-cover rounded"
