@@ -15,7 +15,6 @@ import Locations from "./pages/WhatWeDo";
 import EthicalReview from "./pages/EthicalReview";
 import Resources from "./pages/Resources";
 import PressAndMedia from "./pages/PressAndMedia";
-import AdminLandingPage from "../src copy/pages/LandingPage";
 import HospitalDetail from "./components/HospitalDetail";
 import CenterDetail from "./components/CenterDetail";
 import BranchDetail from "./components/BranchDetail";
@@ -36,23 +35,21 @@ function App() {
           <Route path="care/:id" element={<CenterDetail />} />
           <Route path="branch/:id" element={<BranchDetail />} />
         </Route>
-      
+
         <Route path="/ethical" element={<EthicalReview />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/press" element={<PressAndMedia />} />
-        
-        
-        <Route path="/admin" element={<AdminLandingPage />}>
-          {/* <Route index element={<AdminDashboard />} /> */}
-          {/* <Route path="users" element={<AdminUsers />} />
+
+        {/* <Route path="/admin" element={<AdminLandingPage />}>
+          <Route index element={<AdminDashboard />} /> 
+           <Route path="users" element={<AdminUsers />} />
           <Route path="content" element={<AdminContent />} />
-          <Route path="settings" element={<AdminSettings />} /> */}
-        </Route>
+          <Route path="settings" element={<AdminSettings />} /> 
+        </Route> */}
       </Route>
     )
   );
   return <RouterProvider router={router} />;
 }
-
 
 export default App;

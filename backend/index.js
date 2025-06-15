@@ -6,7 +6,7 @@ require("dotenv").config();
 
 // Routes
 const bankRouter = require("./modules/bank/bank.routes.js");
-const mediaRouter = require("./modules/blogs/media.routes.js");
+const mediaRouter = require("./modules/media/media.routes.js");
 const branchesRouter = require("./modules/branches/branches.routes.js");
 const commitmentRouter = require("./modules/commitments/commitments.routes.js");
 const contactRouter = require("./modules/contact/contact.routes.js");
