@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Define the fadeInUp animation variant
 const fadeInUp = {
@@ -14,131 +14,27 @@ const fadeInUp = {
   },
 };
 
-// Dummy data for hospitals
-export const dummyHospitals = [
-  {
-    name: "Tilganga Institute of Ophthalmology",
-    address: "Gaushala, Kathmandu",
-    phone: "01-4493775",
-    email: "info@tilganga.org",
-    website: "www.tilganga.org",
-    description: "Mid-Western Regional Eye Care Centre, Fateh-Bal Eye Hospital (FBEH) is an eye care institution managed and run by Nepal Netra Jyoti Sangh Banke (NNJS, B). It was established in cooperation with Swiss Red Cross and Lions Club MD 102 Switzerland and Liechtenstein in 1986 A.D. Nepal Netra Jyoti Sangh Banke (NNJS, B) is one of the branches of Nepal Netra Jyoti Sangh (National society for comprehensive eye care), which has its head office in Tripureshwor, Kathmandu. Nepal Netra Jyoti Sangh (NNJS) was established in 1978 A.D. (2035 B.S.) and is registered under the Society Registration Act, 1977 (2034 B.S.). This is a non-government, non-profit making, beneficent genuine social organization affiliated with Social Welfare Council (SWC). Fateh-Bal Eye Hospital started its services in the mid-west region of Nepal since 1986 in collaboration with Swiss Red Cross. Later on, Lions Club MD 102 Switzerland and Liechtenstein also participated in the development of the hospital. The construction of outpatient department, operation theater, In-patient department and doctor quarters of the hospital was funded by the Lions Club MD 102 Switzerland and Liechtenstein. Since March 2001, the financial support from the donor agencies has been phased out and the hospital is running with its own resources. The hospital is in Nepalganj, a famous city of the Mid-west region of Nepal. This is a 150 bedded, well-equipped, secondary level eye hospital with appropriate infrastructure. The hospital is recognized as a highly qualified eye hospital for all kinds of ophthalmic activities by Nepal government, the Ministry of Health. The hospital has recently started 3 year PCL level course in Ophthalmic Science.  This is also recognized as a training centre for MBBS internship on ophthalmology by Nepal Medical Council. Similarly, it is also acknowledged for Tertiary level comprehensive Low Vision Programme. Aim And Objective: The main objective / Mission of Fateh-Bal Eye Hospital is to reduce the blindness problem in this region by providing curative and preventive eye care services as per the guiding principles of the global WHO initiative “VISION 2020, The Right to Sight”. Coverage Area: Bheri Zone, Partly in Karnali and neighboring district of india Available Services, Activities and service Time: MAJOR TEST & TREATMENT - A-Scan - B-Scan - Humphry  Perimetry - Yag Laser Iridectomy & Capsulotomy - Argon Laser including PRP Sectoral and focal. - Green Laser Treatment - Ocular Pathology - Low Vision Service - Orthoptics  Service SURGICAL SERVICES: - Cataract including Phaco  and  sutureless. - Congenital cataract. - Glaucoma - DCR/DCT - Squint - And other minor surgery Community Outreach Service: - Screening Eye Camp - Free and Subsidized Surgical Eye Camp - Education and Training - Primary eye care training to Health Post In- charges. - Awareness training to traditional healers. - Vision screening training to school teachers. - Training to drug retailers. - Training to FCHV. - Training to other community volunteers. - Awareness through F.M., Pamphlets, Posters etc. Future Plan: - Further expansion and strengthen the Community  Outreach Programme including Health Education. - Establish/ Collaborate Community Eye Care Centre in Jajarkot under guidelines of NNJS Centre. - Develop and expand physical infrastructure under support from Indian Embassy. - Establish specialty clinics: Retina, Glaucoma and Cornea. - Gradually develop the hospital as an teaching institute. Data in 2023 Total OPD :  1,34,709 Total Surgery : 9,179",
-    images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
-  },
-  {
-    
-    name: "Lumbini Eye Institute",
-    address: "Bhairahawa, Rupandehi",
-    phone: "071-522921",
-    email: "contact@lumbinieye.com",
-    website: "lumbinieye.com",
-    images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
-  },
-  {
-    name: "Sagarmatha Choudhary Eye Hospital",
-    address: "Lahan, Siraha",
-    phone: "033-560187",
-    email: "info@sceh.org.np",
-    website: "http://www.sceh.org.np",
-    images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
-  },
-  {
-    name: "Sagarmatha Choudhary Eye Hospital",
-    address: "Lahan, Siraha",
-    phone: "033-560187",
-    email: "info@sceh.org.np",
-    website: "http://www.sceh.org.np",
-    images: "https://static.vecteezy.com/system/resources/thumbnails/036/372/442/small_2x/hospital-building-with-ambulance-emergency-car-on-cityscape-background-cartoon-illustration-vector.jpg",
-  },
-];
-
-// Dummy data for eye care centers
-const dummyCenters = [
-  {
-    name: "Kathmandu Eye Care Center",
-    district: "Kathmandu",
-    contactPerson: "Dr. Suman Shrestha",
-    contactNumber: "01-5551234",
-  },
-  {
-    name: "Kathmandu Eye Care Center",
-    district: "Kathmandu",
-    contactPerson: "Dr. Suman Shrestha",
-    contactNumber: "01-5551234",
-  },
-  {
-    name: "Pokhara Vision Center",
-    district: "Kaski",
-    contactPerson: "Ms. Anju Gurung",
-    contactNumber: "061-467890",
-  },
-  {
-    name: "Biratnagar Eye Clinic",
-    district: "Morang",
-    contactPerson: "Dr. Rajesh Yadav",
-    contactNumber: "021-441122",
-  },
-];
-export { dummyCenters }; // export centers for detail view
-
-// Dummy data for presidents
- export const dummyPresidents = [
-  {
-    name: "Ram Bahadur Thapa",
-    district: "Kathmandu",
-    committee: "Central Committee",
-    contact: "9801000001",
-    profilePic: "",
-    contactPerson: "Ramesh Shrestha",
-  },
-  {
-    name: "Sita Devi Sharma",
-    district: "Lalitpur",
-    committee: "District Committee",
-    contact: "9801000002",
-    profilePic: "",
-    contactPerson: "Sita Sharma",
-  },
-  {
-    name: "Hari Prasad Koirala",
-    district: "Bhaktapur",
-    committee: "District Committee",
-    contact: "9801000003",
-    profilePic: "",
-    contactPerson: "Hari Koirala",
-  },
-   {
-    name: "Ram Bahadur Thapa",
-    district: "Kathmandu",
-    committee: "Central Committee",
-    contact: "9801000001",
-    profilePic: "",
-    contactPerson: "Ramesh Shrestha",
-  },
-];
-// export { dummyPresidents }; // export for detail pages
-
 // Improved sort function that handles different data types
-const sortByProperty = (array, property, direction = 'asc') => {
+const sortByProperty = (array, property, direction = "asc") => {
   return [...array].sort((a, b) => {
     // Handle missing values
-    const valueA = a[property] === undefined ? '' : a[property];
-    const valueB = b[property] === undefined ? '' : b[property];
-    
+    const valueA = a[property] === undefined ? "" : a[property];
+    const valueB = b[property] === undefined ? "" : b[property];
+
     // Sort by number if both values are numeric
     if (!isNaN(valueA) && !isNaN(valueB)) {
-      return direction === 'asc' 
-        ? Number(valueA) - Number(valueB) 
+      return direction === "asc"
+        ? Number(valueA) - Number(valueB)
         : Number(valueB) - Number(valueA);
     }
-    
+
     // Otherwise sort alphabetically (case-insensitive)
     const compResult = String(valueA).localeCompare(String(valueB), undefined, {
-      sensitivity: 'base', // case-insensitive
-      numeric: true // enables natural sorting for strings with numbers
+      sensitivity: "base", // case-insensitive
+      numeric: true, // enables natural sorting for strings with numbers
     });
-    
-    return direction === 'asc' ? compResult : -compResult;
+
+    return direction === "asc" ? compResult : -compResult;
   });
 };
 
@@ -146,23 +42,28 @@ const sortByProperty = (array, property, direction = 'asc') => {
 const multiSort = (array, sortCriteria) => {
   return [...array].sort((a, b) => {
     for (const { property, direction } of sortCriteria) {
-      const valueA = a[property] === undefined ? '' : a[property];
-      const valueB = b[property] === undefined ? '' : b[property];
-      
+      const valueA = a[property] === undefined ? "" : a[property];
+      const valueB = b[property] === undefined ? "" : b[property];
+
       // Sort by number if both values are numeric
       if (!isNaN(valueA) && !isNaN(valueB)) {
-        const numResult = direction === 'asc' 
-          ? Number(valueA) - Number(valueB) 
-          : Number(valueB) - Number(valueA);
+        const numResult =
+          direction === "asc"
+            ? Number(valueA) - Number(valueB)
+            : Number(valueB) - Number(valueA);
         if (numResult !== 0) return numResult;
       } else {
         // Otherwise sort alphabetically (case-insensitive)
-        const compResult = String(valueA).localeCompare(String(valueB), undefined, {
-          sensitivity: 'base',
-          numeric: true
-        });
-        
-        const result = direction === 'asc' ? compResult : -compResult;
+        const compResult = String(valueA).localeCompare(
+          String(valueB),
+          undefined,
+          {
+            sensitivity: "base",
+            numeric: true,
+          }
+        );
+
+        const result = direction === "asc" ? compResult : -compResult;
         if (result !== 0) return result;
       }
     }
@@ -170,25 +71,22 @@ const multiSort = (array, sortCriteria) => {
   });
 };
 
-export default function NNJSCombinedList({
-  hospitals = dummyHospitals,
-  centers = dummyCenters,
-  presidents = dummyPresidents,
-}) {
+export default function NNJSCombinedList({ hospitals, centers, presidents }) {
   // Hospital/Eye Center search and sort
   const [search, setSearch] = useState("");
-  
+  const navigate = useNavigate();
+  const api = import.meta.env.VITE_URL;
   // Replace keywords with category filter
   const [activeCategory, setActiveCategory] = useState("all"); // "all", "hospitals", "centers", "presidents"
-  
+
   const [hospitalSortBy, setHospitalSortBy] = useState("name");
   const [hospitalSortDirection, setHospitalSortDirection] = useState("asc");
   const [hospitalPage, setHospitalPage] = useState(1);
-  
+
   const [centerSortBy, setCenterSortBy] = useState("name");
   const [centerSortDirection, setCenterSortDirection] = useState("asc");
   const [centerPage, setCenterPage] = useState(1);
-  
+
   const [presidentSortBy, setPresidentSortBy] = useState("name");
   const [presidentSortDirection, setPresidentSortDirection] = useState("asc");
   const [presidentPage, setPresidentPage] = useState(1);
@@ -196,8 +94,11 @@ export default function NNJSCombinedList({
   const itemsPerPage = 3;
 
   // Search and filter logic
-  const searchKeywords = search.toLowerCase().split(" ").filter((kw) => kw.trim() !== "");
-  
+  const searchKeywords = search
+    .toLowerCase()
+    .split(" ")
+    .filter((kw) => kw.trim() !== "");
+
   // Hospital filtering and sorting
   const filteredHospitals = hospitals.filter((h) =>
     searchKeywords.every(
@@ -209,8 +110,12 @@ export default function NNJSCombinedList({
         (h.website && h.website.toLowerCase().includes(kw))
     )
   );
-  
-  const sortedHospitals = sortByProperty(filteredHospitals, hospitalSortBy, hospitalSortDirection);
+
+  const sortedHospitals = sortByProperty(
+    filteredHospitals,
+    hospitalSortBy,
+    hospitalSortDirection
+  );
   const hospitalTotalPages = Math.ceil(sortedHospitals.length / itemsPerPage);
   const paginatedHospitals = sortedHospitals.slice(
     (hospitalPage - 1) * itemsPerPage,
@@ -227,8 +132,12 @@ export default function NNJSCombinedList({
         (c.contactNumber && c.contactNumber.toLowerCase().includes(kw))
     )
   );
-  
-  const sortedCenters = sortByProperty(filteredCenters, centerSortBy, centerSortDirection);
+
+  const sortedCenters = sortByProperty(
+    filteredCenters,
+    centerSortBy,
+    centerSortDirection
+  );
   const centerTotalPages = Math.ceil(sortedCenters.length / itemsPerPage);
   const paginatedCenters = sortedCenters.slice(
     (centerPage - 1) * itemsPerPage,
@@ -246,8 +155,12 @@ export default function NNJSCombinedList({
         (p.contactPerson && p.contactPerson.toLowerCase().includes(kw))
     )
   );
-  
-  const sortedPresidents = sortByProperty(filteredPresidents, presidentSortBy, presidentSortDirection);
+
+  const sortedPresidents = sortByProperty(
+    filteredPresidents,
+    presidentSortBy,
+    presidentSortDirection
+  );
   const presidentTotalPages = Math.ceil(sortedPresidents.length / itemsPerPage);
   const paginatedPresidents = sortedPresidents.slice(
     (presidentPage - 1) * itemsPerPage,
@@ -259,13 +172,13 @@ export default function NNJSCombinedList({
     { label: "Name", value: "name" },
     { label: "Address", value: "address" },
   ];
-  
+
   const centerSortOptions = [
     { label: "Name", value: "name" },
     { label: "District", value: "district" },
     { label: "Contact Person", value: "contactPerson" },
   ];
-  
+
   const presidentSortOptions = [
     { label: "Name", value: "name" },
     { label: "District", value: "district" },
@@ -282,34 +195,37 @@ export default function NNJSCombinedList({
         className="mb-8"
       >
         <div className="w-full max-w-2xl mx-auto bg-white p-5 rounded-2xl shadow-lg space-y-5">
-          
           {/*** 1. SCROLLING CATEGORY FILTER ***/}
           <div className="relative">
             <div className="overflow-x-auto pb-1 hide-scrollbar pr-12">
               <div className="flex flex-nowrap items-center gap-3 font-primary">
-                {['all','hospitals','centers','presidents'].map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => {
-                      setActiveCategory(category);
-                      setHospitalPage(1);
-                      setCenterPage(1);
-                      setPresidentPage(1);
-                    }}
-                    className={`flex-shrink-0 px-5 py-2 text-sm font-secondary rounded-lg transition-colors duration-200 ${
-                      activeCategory === category
-                        ? 'bg-sky-500 text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
-                  >
-                    {{
-                      all: 'All',
-                      hospitals: 'Hospitals',
-                      centers: 'Centers',
-                      presidents: 'Branches'
-                    }[category]}
-                  </button>
-                ))}
+                {["all", "hospitals", "centers", "presidents"].map(
+                  (category) => (
+                    <button
+                      key={category}
+                      onClick={() => {
+                        setActiveCategory(category);
+                        setHospitalPage(1);
+                        setCenterPage(1);
+                        setPresidentPage(1);
+                      }}
+                      className={`flex-shrink-0 px-5 py-2 text-sm font-secondary rounded-lg transition-colors duration-200 ${
+                        activeCategory === category
+                          ? "bg-sky-500 text-white shadow-sm"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      {
+                        {
+                          all: "All",
+                          hospitals: "Hospitals",
+                          centers: "Centers",
+                          presidents: "Branches",
+                        }[category]
+                      }
+                    </button>
+                  )
+                )}
               </div>
             </div>
             {/* gradient fade */}
@@ -318,13 +234,21 @@ export default function NNJSCombinedList({
 
           {/*** 2. SEARCH + SORT ***/}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            
             {/* Search */}
             <div className="relative md:flex-grow">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <svg
+                  className="w-5 h-5 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </div>
               <input
@@ -347,39 +271,48 @@ export default function NNJSCombinedList({
               <span className="text-slate-700 font-secondary">Sort:</span>
               <select
                 value={
-                  activeCategory === 'centers'
+                  activeCategory === "centers"
                     ? centerSortBy
-                    : activeCategory === 'presidents'
-                      ? presidentSortBy
-                      : hospitalSortBy
+                    : activeCategory === "presidents"
+                    ? presidentSortBy
+                    : hospitalSortBy
                 }
                 onChange={(e) => {
                   const v = e.target.value;
-                  if (activeCategory === 'centers') setCenterSortBy(v);
-                  else if (activeCategory === 'presidents') setPresidentSortBy(v);
+                  if (activeCategory === "centers") setCenterSortBy(v);
+                  else if (activeCategory === "presidents")
+                    setPresidentSortBy(v);
                   else setHospitalSortBy(v);
                 }}
                 className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800
                            focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
               >
-                {(
-                  activeCategory === 'centers'
-                    ? centerSortOptions
-                    : activeCategory === 'presidents'
-                      ? presidentSortOptions
-                      : hospitalSortOptions
+                {(activeCategory === "centers"
+                  ? centerSortOptions
+                  : activeCategory === "presidents"
+                  ? presidentSortOptions
+                  : hospitalSortOptions
                 ).map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
                 ))}
               </select>
 
               <button
                 onClick={() => {
-                  if (activeCategory === 'centers')
-                    setCenterSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-                  else if (activeCategory === 'presidents')
-                    setPresidentSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
-                  else setHospitalSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+                  if (activeCategory === "centers")
+                    setCenterSortDirection((d) =>
+                      d === "asc" ? "desc" : "asc"
+                    );
+                  else if (activeCategory === "presidents")
+                    setPresidentSortDirection((d) =>
+                      d === "asc" ? "desc" : "asc"
+                    );
+                  else
+                    setHospitalSortDirection((d) =>
+                      d === "asc" ? "desc" : "asc"
+                    );
                 }}
                 className="flex-shrink-0 bg-white border border-slate-200 rounded-lg w-10 h-10
                            flex items-center justify-center text-slate-700 hover:bg-slate-50
@@ -387,72 +320,89 @@ export default function NNJSCombinedList({
                 aria-label="Toggle sort direction"
               >
                 <span className="text-xl font-semibold leading-none align-middle">
-                  {(
-                    activeCategory === 'centers'
-                      ? centerSortDirection
-                      : activeCategory === 'presidents'
-                        ? presidentSortDirection
-                        : hospitalSortDirection
-                  ) === 'asc'
-                    ? '↑'
-                    : '↓'}
+                  {(activeCategory === "centers"
+                    ? centerSortDirection
+                    : activeCategory === "presidents"
+                    ? presidentSortDirection
+                    : hospitalSortDirection) === "asc"
+                    ? "↑"
+                    : "↓"}
                 </span>
               </button>
             </div>
           </div>
         </div>
       </motion.div>
-      
+
       {/* Conditional rendering based on active category */}
       {/* Hospitals Section */}
-      {(activeCategory === 'all' || activeCategory === 'hospitals') && (
+      {(activeCategory === "all" || activeCategory === "hospitals") && (
         <section>
-          <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Hospitals</h2>
+          <h2 className="text-2xl font-bold mb-4 font-secondary">
+            Eye Hospitals
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {paginatedHospitals.length > 0 ? paginatedHospitals.map((h, i) => (
-              <Link to={`hospital/${i}`} key={i} className="block">
-                <motion.div 
-                  key={i} 
-                   variants={fadeInUp}
-                   initial="hidden"
-                   whileInView="visible"
-                   viewport={{ once: true, amount: 0.1 }}
-                   className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            {paginatedHospitals.length > 0 ? (
+              paginatedHospitals.map((h, i) => (
+                <motion.div
+                  key={i}
+                  onClick={() => {
+                    navigate(`hospital/${h._id}`);
+                  }}
+                  variants={fadeInUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.1 }}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
-                   {h.images && (
-                     <img
-                       src={h.images}
-                       alt={h.name}
-                       className="w-full h-48 object-cover"
-                     />
-                   )}
-                   <div className="p-6 h-70">
-                     <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
-                       {h.name}
-                     </h3>
-                     {h.address && (
-                       <p className="text-sm text-gray-600 mb-3 font-primary">
-                         {h.address}
-                       </p>
-                     )}
-                     <div className="text-gray-700 mb-4 font-primary">
-                       {h.phone && <p><span className="font-semibold">Phone:</span> {h.phone}</p>}
-                       {h.email && <p><span className="font-semibold">Email:</span> {h.email}</p>}
-                     </div>
-                     {h.website && (
-                       <a
-                         className="text-primary font-secondary hover:text-accent transition-colors duration-colors inline-flex items-center"
-                         href={h.website.startsWith('http') ? h.website : `http://${h.website}`}
-                         target="_blank" 
-                         rel="noopener noreferrer"
-                       >
-                         Visit Website <span className="ml-1">→</span>
-                       </a>
-                     )}
-                   </div>
+                  {h.image && (
+                    <img
+                      src={`${api}/images/${h.image}`}
+                      alt={h.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  )}
+                  <div className="p-6 ">
+                    <h3 className="text-xl font-bold mb-2 font-secondary text-primary">
+                      {h.title}
+                    </h3>
+                    {h.address && (
+                      <p className="text-sm text-gray-600 mb-3 font-primary">
+                        {h.address}
+                      </p>
+                    )}
+                    <div className="text-gray-700 mb-4 font-primary">
+                      {h.phone && (
+                        <p>
+                          <span className="font-semibold">Phone:</span>{" "}
+                          {h.phone}
+                        </p>
+                      )}
+                      {h.email && (
+                        <p>
+                          <span className="font-semibold">Email:</span>{" "}
+                          {h.email}
+                        </p>
+                      )}
+                    </div>
+                    {h.website && (
+                      <a
+                        className="text-primary font-secondary hover:text-accent transition-colors duration-colors inline-flex items-center"
+                        href={
+                          h.website.startsWith("http")
+                            ? h.website
+                            : `http://${h.website}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Visit Website <span className="ml-1">→</span>
+                      </a>
+                    )}
+                  </div>
                 </motion.div>
-              </Link>
-            )) : (
+              ))
+            ) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No Hospitals found</p>
               </div>
@@ -469,29 +419,44 @@ export default function NNJSCombinedList({
       )}
 
       {/* Eye Care Centers Section */}
-      {(activeCategory === 'all' || activeCategory === 'centers') && (
+      {(activeCategory === "all" || activeCategory === "centers") && (
         <section>
-          <h2 className="text-2xl font-bold mb-4 font-secondary">Eye Care Centers</h2>
+          <h2 className="text-2xl font-bold mb-4 font-secondary">
+            Eye Care Centers
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {paginatedCenters.length > 0 ? paginatedCenters.map((center, i) => (
-              // <Link to={`care/${i}`} key={i} className="block">
-                <motion.div 
+            {paginatedCenters.length > 0 ? (
+              paginatedCenters.map((center, i) => (
+                <motion.div
                   variants={fadeInUp}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.1 }}
                   key={i}
-                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
+                  className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
                 >
-                   <h2 className="text-xl font-bold text-blue-900 font-secondary">
-                     {center.name}
-                   </h2>
-                   <p className="text-gray-700 font-primary"><span className="font-semibold">District:</span> {center.district}</p>
-                   {center.contactPerson && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {center.contactPerson}</p>}
-                   {center.contactNumber && <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Number:</span> {center.contactNumber}</p>}
+                  <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                    {center.title}
+                  </h2>
+                  <p className="text-gray-700 font-primary">
+                    <span className="font-semibold">District:</span>{" "}
+                    {center.district}
+                  </p>
+                  {center.contactPerson && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">Contact Person:</span>{" "}
+                      {center.contactPerson}
+                    </p>
+                  )}
+                  {center.contactNum && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">Contact Number:</span>{" "}
+                      {center.contactNum}
+                    </p>
+                  )}
                 </motion.div>
-              // </Link>
-            )) : (
+              ))
+            ) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No eye care centers found</p>
               </div>
@@ -508,37 +473,64 @@ export default function NNJSCombinedList({
       )}
 
       {/* District Presidents Section */}
-      {(activeCategory === 'all' || activeCategory === 'presidents') && (
+      {(activeCategory === "all" || activeCategory === "presidents") && (
         <section>
           <h2 className="text-2xl font-bold mb-4 font-secondary">Branches</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {paginatedPresidents.length > 0 ? paginatedPresidents.map((president, i) => (
-              <Link to={`branch/${i}`} key={i} className="block">
-                <motion.div 
-                  key={i} 
-                   variants={fadeInUp}
-                   initial="hidden"
-                   whileInView="visible"
-                   viewport={{ once: true, amount: 0.1 }}
-                   className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
+            {paginatedPresidents.length > 0 ? (
+              paginatedPresidents.map((president, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeInUp}
+                  onClick={() => {
+                    `branch/${i}`;
+                  }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.1 }}
+                  className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-2 items-center hover:shadow-xl transition-shadow duration-300"
                 >
-                  {/* <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
-                    {president.profilePic ? (
-                      <img src={president.profilePic} alt={president.name} className="w-20 h-20 rounded-full object-cover" />
-                    ) : (
-                      "Profile Pic"
+                  <div className="w-20 h-20 bg-gray-200 rounded-full mb-2 flex items-center justify-center">
+                    {president.image && (
+                      <img
+                        src={`${api}/images/${president.image}`}
+                        alt={president.president}
+                        className="w-20 h-20 rounded-full object-cover"
+                      />
                     )}
-                  </div> */}
-                  <h2 className="text-xl font-bold text-blue-900 font-secondary">
-                    {president.district}
-                  </h2>
-                  <p className="text-gray-700 font-primary"><span className="font-semibold">President:</span> {president.name}</p>
-                  <p className="text-gray-700 font-primary"><span className="font-semibold">Committee:</span> {president.committee}</p>
-                  <p className="text-gray-700 font-primary"><span className="font-semibold">Contact:</span> {president.contact}</p>
-                  <p className="text-gray-700 font-primary"><span className="font-semibold">Contact Person:</span> {president.contactPerson}</p>
+                  </div>
+                  {president.district && (
+                    <h2 className="text-xl font-bold text-blue-900 font-secondary">
+                      {president.district}
+                    </h2>
+                  )}
+                  {president.president && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">President:</span>{" "}
+                      {president.president}
+                    </p>
+                  )}
+                  {president.committee && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">Committee:</span>{" "}
+                      {president.committee}
+                    </p>
+                  )}
+                  {president.phone && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">Contact:</span>{" "}
+                      {president.phone}
+                    </p>
+                  )}
+                  {president.contactPerson && (
+                    <p className="text-gray-700 font-primary">
+                      <span className="font-semibold">Contact Person:</span>{" "}
+                      {president.contactPerson}
+                    </p>
+                  )}
                 </motion.div>
-              </Link>
-            )) : (
+              ))
+            ) : (
               <div className="col-span-3 text-center py-8">
                 <p className="text-gray-500">No Branches found</p>
               </div>

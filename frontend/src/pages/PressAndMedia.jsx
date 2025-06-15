@@ -1,150 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import DonateButton from "../components/DonateButton";
 import Pagination from "../components/Pagination"; // Import Pagination component
 import { motion } from "framer-motion";
-import {
-  FaArrowCircleUp,
-  FaUserInjured,
-  FaProcedures,
-  FaHospital,
-  FaEye,
-  FaDownload,
-  FaFilePdf,
-  FaEnvelope,
-  FaPhone,
-} from "react-icons/fa";
+import { FaArrowCircleUp, FaFilePdf } from "react-icons/fa";
 import heroImage from "../assets/Landing frame.png";
-import mapImage from "../assets/map.png";
-import profileImage from "../assets/profile.png";
-import CoreValues from "../components/CoreValues";
-
-// Dummy data for press articles
-const PRESS_ARTICLES = [
-  {
-    id: 1,
-    headline: "NNJS Brings Hope to Local Communities",
-    source: "Healthcare Daily",
-    date: "May 15, 2025",
-    summary:
-      "A look into how NNJS is transforming healthcare access in underserved neighborhoods.",
-    link: "#",
-    image: profileImage,
-  },
-  {
-    id: 2,
-    headline: "New Surgical Initiative Helps Hundreds",
-    source: "Medical Journal",
-    date: "April 22, 2025",
-    summary:
-      "NNJS's latest initiative provides critical surgeries to those who cannot afford them.",
-    link: "#",
-    image: profileImage,
-  },
-  {
-    id: 3,
-    headline: "Healthcare Heroes: The Story of NNJS",
-    source: "Community Health Magazine",
-    date: "March 10, 2025",
-    summary:
-      "An in-depth look at the founding and impact of NNJS across the region.",
-    link: "#",
-    image: profileImage,
-  },
-  {
-    id: 4,
-    headline: "Volunteer Program Expands Medical Access",
-    source: "Health Network News",
-    date: "February 25, 2025",
-    summary:
-      "NNJS volunteer program recognized for outstanding community engagement and service.",
-    link: "#",
-    image: profileImage,
-  },
-   
-];
-
-// Dummy data for press releases
-const PRESS_RELEASES = [
-  {
-    id: 1,
-    title: "NNJS Announces New Partnership with Regional Hospitals",
-    date: "June 1, 2025",
-    pdfLink: "#",
-    year: "2025",
-  },
-  {
-    id: 2,
-    title: "Annual Impact Report Shows 45% Increase in Patients Served",
-    date: "May 5, 2025",
-    pdfLink: "#",
-    year: "2025",
-  },
-  {
-    id: 3,
-    title: "NNJS Expands Services to Three New Communities",
-    date: "April 12, 2025",
-    pdfLink: "#",
-    year: "2025",
-  },
-  {
-    id: 4,
-    title: "End of Year Summary: Looking Back at Our Impact",
-    date: "December 22, 2024",
-    pdfLink: "#",
-    year: "2024",
-  },
-  {
-    id: 5,
-    title: "New Medical Education Program Launches",
-    date: "November 8, 2024",
-    pdfLink: "#",
-    year: "2024",
-  },
-  {
-    id: 6,
-    title: "NNJS Receives Excellence in Healthcare Award",
-    date: "October 15, 2024",
-    pdfLink: "#",
-    year: "2024",
-  },
-   {
-    id: 7,
-    title: "End of Year Summary: Looking Back at Our Impact",
-    date: "December 22, 2024",
-    pdfLink: "#",
-    year: "2025",
-  },
-  {
-    id: 8,
-    title: "End of Year Summary: Looking Back at Our Impact",
-    date: "December 22, 2024",
-    pdfLink: "#",
-    year: "2025",
-  },
-];
-
-// Dummy data for photo gallery
-const GALLERY_ITEMS = [
-  { id: 1, image: profileImage, title: "Community Outreach Event" },
-  { id: 2, image: profileImage, title: "Medical Staff Training" },
-  { id: 3, image: profileImage, title: "New Facility Opening" },
-  { id: 4, image: profileImage, title: "Patient Consultation" },
-  { id: 5, image: profileImage, title: "Mobile Clinic Services" },
-  { id: 6, image: profileImage, title: "Healthcare Workshop" },
-  { id: 7, image: profileImage, title: "Volunteer Recognition" },
-  { id: 8, image: profileImage, title: "Medical Equipment Donation" },
-{ id: 9, image: profileImage, title: "Healthcare Workshop" },
-  { id: 10, image: profileImage, title: "Volunteer Recognition" },
-  { id: 11, image: profileImage, title: "Medical Equipment Donation" },
-
-];
-
-
-
+import Loading from "../components/Loading";
+import axios from "axios";
+import HeroSection from "../components/HeroSection";
+import { format } from "date-fns";
+import GalleryItem from "../components/GalleryItem";
 // Available years for filtering
-const AVAILABLE_YEARS = ["2025", "2024", "2023"];
 
 export default function PressAndMedia() {
   // track viewport width
@@ -163,34 +29,54 @@ export default function PressAndMedia() {
   }, []);
 
   // derive items-per-page dynamically
-  const articlesPerPage =
-    windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 3;
-  const releasesPerPage =
-    windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 4;
+  const articlesPerPage = windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 3;
+  const releasesPerPage = windowWidth < 640 ? 3 : windowWidth < 1024 ? 3 : 4;
   const galleryItemsPerPage =
     windowWidth < 640 ? 4 : windowWidth < 1024 ? 6 : 8;
 
   const [showButton, setShowButton] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [pressArticles, setPressArticles] = useState([]);
+  const [news, setNews] = useState([]);
   const [pressReleases, setPressReleases] = useState([]);
-  const [galleryItems, setGalleryItems] = useState([]);
-  const [mediaContacts, setMediaContacts] = useState([]);
-  
+  const [gallery, setGallery] = useState([]);
+  const [page, setPage] = useState();
+  const [AVAILABLE_YEARS, setYears] = useState(["2025", "2024", "2023"]);
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL;
   useEffect(() => {
-    // Simulate API calls to fetch data
-    const fetchData = async () => {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      setPressArticles(PRESS_ARTICLES);
-      setPressReleases(PRESS_RELEASES);
-      setGalleryItems(GALLERY_ITEMS);
-      setMediaContacts(MEDIA_CONTACTS);
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/press`);
+        const response = await axios.get(`${api}/media`);
+        if (res.status === 200) {
+          let createdArray;
+          setPage(res.data.data);
+          setNews(response.data.news);
+          setPressReleases(response.data.press);
+          createdArray = response.data.press.map((release) => {
+            const date = new Date(release.createdAt);
+            return format(date, "yyyy");
+          });
+          setYears(createdArray);
+          setGallery(response.data.gallery);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
     };
 
-    fetchData();
-
+    fetchPage();
+  }, [api]);
+  const getYouTubeId = (url) => {
+    const match = url.match(/(?:\?v=|\/embed\/|\.be\/)([\w-]{11})/);
+    return match ? match[1] : null;
+  };
+  useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY > 200);
     };
@@ -216,102 +102,109 @@ export default function PressAndMedia() {
     activeFilter === "all"
       ? pressReleases
       : pressReleases.filter((release) => release.year === activeFilter);
-  
+
   const indexOfLastRelease = releaseCurrentPage * releasesPerPage;
   const indexOfFirstRelease = indexOfLastRelease - releasesPerPage;
-  const currentReleases = filteredReleases.slice(indexOfFirstRelease, indexOfLastRelease);
-  const totalReleasePages = Math.ceil(filteredReleases.length / releasesPerPage);
+  const currentReleases = filteredReleases.slice(
+    indexOfFirstRelease,
+    indexOfLastRelease
+  );
+  const totalReleasePages = Math.ceil(
+    filteredReleases.length / releasesPerPage
+  );
 
   // Handle page change for press releases
   const handleReleasePageChange = (pageNumber) => {
     setReleaseCurrentPage(pageNumber);
     // Scroll to the top of the press releases section
-    const releasesSection = document.getElementById('releases-section');
+    const releasesSection = document.getElementById("releases-section");
     if (releasesSection) {
-      releasesSection.scrollIntoView({ behavior: 'smooth' });
+      releasesSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   // Calculate pagination for press articles
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = pressArticles.slice(
-    indexOfFirstArticle,
-    indexOfLastArticle
-  );
-  const totalPages = Math.ceil(pressArticles.length / articlesPerPage);
+  const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
+  const totalPages = Math.ceil(news.length / articlesPerPage);
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     // Scroll to the top of the news section
-    const newsSection = document.getElementById('news-section');
+    const newsSection = document.getElementById("news-section");
     if (newsSection) {
-      newsSection.scrollIntoView({ behavior: 'smooth' });
+      newsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   // Calculate pagination for gallery
   const indexOfLastGalleryItem = galleryCurrentPage * galleryItemsPerPage;
   const indexOfFirstGalleryItem = indexOfLastGalleryItem - galleryItemsPerPage;
-  const currentGalleryItems = galleryItems.slice(indexOfFirstGalleryItem, indexOfLastGalleryItem);
-  const totalGalleryPages = Math.ceil(galleryItems.length / galleryItemsPerPage);
+  const currentGalleryItems = gallery.slice(
+    indexOfFirstGalleryItem,
+    indexOfLastGalleryItem
+  );
+  const totalGalleryPages = Math.ceil(gallery.length / galleryItemsPerPage);
 
   // Handle page change for gallery
   const handleGalleryPageChange = (pageNumber) => {
     setGalleryCurrentPage(pageNumber);
     // Scroll to the top of the gallery section
-    const gallerySection = document.getElementById('gallery-section');
+    const gallerySection = document.getElementById("gallery-section");
     if (gallerySection) {
-      gallerySection.scrollIntoView({ behavior: 'smooth' });
+      gallerySection.scrollIntoView({ behavior: "smooth" });
     }
   };
-
+  const truncateText = (text, maxLength = 100) => {
+    if (!text) return ""; // Handle null or undefined text
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+  if (loading) return <Loading />;
   return (
     <div>
       <Nav />
 
       <main>
-        {/* Hero Section */}
-        <div
-          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-white text-center space-y-4 sm:space-y-6 md:space-y-10 max-w-4xl px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-secondary">
-              Press and Media
-            </h1>
-          </div>
-        </div>
+        {page && (
+          <HeroSection
+            title={page.heroSection.title}
+            body={page.heroSection.body}
+            image={page.heroSection.image}
+          />
+        )}
 
         {/* Latest Press Coverage */}
-        <section id="news-section" className="py-10 sm:py-12 md:py-16 px-4 bg-gray-50">
+        <section
+          id="news-section"
+          className="py-10 sm:py-12 md:py-16 px-4 bg-gray-50"
+        >
           <div className="container mx-auto max-w-6xl">
             <motion.div
               variants={fadeInUp}
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
             >
               {/* make H2 responsive */}
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
                 In the News
               </h2>
-            </motion.div> 
- 
+            </motion.div>
 
-            {pressArticles.length === 0 ? (
+            {news.length === 0 ? (
               <div className="text-center py-12">
                 <div className="animate-pulse w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
                 <p className="text-gray-500">Loading press coverage...</p>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 ">
                   {currentArticles.map((article) => (
                     <motion.div
-                      key={article.id}
+                      key={article._id}
                       variants={fadeInUp}
                       initial="hidden"
                       whileInView="visible"
@@ -319,36 +212,42 @@ export default function PressAndMedia() {
                       className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
                     >
                       <img
-                        src={article.image}
-                        alt={article.headline}
+                        src={`${api}/images/${article.image}`}
+                        alt={article.title}
                         className="w-full h-40 sm:h-48 object-cover"
                       />
                       <div className="p-4 sm:p-6">
                         <h3 className="text-lg sm:text-xl font-bold mb-2 font-secondary">
-                          {article.headline}
+                          {article.title}
                         </h3>
                         <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 font-primary">
-                          {article.source} – {article.date}
+                          {article.createdAt &&
+                            format(
+                              new Date(article.createdAt),
+                              "MMMM dd, yyyy"
+                            )}
                         </p>
-                        <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 font-primary">"{article.summary}</p>
+                        <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 font-primary">
+                          "{truncateText(article.body)}"
+                        </p>
                         <a
                           href={article.link}
-                          className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base font-primary">"
-                        
+                          className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base font-primary"
+                        >
                           Read More <span className="ml-1 font-primary">→</span>
                         </a>
                       </div>
                     </motion.div>
                   ))}
                 </div>
-                
+
                 {/* Add Pagination component */}
-                {pressArticles.length > articlesPerPage && (
+                {news.length > articlesPerPage && (
                   <div className="mt-6 sm:mt-8">
-                    <Pagination 
-                      currentPage={currentPage} 
-                      totalPages={totalPages} 
-                      onPageChange={handlePageChange} 
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
                     />
                   </div>
                 )}
@@ -372,7 +271,13 @@ export default function PressAndMedia() {
             </motion.div>
 
             {/* Filter controls */}
-            <div className="flex justify-center mb-8 overflow-x-auto py-2">
+            <motion.div
+              className="flex justify-center mb-8 overflow-x-auto py-2"
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
               <div className="inline-flex rounded-md shadow-sm">
                 <button
                   onClick={() => {
@@ -406,7 +311,7 @@ export default function PressAndMedia() {
                   </button>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {pressReleases.length === 0 ? (
               <div className="text-center py-12">
@@ -424,7 +329,7 @@ export default function PressAndMedia() {
                 <div className="space-y-4">
                   {currentReleases.map((release) => (
                     <motion.div
-                      key={release.id}
+                      key={release._id}
                       variants={fadeInUp}
                       initial="hidden"
                       whileInView="visible"
@@ -436,28 +341,43 @@ export default function PressAndMedia() {
                           {release.title}
                         </h3>
                         <p className="text-gray-600 mt-1 font-primary">
-                          {release.date}
+                          {release.createdAt &&
+                            format(
+                              new Date(release.createdAt),
+                              "MMMM dd, yyyy"
+                            )}
                         </p>
+                        {release.link && (
+                          <a
+                            href={`${release.link}`}
+                            className="text-primary underline underline-offset-2"
+                          >
+                            {" "}
+                            Link to the article
+                          </a>
+                        )}
                       </div>
-                      <a
-                        href={release.pdfLink}
-                        className="flex items-center text-primary hover:text-accent transition-colors duration-300 mt-2 sm:mt-0 font-secondary"
-                      >
-                        <FaFilePdf className="mr-2" />
-                        <span className="text-sm sm:text-base font-secondary">
-                          Download PDF
-                        </span>
-                      </a>
+                      {release.file && (
+                        <a
+                          href={`${api}/files/${release.file}`}
+                          className="flex items-center text-primary hover:text-accent transition-colors duration-300 mt-2 sm:mt-0 font-secondary"
+                        >
+                          <FaFilePdf className="mr-2" />
+                          <span className="text-sm sm:text-base font-secondary">
+                            Download PDF
+                          </span>
+                        </a>
+                      )}
                     </motion.div>
                   ))}
                 </div>
-                
+
                 {/* Add Pagination for press releases */}
                 {filteredReleases.length > releasesPerPage && (
-                  <Pagination 
-                    currentPage={releaseCurrentPage} 
-                    totalPages={totalReleasePages} 
-                    onPageChange={handleReleasePageChange} 
+                  <Pagination
+                    currentPage={releaseCurrentPage}
+                    totalPages={totalReleasePages}
+                    onPageChange={handleReleasePageChange}
                   />
                 )}
               </>
@@ -479,7 +399,7 @@ export default function PressAndMedia() {
               </h2>
             </motion.div>
 
-            {galleryItems.length === 0 ? (
+            {gallery.length === 0 ? (
               <div className="text-center py-12">
                 <div className="animate-pulse w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
                 <p className="text-gray-500">Loading gallery...</p>
@@ -487,36 +407,42 @@ export default function PressAndMedia() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {currentGalleryItems.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      variants={fadeInUp}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, amount: 0.1 }}
-                      className="rounded-lg overflow-hidden cursor-pointer relative group"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center p-2">
-                        <span className="text-white text-center text-sm sm:text-base opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold font-secondary">
-                          {item.title}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {currentGalleryItems.map((item) =>
+                    item.images.length > 0 ? (
+                      <GalleryItem item={item} images={item.images} />
+                    ) : (
+                      <motion.div
+                        variants={fadeInUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.1 }}
+                        key={item._id}
+                        className="w-full max-w-sm aspect-video rounded-lg overflow-hidden shadow"
+                      >
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={`https://www.youtube.com/embed/${getYouTubeId(
+                            item.video
+                          )}?rel=0`}
+                          title="YouTube video"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        ></iframe>
+                      </motion.div>
+                    )
+                  )}
                 </div>
 
                 {/* Add Pagination for gallery instead of "View All" button */}
-                {galleryItems.length > galleryItemsPerPage && (
+                {gallery.length > galleryItemsPerPage && (
                   <div className="mt-8">
-                    <Pagination 
-                      currentPage={galleryCurrentPage} 
-                      totalPages={totalGalleryPages} 
-                      onPageChange={handleGalleryPageChange} 
+                    <Pagination
+                      currentPage={galleryCurrentPage}
+                      totalPages={totalGalleryPages}
+                      onPageChange={handleGalleryPageChange}
                     />
                   </div>
                 )}
@@ -524,8 +450,6 @@ export default function PressAndMedia() {
             )}
           </div>
         </section>
-
-       
       </main>
       <motion.div
         variants={fadeInUp}
@@ -541,7 +465,8 @@ export default function PressAndMedia() {
           onClick={scrollToTop}
           className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 bg-accent text-white p-2 rounded-full z-50 hover:bg-support transition-colors duration-300 shadow-lg"
           aria-label="Scroll to top"
-        ><FaArrowCircleUp size={24} />
+        >
+          <FaArrowCircleUp size={24} />
         </button>
       )}
     </div>

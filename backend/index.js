@@ -6,7 +6,7 @@ require("dotenv").config();
 
 // Routes
 const bankRouter = require("./modules/bank/bank.routes.js");
-const blogRouter = require("./modules/blogs/blogs.routes.js");
+const mediaRouter = require("./modules/blogs/media.routes.js");
 const branchesRouter = require("./modules/branches/branches.routes.js");
 const commitmentRouter = require("./modules/commitments/commitments.routes.js");
 const contactRouter = require("./modules/contact/contact.routes.js");
@@ -27,7 +27,7 @@ const timestoneRouter = require("./modules/timeStone/timeStone.routes.js");
 const valueRouter = require("./modules/value/values.routes.js");
 // Models
 require("./models/bankModel");
-require("./models/blogsModel");
+require("./models/mediaModel.js");
 require("./models/branchesModel");
 require("./models/commitmentModel");
 require("./models/contactModel");
@@ -62,7 +62,7 @@ mongoose
 
 // Routes
 app.use("/bank", bankRouter);
-app.use("/blogs", blogRouter);
+app.use("/media", mediaRouter);
 app.use("/branches", branchesRouter);
 app.use("/commitments", commitmentRouter);
 app.use("/contact", contactRouter);

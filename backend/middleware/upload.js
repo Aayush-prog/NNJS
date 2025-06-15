@@ -4,8 +4,7 @@ const path = require("path");
 // Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const folder =
-      file.fieldname === "image" ? "public/images" : "public/files";
+    const folder = file.fieldname === "file" ? "public/files" : "public/images";
     cb(null, folder); // Ensure these directories exist
   },
   filename: function (req, file, cb) {
@@ -20,6 +19,7 @@ const uploadMiddleware = (req, res, next) => {
   const uploadFields = upload.fields([
     { name: "image", maxCount: 1 },
     { name: "file" },
+    { name: "images" },
   ]);
 
   uploadFields(req, res, function (err) {

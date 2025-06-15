@@ -1,0 +1,15 @@
+const express = require("express");
+const auth = require("../../middleware/auth");
+const createMedia = require("./controllers/createMedia");
+const getMedia = require("./controllers/getMedia");
+const getMediaById = require("./controllers/getMediaById");
+const delMedia = require("./controllers/delMedia");
+const editMedia = require("./controllers/editMedia");
+const upload = require("../../middleware/upload");
+const mediaRouter = express.Router();
+mediaRouter.get("/", getMedia);
+mediaRouter.get("/:mediaId", getMediaById);
+mediaRouter.post("/create", upload, createMedia);
+mediaRouter.delete("/del/:mediaId", delMedia);
+mediaRouter.patch("/edit/:mediaId", upload, editMedia);
+module.exports = mediaRouter;

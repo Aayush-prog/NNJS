@@ -11,11 +11,44 @@ import AllBranches from "../components/AllBranches.jsx";
 import HospitalDetail from "../components/HospitalDetail";
 import CenterDetail from "../components/CenterDetail";
 import BranchDetail from "../components/BranchDetail";
-
+import axios from "axios";
+import HeroSection from "../components/HeroSection.jsx";
+import SubSection from "../components/SubSection.jsx";
 export default function WhatWeDo() {
   const [selectedLists, setSelectedLists] = useState(["hospital"]);
   const [showButton, setShowButton] = useState(false);
+  const [ecc, setEcc] = useState();
+  const [branches, setBranches] = useState();
+  const [hospitals, setHospitals] = useState();
+  const [whatWeDo, setWhatWeDo] = useState();
+  const api = import.meta.env.VITE_URL;
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/whatWeDo`);
+        const res1 = await axios.get(`${api}/branches/`);
+        const res2 = await axios.get(`${api}/eyeCareCenters/`);
+        const res3 = await axios.get(`${api}/eyeHospitals/`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setWhatWeDo(res.data.data);
+          setEcc(res2.data.data);
+          setBranches(res1.data.data);
+          setHospitals(res3.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
+    fetchPage();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -75,29 +108,31 @@ export default function WhatWeDo() {
 
       {/* Keep rendering the rest of the page */}
       <div className="fixed top-1/2 right-0 transform -translate-y-1/2 z-50"></div>
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ backgroundImage: `url(${for_location_page})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-white text-center px-4 space-y-5 sm:space-y-10">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold font-secondary">
-            Hospitals and Eye Care Centers
-          </h1>
-        </div>
-      </motion.div>
-      <div className="max-w-7xl mx-auto px-4 mt-14">
-        <img src={eye_hospital} alt="Eye Hospital" className="w-full h-auto" />
-      </div>
+      {whatWeDo && (
+        <HeroSection
+          title={whatWeDo.heroSection.title}
+          image={whatWeDo.heroSection.image}
+          body={whatWeDo.heroSection.body}
+        />
+      )}
 
-      
-      <div className="px-4 sm:px-6 md:px-8">
-        <AllBranches />
-      </div>
+      {whatWeDo && (
+        <SubSection
+          title={whatWeDo.subSection1.title}
+          image={whatWeDo.subSection1.image}
+          body={whatWeDo.subSection1.body}
+        />
+      )}
+
+      {hospitals && ecc && branches && (
+        <div className="px-4 sm:px-6 md:px-8">
+          <AllBranches
+            hospitals={hospitals}
+            centers={ecc}
+            presidents={branches}
+          />
+        </div>
+      )}
 
       <Footer />
 

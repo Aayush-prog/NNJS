@@ -4,7 +4,9 @@ const getWhatWeDo = async (req, res) => {
   try {
     const whatWeDoPage = await PageModel.findOne({
       type: "What We Do",
-    }).populate();
+    })
+      .populate("heroSection")
+      .populate("subSection1");
     res.status(200).json({ status: "success", data: whatWeDoPage });
   } catch (e) {
     res.status(400).json({ msg: e.msg || "error" });
