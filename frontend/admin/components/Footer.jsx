@@ -1,6 +1,6 @@
 import React from "react";
 import DonateButton from "./DonateButton";
-import Logo from "../assets/LOGO.png";
+import Logo from "../../src/assets/LOGO.png";
 import { FaFacebook, FaYoutube, FaGoogle, FaMap } from "react-icons/fa";
 
 export default function Footer() {

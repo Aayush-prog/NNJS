@@ -4,7 +4,7 @@ const getContactPage = async (req, res) => {
   try {
     const contactPage = await PageModel.findOne({
       type: "ContactUs",
-    }).populate();
+    }).populate("heroSection");
     res.status(200).json({ status: "success", data: contactPage });
   } catch (e) {
     res.status(400).json({ msg: e.msg || "error" });

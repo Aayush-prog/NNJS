@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaPen, FaSave } from "react-icons/fa";
 import axios from "axios";
 
-export default function SubSection({ title, body, image }) {
+export default function SubSection({ title, body, image, id }) {
   const api = import.meta.env.VITE_URL;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -35,9 +35,13 @@ export default function SubSection({ title, body, image }) {
         formData.append("image", editedImage);
       }
 
-      const response = await axios.post(`${api}/subSection/edit`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.patch(
+        `${api}/subSection/edit/${id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       console.log("Saved successfully:", response.data);
       setIsEditing(false); // Exit edit mode on success
