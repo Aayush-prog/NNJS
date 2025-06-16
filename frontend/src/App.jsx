@@ -18,6 +18,7 @@ import PressAndMedia from "./pages/PressAndMedia";
 import HospitalDetail from "./components/HospitalDetail";
 import CenterDetail from "./components/CenterDetail";
 import BranchDetail from "./components/BranchDetail";
+import Login from "./pages/Login";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -39,6 +40,7 @@ function App() {
         <Route path="/ethical" element={<EthicalReview />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/press" element={<PressAndMedia />} />
+        <Route path="/login" element={<Login />} />
 
         {/* <Route path="/admin" element={<AdminLandingPage />}>
           <Route index element={<AdminDashboard />} /> 

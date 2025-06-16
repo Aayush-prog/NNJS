@@ -107,7 +107,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="/register-online" aria-label="Register Online">
+                  <a href="/login" aria-label="Register Online">
                     Register Online
                   </a>
                 </li>
