@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import Logo from "../assets/LOGO.png";
+import Logo from "../../src/assets/LOGO.png";
 import DonateButton from "./DonateButton";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";

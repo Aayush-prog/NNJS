@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
-import coveringEyes from "../assets/covering eyes.png";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { FaFacebook, FaMap, FaYoutube } from "react-icons/fa";
 import { FaArrowCircleUp } from "react-icons/fa";
 import Loading from "../components/Loading";
 import axios from "axios";
+import HeroSection from "../components/HeroSection";
 
 export default function Contact() {
   const [showButton, setShowButton] = useState(false);
   const [contact, setContact] = useState(null);
+  const [page, setPage] = useState();
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
 
@@ -18,9 +19,11 @@ export default function Contact() {
     const fetchValue = async () => {
       try {
         setLoading(true);
+        const response = await axios.get(`${api}/pages/contact`);
         const res = await axios.get(`${api}/contact/`);
         if (res.status === 200) {
           console.log(res.data.data);
+          setPage(response.data.data);
           setContact(res.data.data);
           setLoading(false);
         } else {
@@ -72,22 +75,13 @@ export default function Contact() {
     <div>
       <Nav />
       {/* Hero Section */}
-      <motion.div
-        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ backgroundImage: `url(${coveringEyes})` }}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeInUp}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-white text-center space-y-6 md:space-y-10 px-4">
-          <h1 className="text-4xl md:text-6xl font-bold font-secondary">
-            Contact
-          </h1>
-        </div>
-      </motion.div>
-
+      {page && (
+        <HeroSection
+          title={page.heroSection.title}
+          image={page.heroSection.image}
+          body={page.heroSection.body}
+        />
+      )}
       {/* Main content wrapper - apply animation once here */}
       <motion.div
         variants={fadeInUp}

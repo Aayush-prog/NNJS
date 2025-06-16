@@ -19,7 +19,7 @@ const editSubSection = async (req, res) => {
       subSectionId,
       { title, image, body }
     );
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "SubSection updated successfully",
     });

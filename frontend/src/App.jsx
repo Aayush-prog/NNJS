@@ -19,6 +19,7 @@ import HospitalDetail from "./components/HospitalDetail";
 import CenterDetail from "./components/CenterDetail";
 import BranchDetail from "./components/BranchDetail";
 import Login from "./pages/Login";
+import AdminLanding from "../admin/pages/LandingPage";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -42,12 +43,9 @@ function App() {
         <Route path="/press" element={<PressAndMedia />} />
         <Route path="/login" element={<Login />} />
 
-        {/* <Route path="/admin" element={<AdminLandingPage />}>
-          <Route index element={<AdminDashboard />} /> 
-           <Route path="users" element={<AdminUsers />} />
-          <Route path="content" element={<AdminContent />} />
-          <Route path="settings" element={<AdminSettings />} /> 
-        </Route> */}
+        <Route path="/admin">
+          <Route index element={<AdminLanding />} />
+        </Route>
       </Route>
     )
   );

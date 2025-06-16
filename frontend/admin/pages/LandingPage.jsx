@@ -64,6 +64,7 @@ export default function LandingPage() {
               image={landing.heroSection.image}
               title={landing.heroSection.title}
               body={landing.heroSection.body}
+              id={landing.heroSection._id}
             />
           )}
           {landing.subSection1 && (
@@ -71,6 +72,7 @@ export default function LandingPage() {
               title={landing.subSection1.title}
               image={landing.subSection1.image}
               body={landing.subSection1.body}
+              id={landing.subSection1._id}
             />
           )}
           <CoreValues />
@@ -79,6 +81,7 @@ export default function LandingPage() {
               title={landing.subSection2.title}
               image={landing.subSection2.image}
               body={landing.subSection2.body}
+              id={landing.subSection2._id}
             />
           )}
           <Impacts />
