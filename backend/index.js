@@ -25,6 +25,7 @@ const strategicObjectivesRouter = require("./modules/strategicObjectives/strateg
 const subSectionRouter = require("./modules/subSection/subSection.routes.js");
 const timestoneRouter = require("./modules/timeStone/timeStone.routes.js");
 const valueRouter = require("./modules/value/values.routes.js");
+const ircObjectiveRouter = require("./modules/ircObjectives/ircObjectives.routes.js");
 // Models
 require("./models/bankModel");
 require("./models/mediaModel.js");
@@ -46,6 +47,7 @@ require("./models/strategicObjectivesModel");
 require("./models/subSection");
 require("./models/timestoneModel");
 require("./models/valueModel");
+require("./models/ircObjectivesModel");
 // Initialize Express
 const app = express();
 
@@ -81,6 +83,7 @@ app.use("/strategicObjectives", strategicObjectivesRouter);
 app.use("/subSection", subSectionRouter);
 app.use("/timeStone", timestoneRouter);
 app.use("/values", valueRouter);
+app.use("/ircObjectives", ircObjectiveRouter);
 // Start the server
 app.listen(8000, () => {
   console.log("Server started on port 8000");
