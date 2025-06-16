@@ -26,6 +26,8 @@ const subSectionRouter = require("./modules/subSection/subSection.routes.js");
 const timestoneRouter = require("./modules/timeStone/timeStone.routes.js");
 const valueRouter = require("./modules/value/values.routes.js");
 const ircObjectiveRouter = require("./modules/ircObjectives/ircObjectives.routes.js");
+const login = require("./handlers/login.js");
+const { forgotPassword, resetPassword } = require("./handlers/forgotPass.js");
 // Models
 require("./models/bankModel");
 require("./models/mediaModel.js");
@@ -47,6 +49,7 @@ require("./models/strategicObjectivesModel");
 require("./models/subSection");
 require("./models/timestoneModel");
 require("./models/valueModel");
+require("./models/userModel.js");
 require("./models/ircObjectivesModel");
 // Initialize Express
 const app = express();
@@ -63,6 +66,9 @@ mongoose
   .catch((e) => console.log(e));
 
 // Routes
+app.post("/login", login);
+app.post("/forgotPass", forgotPassword);
+app.post("/resetPass/:token", resetPassword);
 app.use("/bank", bankRouter);
 app.use("/media", mediaRouter);
 app.use("/branches", branchesRouter);
