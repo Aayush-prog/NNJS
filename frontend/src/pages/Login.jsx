@@ -82,12 +82,12 @@ function Login() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-600 focus:outline-none"
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-primary focus:outline-none"
                   >
                     {showPassword ? (
                       <FaEye size={18} />
                     ) : (
-                      <FaEyeSlash size={24} />
+                      <FaEyeSlash size={20} />
                     )}
                   </button>
                 </div>
