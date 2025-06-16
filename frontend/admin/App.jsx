@@ -18,6 +18,7 @@ import PressAndMedia from "./pages/PressAndMedia";
 import HospitalDetail from "./components/HospitalDetail";
 import CenterDetail from "./components/CenterDetail";
 import BranchDetail from "./components/BranchDetail";
+import Login from "./pages/Login";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
