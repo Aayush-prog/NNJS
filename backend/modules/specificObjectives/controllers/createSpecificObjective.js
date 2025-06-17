@@ -10,6 +10,7 @@ const createSpecificObjective = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "SpecificObjectives created successfully",
+      data: newSpecificObjective,
     });
   } catch (error) {
     res.status(400).json({
