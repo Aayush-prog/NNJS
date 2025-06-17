@@ -6,7 +6,7 @@ const getMission = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Mission found successfully",
-      data: mission[0],
+      data: mission,
     });
   } catch (error) {
     res.status(400).json({

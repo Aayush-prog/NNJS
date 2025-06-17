@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Loading from "./Loading";
+import * as FaIcons from "react-icons/fa";
 
 export default function MissionSection() {
   const [loading, setLoading] = useState(false);
-  const [mission, setMission] = useState(null);
+  const [missions, setMissions] = useState([]);
   const api = import.meta.env.VITE_URL;
 
   const fadeInUp = {
@@ -23,9 +24,10 @@ export default function MissionSection() {
         setLoading(true);
         const res = await axios.get(`${api}/mission/`);
         if (res.status === 200) {
-          setMission(res.data.data);
-        } else {
-          console.error("Error fetching mission: Status code", res.status);
+          const data = Array.isArray(res.data.data)
+            ? res.data.data
+            : [res.data.data];
+          setMissions(data);
         }
       } catch (error) {
         console.error("Error fetching mission:", error);
@@ -37,14 +39,8 @@ export default function MissionSection() {
     fetchMission();
   }, [api]);
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!mission) {
-    // Optionally render null or a placeholder if mission is not loaded and not loading
-    return null;
-  }
+  if (loading) return <Loading />;
+  if (!missions || missions.length === 0) return null;
 
   return (
     <motion.div
@@ -52,37 +48,40 @@ export default function MissionSection() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="bg-primary py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 font-secondary"
+      className="bg-blue-100 py-12 px-4 sm:px-6 md:px-10 font-secondary"
     >
-      <div className="max-w-7xl mx-auto">
-        <motion.h2
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
-          className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 sm:mb-8 md:mb-10"
-        >
+      <div className="max-w-7xl mx-auto text-center mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
           Our Mission
-        </motion.h2>
+        </h2>
+      </div>
 
-        <motion.div
-          variants={fadeInUp}
-          viewport={{ once: true, amount: 0.2 }}
-          className="bg-white rounded-lg sm:rounded-xl md:rounded-[20px] overflow-hidden max-w-7xl mx-auto flex flex-col lg:flex-row shadow-md sm:shadow-lg md:shadow-xl mb-8 sm:mb-12 md:mb-16"
-        >
-          <div className="lg:w-1/2 w-full flex-shrink-0 h-[200px] sm:h-[250px] md:h-[300px] lg:h-auto">
-            <img
-              src={`${api}/images/${mission.image}`}
-              alt="Team working together"
-              loading="lazy"
-              className="w-full h-full object-cover lg:rounded-l-[20px]"
-            />
-          </div>
-
-          <div className="lg:w-1/2 w-full p-4 sm:p-6 md:p-8 lg:p-10 flex items-center">
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-primary">
-              {mission.body}
-            </p>
-          </div>
-        </motion.div>
+      <div className="grid grid-cols-1  lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
+        {missions.map((item, index) => {
+          const IconComponent = FaIcons[item.icon];
+          return (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              className="bg-white p-6 sm:p-7 md:p-8 rounded-xl shadow-md flex flex-col items-center text-center lg:mb-10"
+            >
+              <div className="bg-primary text-white p-4 rounded-full mb-5 shadow-sm mt-4">
+                {IconComponent && (
+                  <IconComponent className="text-3xl sm:text-4xl" />
+                )}
+              </div>
+              <h3 className="text-primary text-lg sm:text-xl font-semibold mb-3">
+                {item.title}
+              </h3>
+              <p className="text-black text-sm sm:text-base leading-relaxed mb-4">
+                {item.body}
+              </p>
+            </motion.div>
+          );
+        })}
       </div>
     </motion.div>
   );

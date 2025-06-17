@@ -2,10 +2,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const editMission = async (req, res) => {
   const MissionModel = mongoose.model("Mission");
-  const { body } = req.body;
-  const image = req.files?.image?.[0]
-    ? path.basename(req.files.image[0].path)
-    : null;
+  const { icon, title, body } = req.body;
+  
   const { missionId } = req.params;
   try {
     const mission = await MissionModel.findById(missionId);
@@ -16,7 +14,8 @@ const editMission = async (req, res) => {
       });
     }
     const updatedMission = await MissionModel.findByIdAndUpdate(missionId, {
-      image,
+      icon, 
+      title,
       body,
     });
     res.satus(201).json({

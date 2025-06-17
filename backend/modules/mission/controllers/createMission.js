@@ -2,12 +2,9 @@ const mongoose = require("mongoose");
 const path = require("path");
 const createMission = async (req, res) => {
   const MissionModel = mongoose.model("Mission");
-  const { body } = req.body;
-  const image = req.files?.image?.[0]
-    ? path.basename(req.files.image[0].path)
-    : null;
+  const { icon, title, body } = req.body;
   try {
-    const newMission = await MissionModel.create({ image, body });
+    const newMission = await MissionModel.create({ icon, title, body });
     res.status(201).json({
       status: "success",
       message: "Mission created successfully",
