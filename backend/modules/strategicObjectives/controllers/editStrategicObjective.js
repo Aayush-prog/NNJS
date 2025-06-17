@@ -26,7 +26,7 @@ const editStrategicObjective = async (req, res) => {
         color,
         bg,
       });
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "StrategicObjectives updated successfully",
     });
