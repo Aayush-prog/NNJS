@@ -21,7 +21,7 @@ const editImpacts = async (req, res) => {
       image,
       icon,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Impacts updated successfully",
     });

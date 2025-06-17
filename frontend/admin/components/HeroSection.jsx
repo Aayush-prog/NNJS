@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { FaPen, FaSave } from "react-icons/fa";
+import { FaPen, FaSave, FaArrowLeft } from "react-icons/fa";
 
 const HeroSection = ({ id, image, title, body }) => {
   const api = import.meta.env.VITE_URL;
@@ -34,13 +34,9 @@ const HeroSection = ({ id, image, title, body }) => {
         formData.append("image", editedImage);
       }
 
-      const response = await axios.patch(
-        `${api}/heroSection/edit/${id}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.patch(`${api}/hero/edit/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       console.log("Hero section updated:", response.data);
       setIsEditing(false);
@@ -59,7 +55,16 @@ const HeroSection = ({ id, image, title, body }) => {
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
-
+      {/* Back Button */}
+      {isEditing && (
+        <button
+          onClick={toggleEdit}
+          className="absolute top-4 left-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+          aria-label="Back"
+        >
+          <FaArrowLeft size={18} />
+        </button>
+      )}
       {/* Edit / Save Button */}
       <button
         onClick={isEditing ? handleSave : toggleEdit}

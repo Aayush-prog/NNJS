@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delStrategicObjective = async (req, res) => {
   const StrategicObjectiveModel = mongoose.model("StrategicObjectives");
-  const {} = req.body;
   const { strategicObjectiveId } = req.params;
   try {
     const strategicObjective = await StrategicObjectiveModel.findById(

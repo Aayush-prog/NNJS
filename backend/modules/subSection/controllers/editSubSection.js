@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editSubSection = async (req, res) => {
   const SubSectionModel = mongoose.model("SubSection");
-  const { title, body } = req.body;
+  const { title, body, imageDeleted } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -15,9 +16,19 @@ const editSubSection = async (req, res) => {
         message: "SubSection not found",
       });
     }
+    if (imageDeleted == "true") {
+      deleteImage(subSection.image);
+    }
+    if (image) {
+      deleteImage(subSection.image);
+      const updatedSubSection = await SubSectionModel.findByIdAndUpdate(
+        subSectionId,
+        { title, image, body }
+      );
+    }
     const updatedSubSection = await SubSectionModel.findByIdAndUpdate(
       subSectionId,
-      { title, image, body }
+      { title, body }
     );
     res.status(200).json({
       status: "success",

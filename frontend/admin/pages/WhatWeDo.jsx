@@ -2,8 +2,6 @@ import { React, useState, useEffect } from "react";
 import { Outlet, useMatch } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav.jsx";
-import for_location_page from "../assets/Locations.png";
-import eye_hospital from "../assets/eye_hospital.png";
 import { motion } from "motion/react";
 import Footer from "../components/Footer.jsx";
 import { FaArrowCircleUp } from "react-icons/fa";

@@ -4,12 +4,6 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import sailesh from "../assets/sailesh.jpg";
-import sabita from "../assets/sabita.jpg";
-import sailendra from "../assets/sailendra.jpg";
-import ranjan from "../assets/ranjan.jpg";
-import manish from "../assets/manish.jpg";
-import man from "../assets/man.jpeg";
 
 export default function StaffSection(props) {
   const [slidesPerView, setSlidesPerView] = useState(1);

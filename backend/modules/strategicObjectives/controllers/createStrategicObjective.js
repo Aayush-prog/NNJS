@@ -18,6 +18,7 @@ const createStrategicObjectives = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "StrategicObjectives created successfully",
+      data: newStrategicObjective,
     });
   } catch (error) {
     res.status(400).json({

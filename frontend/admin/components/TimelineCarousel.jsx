@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import timelineImage from "../assets/history-pic.webp";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Mousewheel, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -148,7 +147,7 @@ const TimelineCarousel = () => {
                 {/* Card */}
                 <div className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 w-full max-w-sm mx-auto h-90">
                   <img
-                    src={timelineImage}
+                    src={`${api}/images/${item.image}`}
                     loading="lazy"
                     alt={item.title}
                     className="w-full h-48 object-cover"
