@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FaPen, FaSave } from "react-icons/fa";
+import { FaPen, FaSave, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 
 export default function SubSection({ title, body, image, id }) {
@@ -8,6 +7,7 @@ export default function SubSection({ title, body, image, id }) {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title || "");
+  const [imageDeleted, setImageDeleted] = useState(false);
   const [editedBody, setEditedBody] = useState(body || "");
   const [editedImage, setEditedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(
@@ -31,6 +31,7 @@ export default function SubSection({ title, body, image, id }) {
       const formData = new FormData();
       formData.append("title", editedTitle);
       formData.append("body", editedBody);
+      formData.append("imageDeleted", imageDeleted);
       if (editedImage) {
         formData.append("image", editedImage);
       }
@@ -44,44 +45,31 @@ export default function SubSection({ title, body, image, id }) {
       );
 
       console.log("Saved successfully:", response.data);
-      setIsEditing(false); // Exit edit mode on success
+
+      if (response.data.image) {
+        setPreviewImage(`${api}/images/${response.data.image}`);
+      }
+
+      setIsEditing(false);
     } catch (error) {
       console.error("Error saving subsection:", error);
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        when: "beforeChildren",
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const childVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4 },
-    },
-  };
-
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      className="relative flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[40vh] md:min-h-[50vh] py-8 sm:py-12 md:py-16 text-center px-4 space-y-3 sm:space-y-4 md:space-y-5"
-    >
-      {/* Edit / Save Buttons */}
+    <div className="relative flex flex-col items-center justify-center min-h-[30vh] sm:min-h-[40vh] md:min-h-[50vh] py-8 sm:py-12 md:py-16 text-center px-4 space-y-3 sm:space-y-4 md:space-y-5">
+      {/* Back Button */}
+      {isEditing && (
+        <button
+          onClick={toggleEdit}
+          className="absolute top-4 left-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+          aria-label="Back"
+        >
+          <FaArrowLeft size={18} />
+        </button>
+      )}
+
+      {/* Edit / Save Button */}
       <button
         onClick={isEditing ? handleSave : toggleEdit}
         className="absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
@@ -100,12 +88,9 @@ export default function SubSection({ title, body, image, id }) {
         />
       ) : (
         editedTitle && (
-          <motion.h2
-            variants={childVariants}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary"
-          >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary">
             {editedTitle}
-          </motion.h2>
+          </h2>
         )
       )}
 
@@ -119,12 +104,9 @@ export default function SubSection({ title, body, image, id }) {
         />
       ) : (
         editedBody && (
-          <motion.p
-            variants={childVariants}
-            className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]"
-          >
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]">
             {editedBody}
-          </motion.p>
+          </p>
         )
       )}
 
@@ -132,30 +114,44 @@ export default function SubSection({ title, body, image, id }) {
       {isEditing ? (
         <>
           {previewImage && (
-            <motion.img
-              variants={childVariants}
-              src={previewImage}
-              alt="Preview"
-              className="w-full sm:w-[110vw] md:w-[100vw] lg:w-[60vw] rounded"
-            />
+            <>
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="w-full sm:w-[90vw] md:w-[80vw] lg:w-[60vw] rounded"
+              />
+            </>
           )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mt-4"
-          />
+          <div className="flex items-center gap-5">
+            {previewImage && (
+              <button
+                onClick={() => {
+                  setImageDeleted(true);
+                  setPreviewImage(null);
+                }}
+                className="p-3 bg-accent rounded-2xl text-white"
+              >
+                Delete the image
+              </button>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-4 border-2"
+            />
+          </div>
         </>
       ) : (
         previewImage && (
-          <motion.img
-            variants={childVariants}
+          <img
             src={previewImage}
-            alt="Uploaded"
-            className="w-full sm:w-[110vw] md:w-[100vw] lg:w-[60vw]"
+            alt="Current"
+            className="w-full sm:w-[90vw] md:w-[80vw] lg:w-[60vw] rounded"
           />
         )
       )}
-    </motion.div>
+    </div>
   );
 }

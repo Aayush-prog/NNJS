@@ -6,7 +6,6 @@ const getLanding = async (req, res) => {
       .populate("heroSection")
       .populate("subSection1")
       .populate("subSection2");
-    console.log(page);
     res.status(200).send({ status: "success", data: page });
   } catch (e) {
     console.log(e);
