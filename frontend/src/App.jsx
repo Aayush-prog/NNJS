@@ -20,6 +20,19 @@ import CenterDetail from "./components/CenterDetail";
 import BranchDetail from "./components/BranchDetail";
 import Login from "./pages/Login";
 import AdminLanding from "../admin/pages/LandingPage";
+import AdminMission from "../admin/pages/Mission";
+import AdminContact from "../admin/pages/Contact";
+import AdminPartners from "../admin/pages/Partners";
+import AdminHistory from "../admin/pages/History";
+import AdminTeam from "../admin/pages/Team";
+import AdminLocations from "../admin/pages/WhatWeDo";
+import AdminEthicalReview from "../admin/pages/EthicalReview";
+import AdminResources from "../admin/pages/Resources";
+import AdminPressAndMedia from "../admin/pages/PressAndMedia";
+import AdminHospitalDetail from "../admin/components/HospitalDetail";
+import AdminCenterDetail from "../admin/components/CenterDetail";
+import AdminBranchDetail from "../admin/components/BranchDetail";
+import AdminDonate from "../admin/pages/Donate";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -45,6 +58,22 @@ function App() {
 
         <Route path="/admin">
           <Route index element={<AdminLanding />} />
+          <Route path="/admin/mission" element={<AdminMission />} />
+          <Route path="/admin/donate" element={<AdminDonate />} />
+          <Route path="/admin/contact" element={<AdminContact />} />
+          <Route path="/admin/mission" element={<AdminMission />} />
+          <Route path="/admin/partners" element={<AdminPartners />} />
+          <Route path="/admin/history" element={<AdminHistory />} />
+          <Route path="/admin/team" element={<AdminTeam />} />
+          <Route path="/admin/what_we_do" element={<AdminLocations />}>
+            <Route path="hospital/:id" element={<AdminHospitalDetail />} />
+            <Route path="care/:id" element={<AdminCenterDetail />} />
+            <Route path="branch/:id" element={<AdminBranchDetail />} />
+          </Route>
+
+          <Route path="/admin/ethical" element={<AdminEthicalReview />} />
+          <Route path="/admin/resources" element={<AdminResources />} />
+          <Route path="/admin/press" element={<AdminPressAndMedia />} />
         </Route>
       </Route>
     )

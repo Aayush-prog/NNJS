@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
-import donate from "../assets/donate.png";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaHeart, FaUniversity } from "react-icons/fa";

@@ -1,13 +1,4 @@
 import { useState } from "react";
-import rabi from "../assets/rabi.png";
-import pokhrel from "../assets/R.P.png";
-import Mani from "../assets/mani.png";
-import badri from "../assets/badri.png";
-import anang from "../assets/anang.png";
-import banwari from "../assets/banwari.png";
-import tola from "../assets/tola.png";
-import raj from "../assets/raj.png";
-import kamal from "../assets/kamal.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function FoundersCarousel(props) {

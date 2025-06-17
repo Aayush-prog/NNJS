@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import history from "../assets/history-pic.webp";
 import { motion } from "motion/react";
 import TimelineCarousel from "../components/TimelineCarousel";
 import { FaArrowCircleUp } from "react-icons/fa";

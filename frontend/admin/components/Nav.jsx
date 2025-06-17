@@ -120,7 +120,7 @@ export default function Nav() {
                 exit="exit"
               >
                 <NavLink
-                  to="/mission"
+                  to="/admin/mission"
                   className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
@@ -128,7 +128,7 @@ export default function Nav() {
                   Our Mission
                 </NavLink>
                 <NavLink
-                  to="/history"
+                  to="/admin/history"
                   className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
@@ -136,7 +136,7 @@ export default function Nav() {
                   History & Timeline
                 </NavLink>
                 <NavLink
-                  to="/team"
+                  to="/admin/team"
                   className="block px-4 py-2 hover:bg-gray-100 font-bold"
                   onClick={() => setShowDropdown(false)}
                   role="menuitem"
@@ -147,22 +147,22 @@ export default function Nav() {
             )}
           </AnimatePresence>
         </div>
-        <NavLink to="/what_we_do" className="font-bold hover:text-accent">
+        <NavLink to="/admin/what_we_do" className="font-bold hover:text-accent">
           What We Do
         </NavLink>
-        <NavLink to="/partners" className="font-bold hover:text-accent">
+        <NavLink to="/admin/partners" className="font-bold hover:text-accent">
           Partners
         </NavLink>
-        <NavLink to="/resources" className="font-bold hover:text-accent">
+        <NavLink to="/admin/resources" className="font-bold hover:text-accent">
           Resources
         </NavLink>
-        <NavLink to="/press" className="font-bold hover:text-accent">
+        <NavLink to="/admin/press" className="font-bold hover:text-accent">
           Press/Media
         </NavLink>
-        <NavLink to="/ethical" className="font-bold hover:text-accent">
+        <NavLink to="/admin/ethical" className="font-bold hover:text-accent">
           Ethical Review
         </NavLink>
-        <NavLink to="/contact" className="font-bold hover:text-accent">
+        <NavLink to="/admin/contact" className="font-bold hover:text-accent">
           Contact Us
         </NavLink>
       </div>
@@ -184,21 +184,21 @@ export default function Nav() {
                 </summary>
                 <div className="pl-4 mt-2 space-y-2">
                   <NavLink
-                    to="/mission"
+                    to="/admin/mission"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block"
                   >
                     Our Mission
                   </NavLink>
                   <NavLink
-                    to="/history"
+                    to="/admin/history"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block"
                   >
                     History & Timeline
                   </NavLink>
                   <NavLink
-                    to="/team"
+                    to="/admin/team"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block"
                   >
@@ -207,42 +207,42 @@ export default function Nav() {
                 </div>
               </details>
               <NavLink
-                to="/what_we_do"
+                to="/admin/what_we_do"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >
                 What We Do
               </NavLink>
               <NavLink
-                to="/partners"
+                to="/admin/partners"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >
                 Partners
               </NavLink>
               <NavLink
-                to="/resources"
+                to="/admin/resources"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >
                 Resources
               </NavLink>
               <NavLink
-                to="/press"
+                to="/admin/press"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >
                 Press/Media
               </NavLink>
               <NavLink
-                to="/ethical"
+                to="/admin/ethical"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >
                 Ethical Review
               </NavLink>
               <NavLink
-                to="/contact"
+                to="/admin/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block"
               >

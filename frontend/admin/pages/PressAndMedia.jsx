@@ -4,7 +4,6 @@ import Footer from "../components/Footer";
 import Pagination from "../components/Pagination"; // Import Pagination component
 import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaFilePdf } from "react-icons/fa";
-import heroImage from "../assets/Landing frame.png";
 import Loading from "../components/Loading";
 import axios from "axios";
 import HeroSection from "../components/HeroSection";

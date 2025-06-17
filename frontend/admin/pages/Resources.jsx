@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import resources from "../assets/resources.jpeg";
 import { motion } from "motion/react";
 import { FaArrowCircleUp } from "react-icons/fa";
 import ResourcesSection from "../components/ResourceSection";
