@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delImpacts = async (req, res) => {
   const ImpactModel = mongoose.model("Impacts");
-  const {} = req.body;
   const { impactId } = req.params;
   try {
     const impact = await ImpactModel.findById(impactId);
@@ -12,7 +11,7 @@ const delImpacts = async (req, res) => {
       });
     }
     const deletedImpact = await ImpactModel.findByIdAndDelete(impactId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Impacts deleted successfully",
     });

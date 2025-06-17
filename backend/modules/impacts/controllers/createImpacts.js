@@ -11,6 +11,7 @@ const createImpacts = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Impacts created successfully",
+      data: newImpact,
     });
   } catch (error) {
     res.status(400).json({
