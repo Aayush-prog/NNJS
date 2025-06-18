@@ -80,7 +80,7 @@ export default function SpecificObjectives() {
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-lg md:text-xl max-w-3xl mx-auto font-secondary"
+            className="text-lg max-w-3xl mx-auto font-secondary"
           >
             Our roadmap for eliminating preventable blindness and improving eye
             care services
