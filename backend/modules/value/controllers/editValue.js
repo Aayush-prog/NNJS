@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editValue = async (req, res) => {
   const ValueModel = mongoose.model("Values");
   const { title, body } = req.body;
@@ -15,12 +16,20 @@ const editValue = async (req, res) => {
         message: "Values not found",
       });
     }
-    const updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
-      title,
-      body,
-      image,
-    });
-    res.satus(200).json({
+    if (image) {
+      deleteImage(value.image);
+      const updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
+        title,
+        body,
+        image,
+      });
+    } else {
+      const updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
+        title,
+        body,
+      });
+    }
+    res.status(200).json({
       status: "success",
       message: "Values updated successfully",
     });

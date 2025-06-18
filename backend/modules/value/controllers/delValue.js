@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delValue = async (req, res) => {
   const ValueModel = mongoose.model("Values");
-  const {} = req.body;
   const { valueId } = req.params;
   try {
     const value = await ValueModel.findById(valueId);

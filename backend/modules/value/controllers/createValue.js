@@ -11,6 +11,7 @@ const createValue = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Values created successfully",
+      dat: newValue,
     });
   } catch (error) {
     res.status(400).json({
