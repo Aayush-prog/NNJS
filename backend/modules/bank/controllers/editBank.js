@@ -4,8 +4,8 @@ const editBank = async (req, res) => {
   const { accName, accNum, bank, swiftCode } = req.body;
   const { bankId } = req.params;
   try {
-    const bank = await JobModel.findById(bankId);
-    if (!bank) {
+    const bankFound = await BankModel.findById(bankId);
+    if (!bankFound) {
       return res.status(404).json({
         status: "error",
         message: "Bank not found",

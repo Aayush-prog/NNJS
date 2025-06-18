@@ -39,7 +39,7 @@ export default function CoreValues() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {values.slice(0, 4).map((value, index) => (
+        {values.map((value, index) => (
           <FlipCard key={index} value={value} api={api} />
         ))}
       </div>

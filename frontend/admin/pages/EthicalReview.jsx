@@ -199,6 +199,7 @@ export default function EthicalReview() {
             title={irc.heroSection.title}
             body={irc.heroSection.body}
             image={irc.heroSection.image}
+            id={irc.heroSection._id}
           />
         )}
         {irc && (
@@ -206,6 +207,7 @@ export default function EthicalReview() {
             title={irc.subSection1.title}
             body={irc.subSection1.body}
             image={irc.subSection1.image}
+            id={irc.subSection1._id}
           />
         )}
         <motion.div

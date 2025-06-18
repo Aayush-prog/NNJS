@@ -18,7 +18,7 @@ const editMission = async (req, res) => {
       title,
       body,
     });
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Mission updated successfully",
     });

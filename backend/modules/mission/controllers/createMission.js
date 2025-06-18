@@ -8,6 +8,7 @@ const createMission = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Mission created successfully",
+      data: newMission,
     });
   } catch (error) {
     res.status(400).json({

@@ -84,6 +84,7 @@ export default function Mission() {
               image={mission.heroSection.image}
               title={mission.heroSection.title}
               body={mission.heroSection.body}
+              id={mission.heroSection._id}
             />
           )}
           {mission.subSection1 && (
@@ -91,6 +92,7 @@ export default function Mission() {
               title={mission.subSection1.title}
               image={mission.subSection1.image}
               body={mission.subSection1.body}
+              id={mission.subSection1._id}
             />
           )}
 
@@ -101,6 +103,7 @@ export default function Mission() {
               title={mission.subSection2.title}
               image={mission.subSection2.image}
               body={mission.subSection2.body}
+              id={mission.subSection2._id}
             />
           )}
 

@@ -62,8 +62,7 @@ export default function Donate() {
   const saveBankDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.put(`${api}/bank/edit/${bank._id}`, {
-        // Make sure your endpoint is correct
+      const response = await axios.patch(`${api}/bank/edit/${bank._id}`, {
         accName: bank.accName,
         accNum: bank.accNum,
         bank: bank.bank,
@@ -94,6 +93,7 @@ export default function Donate() {
           title={donatePage.heroSection.title}
           body={donatePage.heroSection.body}
           image={donatePage.heroSection.image}
+          id={donatePage.heroSection._id}
         />
       )}
 

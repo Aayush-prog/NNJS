@@ -74,14 +74,14 @@ export default function StaffSection(props) {
                   group.length === 2
                     ? "sm:grid-cols-2"
                     : group.length >= 3
-                    ? "sm:grid-cols-2 md:grid-cols-3"
+                    ? "md:grid-cols-3"
                     : ""
                 } mb-6 sm:mb-8 md:mb-12`}
               >
                 {group.map((staff, idx) => (
                   <div
                     key={idx}
-                    className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px]"
+                    className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px] md:w-[350px]"
                   >
                     <img
                       src={`${api}/images/${staff.image}`}

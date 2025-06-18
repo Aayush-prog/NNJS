@@ -69,7 +69,7 @@ export default function Contact() {
   const saveContact = async () => {
     try {
       setLoading(true);
-      const response = await axios.put(`${api}/contact/edit/${contact._id}`, {
+      const response = await axios.patch(`${api}/contact/edit/${contact._id}`, {
         mailingAddress: contact.mailingAddress,
         physicalAddress: contact.physicalAddress,
         reachUs: contact.reachUs,
@@ -99,6 +99,7 @@ export default function Contact() {
           title={page.heroSection.title}
           image={page.heroSection.image}
           body={page.heroSection.body}
+          id={page.heroSection._id}
         />
       )}
       {/* Main content wrapper  */}

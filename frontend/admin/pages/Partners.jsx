@@ -71,11 +71,13 @@ export default function Partners() {
             title={partner?.heroSection.title}
             body={partner?.heroSection.body}
             image={partner?.heroSection.image}
+            id={partner?.heroSection._id}
           />
           <SubSection
             title={partner?.subSection1.title}
             body={partner?.subSection1.body}
             image={partner?.subSection1.image}
+            id={partner?.subSection1._id}
           />
           <div className="py-12 md:py-0 md:h-screen flex flex-col justify-center items-center space-y-12 md:space-y-30 px-4">
             <div className="flex flex-col justify-center items-center">

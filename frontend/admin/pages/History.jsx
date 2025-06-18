@@ -64,6 +64,7 @@ export default function History() {
             title={history.heroSection.title}
             body={history.heroSection.body}
             image={history.heroSection.image}
+            id={history.heroSection._id}
           />
         )}
         {history && (
@@ -71,6 +72,7 @@ export default function History() {
             title={history.subSection1.title}
             body={history.subSection1.body}
             image={history.subSection1.image}
+            id={history.subSection1._id}
           />
         )}
         <TimelineCarousel />
@@ -79,6 +81,7 @@ export default function History() {
             title={history.subSection2.title}
             body={history.subSection2.body}
             image={history.subSection2.image}
+            id={history.subSection2._id}
           />
         )}
       </main>

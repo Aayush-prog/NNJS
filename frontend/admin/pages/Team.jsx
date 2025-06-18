@@ -84,12 +84,14 @@ export default function Team() {
             title={team?.heroSection.title}
             body={team?.heroSection.body}
             image={team?.heroSection.image}
+            id={team?.heroSection._id}
           />
 
           <SubSection
             title={team?.subSection1.title}
             body={team?.subSection1.body}
             image={team?.subSection1.image}
+            id={team?.subSection1._id}
           />
 
           <FounderCaraousel person={people.founder} />

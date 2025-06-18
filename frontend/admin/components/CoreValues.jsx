@@ -45,7 +45,9 @@ export default function CoreValues() {
   }, [api]);
 
   useEffect(() => {
-    setEditingValue(values?.[editingIndex] || {});
+    // Update editingValue when editingIndex changes. Also handle null editingIndex
+    console.log("useEffect editingValue running", { editingIndex, values }); // Debugging
+    setEditingValue(editingIndex !== null ? values?.[editingIndex] || {} : {});
   }, [editingIndex, values]);
 
   const handleSave = async () => {
@@ -118,7 +120,8 @@ export default function CoreValues() {
       if (res.status === 201) {
         setValues((prevValues) => [...prevValues, res.data.data]);
         setIsAdding(false);
-        setNewValue({ title: "", body: "", image: null }); // Reset New Value
+        setNewValue({ title: "", body: "", image: null });
+        fetchValues(); // Refresh data after adding
       }
     } catch (error) {
       console.error("Error adding value:", error);
@@ -141,7 +144,13 @@ export default function CoreValues() {
     setNewValue({ ...newValue, image: file });
   };
 
+  const handleCancel = () => {
+    setEditingIndex(null);
+    setEditingValue({}); // Clear the editing value as well
+  };
+
   if (loading) return <Loading />;
+  if (!values) return <p>No values found.</p>; // Add a check if values are null
 
   return (
     <section className="min-h-[80vh] pt-12  bg-blue-50 pb-12 px-6 sm:px-12 mx-auto">
@@ -149,8 +158,8 @@ export default function CoreValues() {
         Our Core Values
       </h2>
       <p className="text-base sm:text-lg mx-auto font-secondary text-center mb-12 leading-relaxed">
-        These principles guide everything we do at NNJS, shaping our culture
-        and driving our success.
+        These principles guide everything we do at NNJS, shaping our culture and
+        driving our success.
       </p>
 
       <div className="flex justify-center mb-4">
@@ -224,21 +233,27 @@ export default function CoreValues() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {values.map((value, index) => (
-          <FlipCard
-            key={value._id}
-            value={value}
-            api={api}
-            isEditing={editingIndex === index}
-            onEdit={() => setEditingIndex(index)}
-            onSave={handleSave}
-            onDelete={handleDelete}
-            editingValue={editingValue}
-            handleChange={handleChange}
-            handleImageChange={handleImageChange}
-            onCancel={() => setEditingIndex(null)}
-          />
-        ))}
+        {values.map((value, index) => {
+          console.log({ editingIndex, index, value }); // Debugging
+          return value && value._id ? ( // Only render if value and value._id are defined
+            <FlipCard
+              key={value._id}
+              value={value}
+              api={api}
+              isEditing={editingIndex === index}
+              onEdit={() => {
+                setEditingIndex(index);
+                setShowEditModal(true);
+              }}
+              onSave={handleSave}
+              onDelete={handleDelete}
+              editingValue={editingValue}
+              handleChange={handleChange}
+              handleImageChange={handleImageChange}
+              onCancel={handleCancel}
+            />
+          ) : null;
+        })}
       </div>
     </section>
   );
@@ -256,6 +271,7 @@ function FlipCard({
   handleImageChange,
   onCancel,
 }) {
+  const [showEditModal, setShowEditModal] = useState(false);
   return (
     <div
       className="relative w-full h-80 perspective"
@@ -273,7 +289,9 @@ function FlipCard({
                 type="file"
                 id={`image-${value._id}`}
                 className="hidden"
-                onChange={(e) => handleImageChange(value._id, e.target.files[0])}
+                onChange={(e) =>
+                  handleImageChange(value._id, e.target.files[0])
+                }
               />
             </label>
           ) : null}
@@ -365,6 +383,78 @@ function FlipCard({
           )}
         </div>
       </div>
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg relative">
+            <button
+              onClick={() => {
+                setShowEditModal(false);
+                handleCancel();
+              }}
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+            >
+              <FaTimes />
+            </button>
+
+            <h3 className="text-xl font-bold mb-4 text-center">
+              Edit Core Value
+            </h3>
+
+            <div className="mb-4">
+              <label className="block text-sm font-semibold mb-1">Title</label>
+              <input
+                type="text"
+                value={editingValue.title || ""}
+                onChange={(e) => handleChange("title", e.target.value)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-semibold mb-1">Body</label>
+              <textarea
+                value={editingValue.body || ""}
+                onChange={(e) => handleChange("body", e.target.value)}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-semibold mb-1">Image</label>
+              <input
+                type="file"
+                onChange={(e) =>
+                  handleImageChange(editingValue._id, e.target.files[0])
+                }
+              />
+              {editingValue.newImage ? (
+                <img
+                  src={URL.createObjectURL(editingValue.newImage)}
+                  alt="Preview"
+                  className="mt-2 w-full h-48 object-cover rounded"
+                />
+              ) : (
+                <img
+                  src={`${api}/images/${editingValue.image}`}
+                  alt="Current"
+                  className="mt-2 w-full h-48 object-cover rounded"
+                />
+              )}
+            </div>
+
+            <button
+              onClick={() => {
+                handleSave();
+                setShowEditModal(false);
+              }}
+              className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
+            >
+              <FaSave className="inline mr-2" />
+              Save Changes
+            </button>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .backface-hidden {

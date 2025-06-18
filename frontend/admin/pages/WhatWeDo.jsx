@@ -111,6 +111,7 @@ export default function WhatWeDo() {
           title={whatWeDo.heroSection.title}
           image={whatWeDo.heroSection.image}
           body={whatWeDo.heroSection.body}
+          id={whatWeDo.heroSection._id}
         />
       )}
 
@@ -119,6 +120,7 @@ export default function WhatWeDo() {
           title={whatWeDo.subSection1.title}
           image={whatWeDo.subSection1.image}
           body={whatWeDo.subSection1.body}
+          id={whatWeDo.subSection1._id}
         />
       )}
 

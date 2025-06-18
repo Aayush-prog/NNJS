@@ -16,9 +16,10 @@ const editPerson = async (req, res) => {
         message: "Person not found",
       });
     }
+    let updatedPerson;
     if (image) {
       deleteImage(person.image);
-      const updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
+      updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
         name,
         designation,
         body,
@@ -27,7 +28,7 @@ const editPerson = async (req, res) => {
         type,
       });
     } else {
-      const updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
+      updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
         name,
         designation,
         body,

@@ -73,6 +73,7 @@ export default function Resources() {
             image={resource?.heroSection.image}
             title={resource?.heroSection.title}
             body={resource?.heroSection.body}
+            id={resource?.heroSection._id}
           />
         )}
         <ResourcesSection />

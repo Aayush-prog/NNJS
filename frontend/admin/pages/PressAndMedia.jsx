@@ -175,6 +175,7 @@ export default function PressAndMedia() {
             title={page.heroSection.title}
             body={page.heroSection.body}
             image={page.heroSection.image}
+            id = {page.heroSection._id}
           />
         )}
 

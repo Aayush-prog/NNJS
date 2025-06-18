@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaHeart, FaUniversity } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
-
+import HeroSection from "../components/HeroSection";
 export default function Donate() {
   const [showButton, setShowButton] = useState(false);
   const [bank, setBank] = useState();
