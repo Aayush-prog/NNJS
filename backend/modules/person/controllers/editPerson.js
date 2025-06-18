@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editPerson = async (req, res) => {
   const PersonModel = mongoose.model("Person");
   const { name, designation, body, duration, type } = req.body;
@@ -15,17 +16,30 @@ const editPerson = async (req, res) => {
         message: "Person not found",
       });
     }
-    const updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
-      name,
-      designation,
-      body,
-      duration,
-      image,
-      type,
-    });
+    if (image) {
+      deleteImage(person.image);
+      const updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
+        name,
+        designation,
+        body,
+        duration,
+        image,
+        type,
+      });
+    } else {
+      const updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
+        name,
+        designation,
+        body,
+        duration,
+        type,
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Person updated successfully",
+      data: updatedPerson,
     });
   } catch (error) {
     res.status(400).json({

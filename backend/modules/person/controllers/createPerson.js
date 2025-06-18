@@ -19,6 +19,7 @@ const createPerson = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Person created successfully",
+      data: newPerson,
     });
   } catch (error) {
     res.status(400).json({

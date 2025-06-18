@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delTimestone = async (req, res) => {
   const TimestoneModel = mongoose.model("Timestones");
-  const {} = req.body;
   const { timestoneId } = req.params;
   try {
     const timestone = await TimestoneModel.findById(timestoneId);

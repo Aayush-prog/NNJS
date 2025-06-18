@@ -16,6 +16,7 @@ const createTimestone = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Timestones created successfully",
+      data: newTimestone,
     });
   } catch (error) {
     res.status(400).json({

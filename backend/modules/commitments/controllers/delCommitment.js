@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delCommitment = async (req, res) => {
   const CommitmentModel = mongoose.model("Commitments");
-  const {} = req.body;
   const { commitmentId } = req.params;
   try {
     const commitment = await CommitmentModel.findById(commitmentId);

@@ -5,10 +5,34 @@ import history from "../assets/history-pic.webp";
 import { motion } from "motion/react";
 import TimelineCarousel from "../components/TimelineCarousel";
 import { FaArrowCircleUp } from "react-icons/fa";
-
+import axios from "axios";
+import Loading from "../components/Loading";
+import HeroSection from "../components/HeroSection";
+import SubSection from "../components/SubSection";
 export default function History() {
   const [showButton, setShowButton] = useState(false);
+  const [history, setHistory] = useState();
+  const [loading, setLoading] = useState(false);
+  const api = import.meta.env.VITE_URL;
+  useEffect(() => {
+    const fetchPage = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/pages/history`);
+        if (res.status === 200) {
+          setHistory(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
+    fetchPage();
+  }, [api]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -40,84 +64,33 @@ export default function History() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+  if (loading) return <Loading />;
   return (
     <div className="overflow-x-hidden">
       <Nav />
       <main>
-        <motion.div
-          className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-          style={{ backgroundImage: `url(${history})` }}
-        >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-white text-center px-4">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
-              Milestones in Sight
-            </h1>
-          </div>
-        </motion.div>
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          className="items-center justify-center flex flex-col text-center py-10 sm:py-16 md:py-24 bg-blue-50 px-4 sm:px-6"
-        >
-          <motion.h1
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.05 }}
-            className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold p-2 sm:p-3 md:p-5"
-          >
-            Our History
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.05 }}
-            className="text-sm leading-relaxed sm:text-base md:text-lg lg:text-xl font-primary max-w-6xl mx-auto"
-          >
-            Motivated by the urgent need to address preventable blindness and
-            improve access to quality eye care, a group of nine committed
-            individuals — including social workers, physicians, industrialists,
-            and traders — came together in Kathmandu to pursue a shared vision.
-            Recognizing the lack of structured eye health services in Nepal,
-            they initiated focused discussions on how to contribute meaningfully
-            to a national cause. These efforts culminated in the establishment
-            of the Nepal Netra Jyoti Sangh (NNJS), a dedicated non-governmental,
-            welfare oriented social organization committed to promoting
-            comprehensive eye care and supporting national efforts to improve
-            eye health through coordinated, community-driven initiatives.
-          </motion.p>
-        </motion.div>
+        {history && (
+          <HeroSection
+            title={history.heroSection.title}
+            body={history.heroSection.body}
+            image={history.heroSection.image}
+          />
+        )}
+        {history && (
+          <SubSection
+            title={history.subSection1.title}
+            body={history.subSection1.body}
+            image={history.subSection1.image}
+          />
+        )}
         <TimelineCarousel />
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          className="flex flex-col items-start py-10 sm:py-16 md:py-24 bg-blue-50 px-4 sm:px-6 md:px-12 lg:px-24"
-        >
-          <motion.h1
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.05 }}
-            className="font-secondary text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-3 sm:mb-4 md:mb-6"
-          >
-            Our story is still unfolding.
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            viewport={{ once: true, amount: 0.05 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl font-primary text-left leading-relaxed"
-          >
-            What began as a vision among a few compassionate pioneers in 1978
-            has grown into Nepal Netra Jyoti Sangh (NNJS) — a nationwide
-            movement to restore sight and bring hope. From a humble beginning,
-            NNJS has become a leading force in eye care across Nepal, reaching
-            thousands through hospitals, eye care centers, and community
-            programs. Our journey is a testament to what's possible when
-            dedication meets purpose. And we're just getting started. Together,
-            we can light the path ahead and ensure that no one in Nepal is left
-            in the dark. Join us, and be part of this vision.
-          </motion.p>
-        </motion.div>
+        {history && (
+          <SubSection
+            title={history.subSection2.title}
+            body={history.subSection2.body}
+            image={history.subSection2.image}
+          />
+        )}
       </main>
       <Footer />
       {showButton && (

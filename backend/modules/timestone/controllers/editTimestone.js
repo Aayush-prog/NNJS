@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editTimestone = async (req, res) => {
   const TimestoneModel = mongoose.model("Timestones");
   const { title, body, year } = req.body;
@@ -15,9 +16,16 @@ const editTimestone = async (req, res) => {
         message: "Timestones not found",
       });
     }
+    if (image) {
+      deleteImage(timestone.image);
+      const updatedTimestone = await TimestoneModel.findByIdAndUpdate(
+        timestoneId,
+        { title, body, year, image }
+      );
+    }
     const updatedTimestone = await TimestoneModel.findByIdAndUpdate(
       timestoneId,
-      { title, body, year, image }
+      { title, body, year }
     );
     res.status(200).json({
       status: "success",

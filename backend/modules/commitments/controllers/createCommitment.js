@@ -17,6 +17,7 @@ const createCommitment = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Commitments created successfully",
+      data: newCommitment,
     });
   } catch (error) {
     res.status(400).json({

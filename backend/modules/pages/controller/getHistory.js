@@ -4,7 +4,8 @@ const getHistory = async (req, res) => {
   try {
     const history = await PageModel.findOne({ type: "History" })
       .populate("heroSection")
-      .populate("subSection1");
+      .populate("subSection1")
+      .populate("subSection2");
     res.status(200).json({ status: "success", data: history });
   } catch (e) {
     res.status(400).json({ msg: e.msg || "error" });
