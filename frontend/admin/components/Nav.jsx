@@ -62,7 +62,7 @@ export default function Nav() {
       <div className="flex flex-col gap-3 px-6 sm:px-10 lg:px-30 py-5">
         <div className="flex justify-between items-center">
           <Link
-            to="/"
+            to="/admin"
             className="flex text-primary items-center"
             aria-label="Navigate to homepage"
           >
