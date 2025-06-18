@@ -4,12 +4,10 @@ const path = require("path");
 const editIrcObjectives = async (req, res) => {
   const IrcObjectivesModel = mongoose.model("IrcObjectives");
   const { title, description, icon, color } = req.body;
-  
+
   const { ircObjectiveId } = req.params;
   try {
-    const ircObjective = await IrcObjectivesModel.findById(
-      ircObjectiveId
-    );
+    const ircObjective = await IrcObjectivesModel.findById(ircObjectiveId);
     if (!ircObjective) {
       return res.status(404).json({
         status: "error",
@@ -23,7 +21,7 @@ const editIrcObjectives = async (req, res) => {
         icon,
         color,
       });
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "Irc Objectives updated successfully",
     });
