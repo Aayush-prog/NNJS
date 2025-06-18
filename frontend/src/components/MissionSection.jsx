@@ -48,7 +48,7 @@ export default function MissionSection() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="bg-blue-100 py-12 px-4 sm:px-6 md:px-10 font-secondary"
+      className="bg-blue-50 py-12 px-4 sm:px-6 md:px-10 font-secondary"
     >
       <div className="max-w-7xl mx-auto text-center mb-10">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
