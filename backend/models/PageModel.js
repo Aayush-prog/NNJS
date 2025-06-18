@@ -19,6 +19,7 @@ const pageSchema = new mongoose.Schema(
         "Press/Media",
         "EthicalReview",
         "ContactUs",
+        "Donate",
       ],
     },
   },

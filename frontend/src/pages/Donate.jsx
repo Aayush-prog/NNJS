@@ -10,6 +10,7 @@ import Loading from "../components/Loading";
 export default function Donate() {
   const [showButton, setShowButton] = useState(false);
   const [bank, setBank] = useState();
+  const [donatePage, setDonate] = useState();
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
 
@@ -18,7 +19,9 @@ export default function Donate() {
       try {
         setLoading(true);
         const res = await axios.get(`${api}/bank/`);
+        const response = await axios.get(`${api}/pages/donate`);
         if (res.status === 200) {
+          setDonate(response.data.data);
           setBank(res.data.data);
         } else {
           console.error("Error fetching bank: Status code", res.status);
@@ -70,20 +73,13 @@ export default function Donate() {
       <Nav />
 
       {/* Hero Section with background image */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ backgroundImage: `url(${donate})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-white text-center px-4">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
-            Donate
-          </h1>
-        </div>
-      </motion.div>
+      {donatePage && (
+        <HeroSection
+          title={donatePage.heroSection.title}
+          body={donatePage.heroSection.body}
+          image={donatePage.heroSection.image}
+        />
+      )}
 
       {/* Main content section */}
       <div className="bg-primary py-8 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-6 md:px-12">

@@ -1,15 +1,17 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { motion } from "framer-motion";
 import { FaArrowCircleUp, FaHeart, FaUniversity } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
+import HeroSection from "../components/HeroSection";
 
 export default function Donate() {
   const [showButton, setShowButton] = useState(false);
-  const [bank, setBank] = useState();
+  const [bank, setBank] = useState(null);
+  const [donatePage, setDonate] = useState();
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // State for edit mode
   const api = import.meta.env.VITE_URL;
 
   useEffect(() => {
@@ -17,7 +19,9 @@ export default function Donate() {
       try {
         setLoading(true);
         const res = await axios.get(`${api}/bank/`);
+        const response = await axios.get(`${api}/pages/donate`);
         if (res.status === 200) {
+          setDonate(response.data.data);
           setBank(res.data.data);
         } else {
           console.error("Error fetching bank: Status code", res.status);
@@ -48,18 +52,35 @@ export default function Donate() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-    exit: {
-      opacity: 0,
-      y: 50,
-      transition: { duration: 0.4, ease: "easeIn" },
-    },
+  const handleBankChange = (field, value) => {
+    setBank((prevBank) => ({
+      ...prevBank,
+      [field]: value,
+    }));
+  };
+
+  const saveBankDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.put(`${api}/bank/edit/${bank._id}`, {
+        // Make sure your endpoint is correct
+        accName: bank.accName,
+        accNum: bank.accNum,
+        bank: bank.bank,
+        swiftCode: bank.swiftCode,
+      });
+
+      if (response.status === 200) {
+        console.log("Bank details updated successfully");
+        setIsEditing(false);
+      } else {
+        console.error("Error updating bank details:", response.status);
+      }
+    } catch (error) {
+      console.error("Error updating bank details:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) return <Loading />;
@@ -68,31 +89,17 @@ export default function Donate() {
     <div>
       <Nav />
 
-      {/* Hero Section with background image */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="relative h-[40vh] sm:h-[90vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{ backgroundImage: `url(${donate})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-white text-center px-4">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-secondary">
-            Donate
-          </h1>
-        </div>
-      </motion.div>
+      {donatePage && (
+        <HeroSection
+          title={donatePage.heroSection.title}
+          body={donatePage.heroSection.body}
+          image={donatePage.heroSection.image}
+        />
+      )}
 
       {/* Main content section */}
       <div className="bg-primary py-8 sm:py-12 md:py-16 lg:py-24 px-4 sm:px-6 md:px-12">
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 font-primary"
-        >
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 font-primary">
           {/* Donation message and details */}
           <div className="bg-white rounded-xl md:rounded-2xl p-5 sm:p-6 md:p-8 flex-1 space-y-3 sm:space-y-4 md:space-y-5">
             <div className="flex justify-center">
@@ -101,30 +108,30 @@ export default function Donate() {
             <h2 className="text-xl sm:text-2xl font-bold text-primary font-secondary text-center">
               Every Donation Brings Someone Closer to Sight.
             </h2>
-            <h3 className="text-center font-semibold text-sm sm:text-base">
+            <h3 className="text-center font-semibold text-sm:text-base">
               You Have the Power to Restore Sight and Transform Lives.
             </h3>
-            <p className="text-gray-700 text-sm sm:text-base">
+            <p className="text-gray-700 text-sm:text-base">
               By supporting our mission, you're doing more than funding
               treatments — you're giving children the chance to learn, elders
               the dignity to live independently, and families the joy of seeing
               each other clearly again.
             </p>
-            <p className="text-gray-700 text-sm sm:text-base">
+            <p className="text-gray-700 text-sm:text-base">
               Across Nepal, thousands live in darkness caused by preventable
               blindness. With your help, we provide free eye exams,
               life-changing surgeries, and essential vision care to those who
               need it most.
             </p>
-            <p className="text-gray-700 text-sm sm:text-base">
+            <p className="text-gray-700 text-sm:text-base">
               Together, we can build a Nepal where no one is blind from
               avoidable causes, and everyone has the opportunity to live a full,
               healthy, and dignified life.
             </p>
-            <p className="text-gray-700 text-sm sm:text-base">
+            <p className="text-gray-700 text-sm:text-base">
               Your generosity brings light to those who need it most.
             </p>
-            <p className="text-gray-700 text-sm sm:text-base">
+            <p className="text-gray-700 text-sm:text-base">
               If you would like to talk to us about your donation, please
               contact Nepal Netra Jyoti Sangh central office by calling{" "}
               <strong>977-1-5361921 / 5361066</strong>. You can also send an
@@ -147,37 +154,86 @@ export default function Donate() {
                 Bank Details
               </h2>
             </div>
-            <div className="space-y-3 sm:space-y-4 md:space-y-6 text-gray-700 text-sm sm:text-base">
+            <div className="space-y-3 sm:space-y-4 md:space-y-6 text-gray-700 text-sm:text-base">
               <div>
                 <p className="font-semibold">Account Name:</p>
-                <p>{bank?.accName || "Loading..."}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={bank?.accName || ""}
+                    onChange={(e) =>
+                      handleBankChange("accName", e.target.value)
+                    }
+                    className="w-full border rounded p-1 text-black"
+                  />
+                ) : (
+                  <p>{bank?.accName || "Loading..."}</p>
+                )}
               </div>
               <div>
                 <p className="font-semibold">Account Number:</p>
-                <p className="break-words">{bank?.accNum || "Loading..."}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={bank?.accNum || ""}
+                    onChange={(e) => handleBankChange("accNum", e.target.value)}
+                    className="w-full border rounded p-1 text-black"
+                  />
+                ) : (
+                  <p className="break-words">{bank?.accNum || "Loading..."}</p>
+                )}
               </div>
               <div>
                 <p className="font-semibold">Bank:</p>
-                <p>{bank?.bank || "Loading..."}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={bank?.bank || ""}
+                    onChange={(e) => handleBankChange("bank", e.target.value)}
+                    className="w-full border rounded p-1 text-black"
+                  />
+                ) : (
+                  <p>{bank?.bank || "Loading..."}</p>
+                )}
               </div>
               <div>
                 <p className="font-semibold">SWIFT Code:</p>
-                <p>{bank?.swiftCode || "Loading..."}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={bank?.swiftCode || ""}
+                    onChange={(e) =>
+                      handleBankChange("swiftCode", e.target.value)
+                    }
+                    className="w-full border rounded p-1 text-black"
+                  />
+                ) : (
+                  <p>{bank?.swiftCode || "Loading..."}</p>
+                )}
               </div>
             </div>
+            {/* Edit and Save buttons */}
+            {isEditing ? (
+              <button
+                onClick={saveBankDetails}
+                className="bg-green-500 text-white p-2 rounded-sm mt-4 font-bold hover:bg-green-700 transition-colors"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="bg-blue-500 text-white p-2 rounded-sm mt-4 font-bold hover:bg-blue-700 transition-colors"
+              >
+                Edit
+              </button>
+            )}
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Footer */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <Footer />
-      </motion.div>
+      <Footer />
 
       {/* Scroll to top button */}
       {showButton && (

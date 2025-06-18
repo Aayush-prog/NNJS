@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delContact = async (req, res) => {
   const ContactModel = mongoose.model("Contact");
-  const {} = req.body;
   const { contactId } = req.params;
   try {
     const contact = await ContactModel.findById(contactId);
