@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { motion } from "framer-motion";
 import { FaFacebook, FaMap, FaYoutube } from "react-icons/fa";
 import { FaArrowCircleUp } from "react-icons/fa";
 import Loading from "../components/Loading";
@@ -13,6 +12,7 @@ export default function Contact() {
   const [contact, setContact] = useState(null);
   const [page, setPage] = useState();
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const api = import.meta.env.VITE_URL;
 
   useEffect(() => {
@@ -57,16 +57,35 @@ export default function Contact() {
     });
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
+  const handleContactChange = (field, index, value) => {
+    setContact((prevContact) => {
+      const updatedContact = { ...prevContact };
+      updatedContact[field] = [...prevContact[field]];
+      updatedContact[field][index] = value;
+      return updatedContact;
+    });
+  };
+
+  const saveContact = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.put(`${api}/contact/edit/${contact._id}`, {
+        mailingAddress: contact.mailingAddress,
+        physicalAddress: contact.physicalAddress,
+        reachUs: contact.reachUs,
+      });
+
+      if (response.status === 200) {
+        console.log("Contact updated successfully");
+        setIsEditing(false);
+      } else {
+        console.error("Error updating contact:", response.status);
+      }
+    } catch (error) {
+      console.error("Error updating contact:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) return <Loading />;
@@ -82,14 +101,8 @@ export default function Contact() {
           body={page.heroSection.body}
         />
       )}
-      {/* Main content wrapper - apply animation once here */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="min-h-screen bg-blue-50 p-4 sm:p-8 md:p-12 lg:p-20 flex items-center justify-center py-16"
-      >
+      {/* Main content wrapper  */}
+      <div className="min-h-screen bg-blue-50 p-4 sm:p-8 md:p-12 lg:p-20 flex items-center justify-center py-16">
         <div className="flex flex-col lg:flex-row bg-white rounded-2xl overflow-hidden shadow-lg w-full max-w-5xl">
           {/* Left Form Section */}
           <div className="flex flex-col justify-center items-left text-left w-full lg:w-1/2 space-y-4 md:space-y-5 text-white bg-primary p-6 sm:p-8 md:p-10">
@@ -147,7 +160,24 @@ export default function Contact() {
                   <p className="font-bold mb-1 md:mb-2">MAILING ADDRESS</p>
                   <div>
                     {contact?.mailingAddress?.map((item, i) => (
-                      <p key={i}>{item}</p>
+                      <div key={i}>
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            value={item}
+                            onChange={(e) =>
+                              handleContactChange(
+                                "mailingAddress",
+                                i,
+                                e.target.value
+                              )
+                            }
+                            className="w-full border rounded p-1 text-black"
+                          />
+                        ) : (
+                          <p>{item}</p>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -155,7 +185,24 @@ export default function Contact() {
                   <p className="font-bold mb-1 md:mb-2">PHYSICAL ADDRESS</p>
                   <div>
                     {contact?.physicalAddress?.map((item, i) => (
-                      <p key={i}>{item}</p>
+                      <div key={i}>
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            value={item}
+                            onChange={(e) =>
+                              handleContactChange(
+                                "physicalAddress",
+                                i,
+                                e.target.value
+                              )
+                            }
+                            className="w-full border rounded p-1 text-black"
+                          />
+                        ) : (
+                          <p>{item}</p>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -163,11 +210,40 @@ export default function Contact() {
                   <p className="font-bold mb-1 md:mb-2">REACH US</p>
                   <div>
                     {contact?.reachUs?.map((item, i) => (
-                      <p key={i}>{item}</p>
+                      <div key={i}>
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            value={item}
+                            onChange={(e) =>
+                              handleContactChange("reachUs", i, e.target.value)
+                            }
+                            className="w-full border rounded p-1 text-black"
+                          />
+                        ) : (
+                          <p>{item}</p>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
               </div>
+              {/* Edit and Save buttons */}
+              {isEditing ? (
+                <button
+                  onClick={saveContact}
+                  className="bg-green-500 text-white p-2 rounded-sm mt-4 font-bold hover:bg-green-700 transition-colors"
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-500 text-white p-2 rounded-sm mt-4 font-bold hover:bg-blue-700 transition-colors"
+                >
+                  Edit
+                </button>
+              )}
             </div>
 
             {/* Social icons */}
@@ -196,17 +272,10 @@ export default function Contact() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Footer with animation */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <Footer />
-      </motion.div>
+      {/* Footer  */}
+      <Footer />
 
       {/* Scroll to top button */}
       {showButton && (
