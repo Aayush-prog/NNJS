@@ -1,13 +1,20 @@
 import { React, useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { FaArrowCircleUp } from "react-icons/fa";
+import {
+  FaArrowCircleUp,
+  FaArrowLeft,
+  FaPlus,
+  FaSave,
+  FaPen,
+  FaTrash,
+} from "react-icons/fa";
 import * as ReactIcons from "react-icons/fa";
-import { motion } from "motion/react";
 import axios from "axios";
 import Loading from "../components/Loading";
 import SubSection from "../components/SubSection";
 import HeroSection from "../components/HeroSection";
+
 const faqs = [
   {
     question: "Who can apply for ethical approval, and how is it submitted?",
@@ -86,11 +93,56 @@ const faqs = [
   },
 ];
 
+function SearchableIconPicker({ selectedIcon, setSelectedIcon }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const iconList = Object.keys(ReactIcons);
+
+  const filteredIcons = iconList.filter((iconName) =>
+    iconName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="icon-picker">
+      <input
+        type="text"
+        placeholder="Search Icons..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full border rounded mb-2 p-1"
+      />
+      <div className="icon-grid max-h-40 overflow-y-auto grid grid-cols-5 gap-2">
+        {filteredIcons.map((iconName) => {
+          const IconComponent = ReactIcons[iconName];
+          return (
+            <button
+              key={iconName}
+              onClick={() => setSelectedIcon(iconName)}
+              className={`p-1 rounded hover:bg-gray-200 ${
+                selectedIcon === iconName ? "bg-blue-200" : ""
+              }`}
+            >
+              <IconComponent size={24} />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function EthicalReview() {
   const [showButton, setShowButton] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [objectives, setObjectives] = useState(null);
   const [irc, setIrc] = useState();
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newObjective, setNewObjective] = useState({
+    icon: "FaStar",
+    title: "",
+    description: "",
+    color: "text-blue-500",
+  });
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
 
@@ -115,7 +167,60 @@ export default function EthicalReview() {
 
     fetchCommitments();
   }, [api]);
+  const toggleAdd = () => setIsAdding((prev) => !prev);
 
+  const handleChange = (index, field, value) => {
+    const updated = [...objectives];
+    updated[index][field] = value;
+    setObjectives(updated);
+  };
+
+  const handleSave = async (obj, index) => {
+    try {
+      const { _id, title, description, icon, color } = obj;
+      const res = await axios.patch(`${api}/ircObjectives/edit/${_id}`, {
+        title,
+        description,
+        icon,
+        color,
+      });
+      if (res.status === 200) {
+        setEditingIndex(null);
+        fetchObjectives(); // Refresh after save
+      }
+    } catch (error) {
+      console.error("Error updating objective:", error);
+    }
+  };
+
+  const handleDelete = async (_id) => {
+    try {
+      await axios.delete(`${api}/ircObjectives/del/${_id}`);
+      setObjectives((prev) => prev.filter((o) => o._id !== _id));
+      fetchObjectives(); // Refresh after delete
+    } catch (error) {
+      console.error("Error deleting objective:", error);
+    }
+  };
+
+  const handleAddObjective = async () => {
+    try {
+      const res = await axios.post(`${api}/ircObjectives/create`, newObjective);
+      if (res.status === 201) {
+        //setObjectives([...objectives, res.data.data]);
+        setNewObjective({
+          icon: "FaStar",
+          title: "",
+          description: "",
+          color: "text-blue-500",
+        });
+        setIsAdding(false);
+        fetchObjectives(); // Refresh after add
+      }
+    } catch (error) {
+      console.error("Error creating objective:", error);
+    }
+  };
   const iconMap = { ...ReactIcons };
 
   function IconRenderer({ iconName, color }) {
@@ -157,39 +262,23 @@ export default function EthicalReview() {
     });
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-  // Animation variants for container with stagger
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
+  const fetchObjectives = async () => {
+    try {
+      const res = await axios.get(`${api}/ircObjectives/`);
+      if (res.status === 200) {
+        setObjectives(res.data.data);
+      } else {
+        console.error("Error fetching objectives: Status code", res.status);
+      }
+    } catch (error) {
+      console.error("Error fetching objectives:", error);
+    }
   };
 
-  // Animation variants for each item
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
   if (loading) {
     return <Loading />;
   }
+
   return (
     <div>
       <Nav />
@@ -208,43 +297,156 @@ export default function EthicalReview() {
             image={irc.subSection1.image}
           />
         )}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary text-primary mt-10 md:mt-16 mb-6 md:mb-8 text-center px-4"
-          >
+        <div className="flex flex-col items-center py-10 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary text-primary mt-10 md:mt-16 mb-6 md:mb-8 text-center px-4">
             IRC's Objectives
-          </motion.h2>
-          <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 px-4 sm:px-8 md:px-16 lg:px-28 mb-10 md:mb-18">
-            {objectives?.length > 0 &&
-              objectives.map((obj, idx) => (
-                <motion.div
-                  variants={itemVariants}
-                  key={idx}
-                  className="bg-white border border-gray-200 rounded-xl p-6 md:p-6 shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="flex items-start gap-3 md:gap-4">
-                    <IconRenderer iconName={obj.icon} color={obj.color} />
-                    <div>
-                      <h3
-                        className={`text-base md:text-lg font-secondary font-semibold mb-1 ${obj.color}`}
-                      >
-                        {obj.title}
-                      </h3>
-                      <p className="text-sm md:text-base text-gray-700 font-primary">
-                        {obj.description}
-                      </p>
-                    </div>
+          </h2>
+          <button
+            onClick={toggleAdd}
+            className="p-2 rounded-full text-black bg-gray-200 hover:bg-gray-300"
+            aria-label={isAdding ? "Back" : "Add"}
+          >
+            {isAdding ? <FaArrowLeft size={18} /> : <FaPlus size={18} />}
+          </button>
+
+          {!isAdding ? (
+            <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 px-4 sm:px-8 md:px-16 lg:px-28 mb-10 md:mb-18">
+              {objectives &&
+                objectives.map((obj, index) => (
+                  <div
+                    key={obj._id}
+                    className="bg-white border border-gray-200 rounded-xl p-6 md:p-6 shadow-md hover:shadow-lg transition-all duration-300 relative"
+                  >
+                    {editingIndex === index ? (
+                      <div className="flex flex-col">
+                        <SearchableIconPicker
+                          selectedIcon={obj.icon}
+                          setSelectedIcon={(icon) =>
+                            handleChange(index, "icon", icon)
+                          }
+                        />
+                        <input
+                          type="text"
+                          value={obj.color}
+                          onChange={(e) =>
+                            handleChange(index, "color", e.target.value)
+                          }
+                          className="w-full border rounded mb-2 p-1"
+                          placeholder="text-blue-500"
+                        />
+                        <input
+                          type="text"
+                          value={obj.title}
+                          onChange={(e) =>
+                            handleChange(index, "title", e.target.value)
+                          }
+                          className="w-full border rounded mb-2 p-1"
+                          placeholder="Title"
+                        />
+                        <textarea
+                          value={obj.description}
+                          onChange={(e) =>
+                            handleChange(index, "description", e.target.value)
+                          }
+                          className="w-full border rounded mb-2 p-1"
+                          placeholder="Description"
+                        />
+                        <div className="flex justify-between">
+                          <button
+                            onClick={() => handleSave(obj, index)}
+                            className="p-2 bg-green-600 text-white rounded"
+                          >
+                            <FaSave />
+                          </button>
+                          <button
+                            onClick={() => setEditingIndex(null)}
+                            className="p-2 bg-gray-400 text-white rounded"
+                          >
+                            <FaArrowLeft />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-start gap-3 md:gap-4">
+                          <IconRenderer iconName={obj.icon} color={obj.color} />
+                          <div>
+                            <h3 className="text-base md:text-lg font-secondary font-semibold mb-1">
+                              {obj.title}
+                            </h3>
+                            <p className="text-sm md:text-base text-gray-700 font-primary">
+                              {obj.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          <button
+                            onClick={() => setEditingIndex(index)}
+                            className="p-2 bg-yellow-300 text-black rounded-full"
+                          >
+                            <FaPen />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(obj._id)}
+                            className="p-2 bg-red-500 text-white rounded-full"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </motion.div>
-              ))}
-          </div>
-        </motion.div>
+                ))}
+            </div>
+          ) : (
+            <div className="w-full max-w-md border p-4 bg-white text-black rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">Add New Objective</h3>
+              <SearchableIconPicker
+                selectedIcon={newObjective.icon}
+                setSelectedIcon={(icon) =>
+                  setNewObjective({ ...newObjective, icon })
+                }
+              />
+              <input
+                type="text"
+                value={newObjective.color}
+                onChange={(e) =>
+                  setNewObjective({ ...newObjective, color: e.target.value })
+                }
+                className="w-full border rounded mb-2 p-1"
+                placeholder="text-blue-500"
+              />
+
+              <input
+                type="text"
+                value={newObjective.title}
+                onChange={(e) =>
+                  setNewObjective({ ...newObjective, title: e.target.value })
+                }
+                className="w-full border rounded mb-2 p-1"
+                placeholder="Title"
+              />
+              <textarea
+                value={newObjective.description}
+                onChange={(e) =>
+                  setNewObjective({
+                    ...newObjective,
+                    description: e.target.value,
+                  })
+                }
+                className="w-full border rounded mb-4 p-1"
+                placeholder="Description"
+              />
+              <button
+                onClick={handleAddObjective}
+                className="p-2 w-full bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2"
+              >
+                <FaPlus />
+                Add Objective
+              </button>
+            </div>
+          )}
+        </div>
         {irc && (
           <SubSection
             title={irc.subSection2.title}

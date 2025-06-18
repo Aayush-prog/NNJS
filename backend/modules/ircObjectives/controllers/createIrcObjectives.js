@@ -4,9 +4,9 @@ const path = require("path");
 const createIrcObjectives = async (req, res) => {
   const IrcObjectiveModel = mongoose.model("IrcObjectives");
   const { title, description, icon, color } = req.body;
-  
+
   try {
-    const newStrategicObjective = await IrcObjectiveModel.create({
+    const newIrcObjective = await IrcObjectiveModel.create({
       title,
       description,
       icon,
@@ -15,6 +15,7 @@ const createIrcObjectives = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Irc Objectives created successfully",
+      data: newIrcObjective,
     });
   } catch (error) {
     res.status(400).json({
