@@ -89,7 +89,7 @@ const Commitments = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl px-2"
+          className="font-secondary sm:text-lg md:text-xl px-2"
         >
           The fundamental principles that guide our work in eye healthcare:
         </motion.p>
