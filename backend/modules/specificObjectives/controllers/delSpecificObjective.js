@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delSpecificObjective = async (req, res) => {
   const SpecificObjectiveModel = mongoose.model("SpecificObjectives");
-  const {} = req.body;
   const { specificObjectiveId } = req.params;
   try {
     const specificObjective = await SpecificObjectiveModel.findById(
