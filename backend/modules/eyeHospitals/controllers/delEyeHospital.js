@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const delEyeHospital = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
-  const {} = req.body;
+
   const { eyeHospitalId } = req.params;
   try {
     const eyeHospital = await EyeHospitalModel.findById(eyeHospitalId);

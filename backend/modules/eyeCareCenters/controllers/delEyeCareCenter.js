@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const deleteImage = require("../../../handlers/delImage");
 const delEyeCareCenter = async (req, res) => {
   const EyeCareCenterModel = mongoose.model("EyeCareCenters");
-  const {} = req.body;
   const { eyeCareCenterId } = req.params;
   try {
     const eyeCareCenter = await EyeCareCenterModel.findById(eyeCareCenterId);
@@ -14,6 +14,7 @@ const delEyeCareCenter = async (req, res) => {
     const deletedEyeCareCenter = await EyeCareCenterModel.findByIdAndDelete(
       eyeCareCenterId
     );
+    deleteImage(eyeCareCenter.image);
     res.status(200).json({
       status: "success",
       message: "EyeCareCenters deleted successfully",

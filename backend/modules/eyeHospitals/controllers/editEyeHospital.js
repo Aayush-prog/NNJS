@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editEyeHospital = async (req, res) => {
   const EyeHospitalModel = mongoose.model("EyeHospitals");
   const {
@@ -29,25 +30,48 @@ const editEyeHospital = async (req, res) => {
         message: "EyeHospitals not found",
       });
     }
-    const updatedEyeHospital = await EyeHospitalModel.findByIdAndUpdate(
-      eyeHospitalId,
-      {
-        title,
-        body,
-        phone,
-        email,
-        website,
-        address,
-        image,
-        aim,
-        coverageArea,
-        availableServices,
-        communityServices,
-        futurePlans,
-        totalOPD,
-        totalSurgery,
-      }
-    );
+    let updatedEyeHospital;
+    if (image) {
+      deleteImage(eyeHospital.image);
+      updatedEyeHospital = await EyeHospitalModel.findByIdAndUpdate(
+        eyeHospitalId,
+        {
+          title,
+          body,
+          phone,
+          email,
+          website,
+          address,
+          image,
+          aim,
+          coverageArea,
+          availableServices,
+          communityServices,
+          futurePlans,
+          totalOPD,
+          totalSurgery,
+        }
+      );
+    } else {
+      updatedEyeHospital = await EyeHospitalModel.findByIdAndUpdate(
+        eyeHospitalId,
+        {
+          title,
+          body,
+          phone,
+          email,
+          website,
+          address,
+          aim,
+          coverageArea,
+          availableServices,
+          communityServices,
+          futurePlans,
+          totalOPD,
+          totalSurgery,
+        }
+      );
+    }
     res.status(200).json({
       status: "success",
       message: "EyeHospitals updated successfully",

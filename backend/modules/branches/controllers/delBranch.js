@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const deleteImage = require("../../../handlers/delImage");
 const delBranch = async (req, res) => {
   const BranchModel = mongoose.model("Branches");
   const { branchId } = req.params;
@@ -11,6 +12,7 @@ const delBranch = async (req, res) => {
       });
     }
     const deletedBranch = await BranchModel.findByIdAndDelete(branchId);
+    deleteImage(branch.image);
     res.status(200).json({
       status: "success",
       message: "Branches deleted successfully",

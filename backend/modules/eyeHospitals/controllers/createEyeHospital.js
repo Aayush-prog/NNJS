@@ -40,6 +40,7 @@ const createEyeHospital = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "EyeHospitals created successfully",
+      data: newEyeHospital,
     });
   } catch (error) {
     res.status(400).json({

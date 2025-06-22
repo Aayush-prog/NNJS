@@ -16,6 +16,7 @@ const createBranch = async (req, res) => {
       committee,
     });
     res.status(201).json({
+      data: newBranch,
       status: "success",
       message: "Branches created successfully",
     });

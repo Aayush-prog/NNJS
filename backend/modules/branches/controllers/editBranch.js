@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editBranch = async (req, res) => {
   const BranchModel = mongoose.model("Branches");
   const { contactPerson, phone, president, district, committee } = req.body;
@@ -15,14 +16,27 @@ const editBranch = async (req, res) => {
         message: "Branches not found",
       });
     }
-    const updatedBranch = await BranchModel.findByIdAndUpdate(branchId, {
-      contactPerson,
-      phone,
-      president,
-      district,
-      image,
-      committee,
-    });
+    let updatedBranch;
+    if (image) {
+      deleteImage(branch.image);
+      updatedBranch = await BranchModel.findByIdAndUpdate(branchId, {
+        contactPerson,
+        phone,
+        president,
+        district,
+        image,
+        committee,
+      });
+    } else {
+      updatedBranch = await BranchModel.findByIdAndUpdate(branchId, {
+        contactPerson,
+        phone,
+        president,
+        district,
+        committee,
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Branches updated successfully",
