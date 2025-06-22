@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 export default function CoreValues() {
+  
   const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);

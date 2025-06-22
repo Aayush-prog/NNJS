@@ -129,7 +129,7 @@ export default function SubSection({ title, body, image, id }) {
                   setImageDeleted(true);
                   setPreviewImage(null);
                 }}
-                className="p-3 bg-accent rounded-2xl text-white"
+                className="p-2 bg-accent rounded-2xl text-white"
               >
                 Delete the image
               </button>
@@ -139,7 +139,7 @@ export default function SubSection({ title, body, image, id }) {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="mt-4 border-2"
+              className=" border-2"
             />
           </div>
         </>

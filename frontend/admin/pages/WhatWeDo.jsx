@@ -13,12 +13,14 @@ import axios from "axios";
 import HeroSection from "../components/HeroSection.jsx";
 import SubSection from "../components/SubSection.jsx";
 export default function WhatWeDo() {
+
   const [selectedLists, setSelectedLists] = useState(["hospital"]);
   const [showButton, setShowButton] = useState(false);
   const [ecc, setEcc] = useState();
   const [branches, setBranches] = useState();
   const [hospitals, setHospitals] = useState();
   const [whatWeDo, setWhatWeDo] = useState();
+  const [isAdding,setIsAdding]=useState(false);
   const api = import.meta.env.VITE_URL;
   const [loading, setLoading] = useState(false);
   useEffect(() => {
