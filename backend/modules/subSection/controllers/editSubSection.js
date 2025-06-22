@@ -19,6 +19,10 @@ const editSubSection = async (req, res) => {
     let updatedSubSection;
     if (imageDeleted == "true") {
       deleteImage(subSection.image);
+      updatedSubSection = await SubSectionModel.findByIdAndUpdate(
+        subSectionId,
+        { title, body, image }
+      );
     }
     if (image) {
       deleteImage(subSection.image);
@@ -27,10 +31,10 @@ const editSubSection = async (req, res) => {
         { title, image, body }
       );
     }
-    updatedSubSection = await SubSectionModel.findByIdAndUpdate(
-      subSectionId,
-      { title, body }
-    );
+    updatedSubSection = await SubSectionModel.findByIdAndUpdate(subSectionId, {
+      title,
+      body,
+    });
     res.status(200).json({
       status: "success",
       message: "SubSection updated successfully",
