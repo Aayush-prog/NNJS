@@ -17,7 +17,6 @@ const editResource = async (req, res) => {
       });
     }
     let updatedResource;
-    console.log(fileDeleted);
     if (fileDeleted == "true") {
       deleteFile(resource.file);
       updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
