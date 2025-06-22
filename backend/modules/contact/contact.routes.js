@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const contactRouter = express.Router();
 contactRouter.get("/", getContact);
 contactRouter.get("/:contactId", getContactById);
+contactRouter.use(auth);
 contactRouter.post("/create", upload, createEyeCareCenter);
 contactRouter.delete("/del/:contactId", delContact);
 contactRouter.patch("/edit/:contactId", upload, editContact);

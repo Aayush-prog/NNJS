@@ -8,6 +8,7 @@ const editSpecificObjective = require("./controllers/editSpecificObjective");
 const specificObjectiveRouter = express.Router();
 specificObjectiveRouter.get("/", getSpecificObjectives);
 specificObjectiveRouter.get("/:specificObjectiveId", getSpecificObjectiveById);
+specificObjectiveRouter.use(auth);
 specificObjectiveRouter.post("/create", createSpecificObjective);
 specificObjectiveRouter.delete(
   "/del/:specificObjectiveId",

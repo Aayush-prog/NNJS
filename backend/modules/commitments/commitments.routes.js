@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const commitmentsRouter = express.Router();
 commitmentsRouter.get("/", getCommitments);
 commitmentsRouter.get("/:commitmentId", getCommitmentById);
+commitmentsRouter.use(auth);
 commitmentsRouter.post("/create", upload, createCommitment);
 commitmentsRouter.delete("/del/:commitmentId", delCommitment);
 commitmentsRouter.patch("/edit/:commitmentId", upload, editCommitment);

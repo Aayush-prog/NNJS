@@ -9,6 +9,7 @@ const editHero = require("./controllers/editHero");
 const heroRouter = express.Router();
 heroRouter.get("/", getHero);
 heroRouter.get("/:heroId", getHeroById);
+heroRouter.use(auth);
 heroRouter.post("/create", upload, createHero);
 heroRouter.delete("/del/:heroId", delHero);
 heroRouter.patch("/edit/:heroId", upload, editHero);

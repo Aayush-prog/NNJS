@@ -9,6 +9,7 @@ const editBranch = require("./controllers/editBranch");
 const branchRouter = express.Router();
 branchRouter.get("/", getBranches);
 branchRouter.get("/:branchId", getBranchById);
+branchRouter.use(auth);
 branchRouter.post("/create", upload, createBranch);
 branchRouter.delete("/del/:branchId", delBranch);
 branchRouter.patch("/edit/:branchId", upload, editBranch);

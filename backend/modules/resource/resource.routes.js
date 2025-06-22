@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const impactsRouter = express.Router();
 impactsRouter.get("/", getResource);
 impactsRouter.get("/:resourceId", getResourceById);
+impactsRouter.use(auth);
 impactsRouter.post("/create", upload, createResource);
 impactsRouter.delete("/del/:resourceId", delResource);
 impactsRouter.patch("/edit/:resourceId", upload, editResource);

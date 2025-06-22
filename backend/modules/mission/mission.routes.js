@@ -9,6 +9,7 @@ const editMission = require("./controllers/editMission");
 const missionROuter = express.Router();
 missionROuter.get("/", getMission);
 missionROuter.get("/:missionId", getMissionById);
+missionROuter.use(auth);
 missionROuter.post("/create", createMission);
 missionROuter.delete("/del/:missionId", delMission);
 missionROuter.patch("/edit/:missionId", editMission);

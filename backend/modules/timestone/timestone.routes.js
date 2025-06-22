@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const timestoneRouter = express.Router();
 timestoneRouter.get("/", getTimestone);
 timestoneRouter.get("/:timestoneId", getTimestoneById);
+timestoneRouter.use(auth);
 timestoneRouter.post("/create", upload, createTimestone);
 timestoneRouter.delete("/del/:timestoneId", delTimestone);
 timestoneRouter.patch("/edit/:timestoneId", upload, editTimestone);
