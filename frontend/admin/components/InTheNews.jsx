@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaPen, FaTrash, FaPlus } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import Pagination from "./Pagination";
@@ -8,13 +8,10 @@ import Loading from "../components/Loading";
 import axios from "axios";
 
 const InTheNews = ({
-  news,
-  api,
   currentPage,
   articlesPerPage,
   handlePageChange,
   totalPages,
-  setNews,
 }) => {
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
@@ -32,7 +29,11 @@ const InTheNews = ({
   };
 
   const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [editingArticleId, setEditingArticleId] = useState(null);
+  const [news, setNews] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [editingMediaId, setEditingMediaId] = useState(null);
   const [newArticle, setNewArticle] = useState({
     title: "",
     body: "",
@@ -40,89 +41,162 @@ const InTheNews = ({
     type: "News",
   });
   const [imageDeleted, setimageDeleted] = useState(false);
+  const api = import.meta.env.VITE_URL;
 
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  {
+    loading && (
+      <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
 
   const handleInputChange = (e) => {
     setNewArticle({ ...newArticle, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
-    setNewArticle({ ...newArticle, image: e.target.files[0] });
+    setSelectedImage(e.target.files[0]);
+    setNewArticle((prev) => ({ ...prev, image: e.target.files[0] }));
   };
+
+  const fetchNews = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${api}/media`);
+      if (res.status === 200) {
+        setNews(res.data.news || []);
+        setLoading(false);
+      } else {
+        console.error("Error fetching page: Status code", res.status);
+        setLoading(false); // Ensure loading is set to false even on error
+      }
+    } catch (error) {
+      console.error("Error fetching page:", error);
+      setLoading(false); // Ensure loading is set to false even on error
+    }
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, [api]);
 
   const handleAddArticle = async () => {
-    const formData = new FormData();
-    formData.append("title", newArticle.title);
-    formData.append("body", newArticle.body);
-    if (newArticle.image instanceof File) {
-      formData.append("image", newArticle.image);
-    }
-    formData.append("type", newArticle.type);
-
+    setLoading(true);
     try {
-      const response = await axios.post(`${api}/media/create`, formData);
-      const newArticleData = response.data;
-      setNews([...news, newArticleData]);
-      setIsAdding(false);
-      setNewArticle({ title: "", body: "", image: null, type: "News" });
+      const formData = new FormData();
+      formData.append("title", newArticle.title);
+      formData.append("body", newArticle.body);
+      formData.append("type", newArticle.type);
+
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
+      const res = await axios.post(`${api}/media/create`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (res.status === 201) {
+        await fetchNews();
+        setNewArticle({
+          title: "",
+          body: "",
+          image: null,
+          type: "News",
+        });
+        setSelectedImage(null);
+        setIsAdding(false);
+      } else {
+        console.error("Error creating media:", res.status);
+      }
     } catch (error) {
-      console.error("Error adding article:", error);
+      console.error("Error creating media:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleEditArticle = (id) => {
-    const articleToEdit = news.find((article) => article._id === id);
-    setNewArticle({
-      title: articleToEdit.title,
-      body: articleToEdit.body,
-      image: null, // Reset to null for fresh upload
-      type: "News",
-    });
-    setEditingArticleId(id);
-    setimageDeleted(false);
+  const handleEditArticle = (mediaId) => {
+    setEditingArticleId(mediaId); // FIXED
+    const mediaToEdit = news.find((media) => media._id === mediaId);
+    if (mediaToEdit) {
+      setNewArticle({
+        title: mediaToEdit.title,
+        body: mediaToEdit.body,
+        image: mediaToEdit.image || null,
+        type: "News",
+        _id: mediaToEdit._id,
+      });
+    }
   };
 
   const handleUpdateArticle = async () => {
-    const formData = new FormData();
-    formData.append("title", newArticle.title);
-    formData.append("body", newArticle.body);
-    formData.append("type", newArticle.type);
-
-    if (newArticle.image instanceof File) {
-      formData.append("image", newArticle.image);
-    } else if (imageDeleted) {
-      formData.append("imageDeleted", true);
-    }
-
+    setLoading(true);
     try {
-      const response = await axios.patch(
-        `${api}/media/edit/${editingArticleId}`,
-        formData
+      const formData = new FormData();
+      formData.append("title", newArticle.title);
+      formData.append("body", newArticle.body);
+      formData.append("type", newArticle.type);
+      formData.append("imageDeleted", imageDeleted);
+
+      if (selectedImage) {
+        formData.append("image", selectedImage); // FIXED
+      }
+
+      const res = await axios.patch(
+        `${api}/media/edit/${newArticle._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      const updatedArticle = response.data;
-      setNews(
-        news.map((article) =>
-          article._id === editingArticleId ? updatedArticle : article
-        )
-      );
-      setEditingArticleId(null);
-      setNewArticle({ title: "", body: "", image: null, type: "News" });
+
+      if (res.status === 200) {
+        await fetchNews();
+        setNewArticle({
+          title: "",
+          body: "",
+          image: null,
+          type: "News",
+        });
+        setSelectedImage(null);
+        setEditingArticleId(null);
+      } else {
+        console.error("Error updating media:", res.status);
+      }
     } catch (error) {
-      console.error("Error updating article:", error);
+      console.error("Error updating media:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDeleteArticle = async (id) => {
+  const handleDeleteArticle = async (mediaId) => {
+    setLoading(true);
     try {
-      await axios.delete(`${api}/media/del/${id}`);
-      setNews(news.filter((article) => article._id !== id));
+      const res = await axios.delete(`${api}/media/del/${mediaId}`);
+      if (res.status === 200) {
+        await fetchNews();
+      } else {
+        console.error("Error deleting news:", res.status);
+      }
     } catch (error) {
-      console.error("Error deleting article:", error);
+      console.error("Error deleting news:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <section
@@ -270,7 +344,7 @@ const InTheNews = ({
       {editingArticleId && (
         <div
           className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }} //  Slightly Darker Overlay
         >
           <div className="bg-white p-6 rounded-xl shadow-md text-center relative w-full max-w-md">
             <button
@@ -279,7 +353,7 @@ const InTheNews = ({
             >
               <RxCross2 className="inline-block h-5 w-5" />
             </button>
-            <h3 className="text-xl font-semibold mb-4">Edit Article</h3>
+            <h3 className="text-xl font-semibold mb-4">Edit News</h3>
             <input
               type="text"
               name="title"
@@ -295,15 +369,17 @@ const InTheNews = ({
               className="w-full border mb-2 p-2"
               placeholder="Body"
             />
-            {newArticle.image && !imageDeleted && (
+            {newArticle.image && (
               <button
                 className="p-3 bg-accent"
                 onClick={() => {
                   setimageDeleted(true);
-                  setNewArticle({ ...newArticle, image: null });
+                  newArticle.image = null;
+                  console.log("deleted");
                 }}
               >
-                Delete image
+                {" "}
+                Delete file
               </button>
             )}
             <input
@@ -316,7 +392,7 @@ const InTheNews = ({
               onClick={handleUpdateArticle}
               className="w-full bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2"
             >
-              <FaPen /> Update Article
+              <FaPen /> Update Resource
             </button>
           </div>
         </div>

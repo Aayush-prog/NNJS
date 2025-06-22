@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delMedia = async (req, res) => {
   const MediaModel = mongoose.model("Media");
-  const {} = req.body;
   const { mediaId } = req.params;
   try {
     const media = await MediaModel.findById(mediaId);
