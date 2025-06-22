@@ -12,6 +12,7 @@ import {
 import { AuthContext } from "../../AuthContext";
 
 export default function CoreValues() {
+  
   const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
