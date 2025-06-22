@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const getResource = async (req, res) => {
   const ResourceModel = mongoose.model("Resources");
   try {
-    const notices = await ResourceModel.find({ type: "Notice & Reports" });
+    const notice = await ResourceModel.find({ type: "Notice & Reports" });
     const guidelines = await ResourceModel.find({
       type: "Guidelines & Protocols",
     });
@@ -13,7 +13,7 @@ const getResource = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Resources found successfully",
-      notices,
+      notice,
       guidelines,
       media,
       publications,

@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteFile = require("../../../handlers/delFile");
 const editResource = async (req, res) => {
   const ResourceModel = mongoose.model("Resources");
-  const { title, body, link, type } = req.body;
+  const { title, body, link, type, fileDeleted } = req.body;
   const { resourceId } = req.params;
   const file = req.files?.file?.[0]
     ? path.basename(req.files.file[0].path)
@@ -15,13 +16,28 @@ const editResource = async (req, res) => {
         message: "Resources not found",
       });
     }
-    const updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
+    let updatedResource;
+    if (fileDeleted == "true") {
+      deleteFile(resource.file);
+    }
+        if (file) {
+          deleteFile(resource.file);
+          updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
       title,
       body,
       link,
       type,
       file,
     });
+        } else {
+          updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
+      title,
+      body,
+      link,
+      type,
+    });
+        }
+    
     res.status(200).json({
       status: "success",
       message: "Resources updated successfully",

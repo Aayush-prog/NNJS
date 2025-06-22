@@ -16,17 +16,18 @@ const editSubSection = async (req, res) => {
         message: "SubSection not found",
       });
     }
+    let updatedSubSection;
     if (imageDeleted == "true") {
       deleteImage(subSection.image);
     }
     if (image) {
       deleteImage(subSection.image);
-      const updatedSubSection = await SubSectionModel.findByIdAndUpdate(
+      updatedSubSection = await SubSectionModel.findByIdAndUpdate(
         subSectionId,
         { title, image, body }
       );
     }
-    const updatedSubSection = await SubSectionModel.findByIdAndUpdate(
+    updatedSubSection = await SubSectionModel.findByIdAndUpdate(
       subSectionId,
       { title, body }
     );
