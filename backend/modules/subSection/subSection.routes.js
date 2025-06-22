@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const subSectionRouter = express.Router();
 subSectionRouter.get("/", getSubSection);
 subSectionRouter.get("/:subSectionId", getSubSectionById);
+subSectionRouter.use(auth);
 subSectionRouter.post("/create", upload, createSubSection);
 subSectionRouter.delete("/del/:subSectionId", delSubSection);
 subSectionRouter.patch("/edit/:subSectionId", upload, editSubSection);

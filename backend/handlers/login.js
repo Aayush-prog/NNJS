@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const login = async (req, res) => {
   const UserModel = mongoose.model("User");
   const { email, password } = req.body;
-
+  console.log(email, password);
   try {
     if (!email) {
       return res
@@ -40,7 +40,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ _id: user._id, role: user.role }, jwtSalt);
-
+    console.log("loggedin");
     res.status(200).json({
       status: "success",
       token,

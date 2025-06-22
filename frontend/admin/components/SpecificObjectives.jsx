@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   FaCheckCircle,
   FaPen,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 
 export default function SpecificObjectives() {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export default function SpecificObjectives() {
     title: "",
     objectives: [""],
   });
-
+  const { authToken } = useContext(AuthContext);
   const api = import.meta.env.VITE_URL;
 
   useEffect(() => {
@@ -58,10 +59,14 @@ export default function SpecificObjectives() {
   const handleSave = async (item, index) => {
     try {
       const { _id, title, objectives: objArray } = item;
-      const res = await axios.patch(`${api}/specificObjectives/edit/${_id}`, {
-        title,
-        objectives: objArray,
-      });
+      const res = await axios.patch(
+        `${api}/specificObjectives/edit/${_id}`,
+        {
+          title,
+          objectives: objArray,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
       }
@@ -72,7 +77,9 @@ export default function SpecificObjectives() {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/specificObjectives/del/${_id}`);
+      await axios.delete(`${api}/specificObjectives/del/${_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setObjectives((prev) => prev.filter((item) => item._id !== _id));
     } catch (error) {
       console.error("Delete Error:", error);
@@ -83,7 +90,8 @@ export default function SpecificObjectives() {
     try {
       const res = await axios.post(
         `${api}/specificObjectives/create`,
-        newObjective
+        newObjective,
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
       if (res.status === 201) {
         setObjectives([...objectives, res.data.data]);

@@ -17,6 +17,7 @@ personRouter.get("/board", getBoard);
 personRouter.get("/founder", getFounder);
 personRouter.get("/past", getPast);
 personRouter.get("/getById/:personId", getPersonById);
+personRouter.use(auth);
 personRouter.post("/create", upload, createPerson);
 personRouter.delete("/del/:personId", delPerson);
 personRouter.patch("/edit/:personId", upload, editPerson);

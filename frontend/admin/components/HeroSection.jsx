@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { FaPen, FaSave, FaArrowLeft } from "react-icons/fa";
+import { AuthContext } from "../../AuthContext";
 
 const HeroSection = ({ id, image, title, body }) => {
   const api = import.meta.env.VITE_URL;
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title || "");
+  const { authToken } = useContext(AuthContext);
   const [editedBody, setEditedBody] = useState(body || "");
   const [editedImage, setEditedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(
@@ -35,7 +37,10 @@ const HeroSection = ({ id, image, title, body }) => {
       }
 
       const response = await axios.patch(`${api}/hero/edit/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
+        },
       });
 
       console.log("Hero section updated:", response.data);

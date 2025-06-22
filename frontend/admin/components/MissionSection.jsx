@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import * as FaIcons from "react-icons/fa";
 import { FaPen, FaTrash, FaSave, FaPlus, FaArrowLeft } from "react-icons/fa";
 import SearchableIconPicker from "./SearchableIconPicker";
 import Loading from "./Loading";
+import { AuthContext } from "../../AuthContext";
 
 export default function MissionSection() {
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export default function MissionSection() {
 
   const api = import.meta.env.VITE_URL;
   const iconMap = { ...FaIcons };
-
+  const { authToken } = useContext(AuthContext);
   const fetchMissions = async () => {
     try {
       setLoading(true);
@@ -50,12 +51,18 @@ export default function MissionSection() {
   const handleSave = async (item, index) => {
     try {
       const { _id, title, body, icon, color } = item;
-      const res = await axios.patch(`${api}/mission/edit/${_id}`, {
-        title,
-        body,
-        icon,
-        color,
-      });
+      const res = await axios.patch(
+        `${api}/mission/edit/${_id}`,
+        {
+          title,
+          body,
+          icon,
+          color,
+        },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
       }
@@ -66,7 +73,9 @@ export default function MissionSection() {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/mission/del/${_id}`);
+      await axios.delete(`${api}/mission/del/${_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setMissions((prev) => prev.filter((m) => m._id !== _id));
     } catch (error) {
       console.error("Error deleting mission:", error);
@@ -75,7 +84,9 @@ export default function MissionSection() {
 
   const handleAddMission = async () => {
     try {
-      const res = await axios.post(`${api}/mission/create`, newMission);
+      const res = await axios.post(`${api}/mission/create`, newMission, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       if (res.status === 201) {
         setMissions([...missions, res.data.data]);
         setNewMission({

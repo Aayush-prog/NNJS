@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   FaPen,
@@ -11,6 +11,7 @@ import {
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 
 export default function Partners() {
   const [logos, setLogos] = useState({ current: [], past: [], special: [] });
@@ -40,7 +41,7 @@ export default function Partners() {
       setLoading(false);
     }
   };
-
+  const { authToken } = useContext(AuthContext);
   useEffect(() => {
     fetchPartners();
   }, [api]);
@@ -69,7 +70,10 @@ export default function Partners() {
       formData.append("image", newPartner.image);
 
       await axios.post(`${api}/partners/create`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
+        },
       });
 
       setNewPartner({ name: "", image: null, type: "Current" });

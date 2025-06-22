@@ -12,6 +12,7 @@ strategicObjectiveRouter.get(
   "/:strategicObjectiveId",
   getStrategicObjectiveById
 );
+strategicObjectiveRouter.use(auth);
 strategicObjectiveRouter.post("/create", upload, createStrategicObjective);
 strategicObjectiveRouter.delete(
   "/del/:strategicObjectiveId",

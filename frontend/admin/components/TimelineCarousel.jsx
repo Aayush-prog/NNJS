@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -16,6 +16,7 @@ import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 
 const TimelineCarousel = () => {
   const prevRef = useRef(null);
@@ -30,7 +31,7 @@ const TimelineCarousel = () => {
     year: "",
     image: null, // Store the file object instead of the filename
   });
-
+  const { authToken } = useContext(AuthContext);
   const api = import.meta.env.VITE_URL;
 
   const fetchTimestone = async () => {
@@ -62,6 +63,7 @@ const TimelineCarousel = () => {
       await axios.post(`${api}/timeStone/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
       setIsAdding(false);
@@ -93,6 +95,7 @@ const TimelineCarousel = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -108,7 +111,9 @@ const TimelineCarousel = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/timeStone/del/${id}`);
+      await axios.delete(`${api}/timeStone/del/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       fetchTimestone();
     } catch (error) {
       console.error("Error deleting:", error);

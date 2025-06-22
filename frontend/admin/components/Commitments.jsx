@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as ReactIcons from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { FaPen, FaSave, FaArrowLeft, FaTrash, FaPlus } from "react-icons/fa";
 import SearchableIconPicker from "./SearchableIconPicker";
+import { AuthContext } from "../../AuthContext";
 
 const Commitments = () => {
   const [loading, setLoading] = useState(false);
   const [commitments, setCommitments] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const { authToken } = useContext(AuthContext);
   const [newCommitment, setNewCommitment] = useState({
     icon: "FaStar",
     title: "",
@@ -56,12 +58,16 @@ const Commitments = () => {
   const handleSave = async (obj, index) => {
     try {
       const { _id, title, body, icon, color } = obj;
-      const res = await axios.patch(`${api}/commitments/edit/${_id}`, {
-        title,
-        body,
-        icon,
-        color,
-      });
+      const res = await axios.patch(
+        `${api}/commitments/edit/${_id}`,
+        {
+          title,
+          body,
+          icon,
+          color,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
         fetchCommitments();
@@ -73,7 +79,9 @@ const Commitments = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/commitments/del/${_id}`);
+      await axios.delete(`${api}/commitments/del/${_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setCommitments((prev) => prev.filter((c) => c._id !== _id));
     } catch (error) {
       console.error("Error deleting commitment:", error);
@@ -82,7 +90,11 @@ const Commitments = () => {
 
   const handleAddCommitment = async () => {
     try {
-      await axios.post(`${api}/commitments/create`, newCommitment);
+      await axios.post(`${api}/commitments/create`, newCommitment, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       setNewCommitment({
         icon: "FaStar",
         title: "",

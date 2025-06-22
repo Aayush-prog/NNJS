@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as ReactIcons from "react-icons/fa";
 import axios from "axios";
 import Loading from "./Loading";
 import { FaPen, FaSave, FaArrowLeft, FaTrash, FaPlus } from "react-icons/fa";
 import SearchableIconPicker from "./SearchableIconPicker";
+import { AuthContext } from "../../AuthContext";
 
 export default function ObjectivesSection() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function ObjectivesSection() {
   });
   const api = import.meta.env.VITE_URL;
   const iconMap = { ...ReactIcons };
-
+  const { authToken } = useContext(AuthContext);
   const IconRenderer = ({ iconName, color }) => {
     const IconComponent = iconMap[iconName];
     return IconComponent ? (
@@ -57,12 +58,16 @@ export default function ObjectivesSection() {
   const handleSave = async (obj, index) => {
     try {
       const { _id, title, body, icon, color } = obj;
-      const res = await axios.patch(`${api}/strategicObjectives/edit/${_id}`, {
-        title,
-        body,
-        icon,
-        color,
-      });
+      const res = await axios.patch(
+        `${api}/strategicObjectives/edit/${_id}`,
+        {
+          title,
+          body,
+          icon,
+          color,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
       }
@@ -73,7 +78,11 @@ export default function ObjectivesSection() {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/strategicObjectives/del/${_id}`);
+      await axios.delete(`${api}/strategicObjectives/del/${_id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       setObjectives((prev) => prev.filter((o) => o._id !== _id));
     } catch (error) {
       console.error("Error deleting objective:", error);
@@ -84,7 +93,8 @@ export default function ObjectivesSection() {
     try {
       const res = await axios.post(
         `${api}/strategicObjectives/create`,
-        newObjective
+        newObjective,
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
       if (res.status === 201) {
         setObjectives([...objectives, res.data.data]);

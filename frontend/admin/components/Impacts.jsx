@@ -4,6 +4,7 @@ import axios from "axios";
 import Loading from "./Loading";
 import { FaPen, FaSave, FaArrowLeft, FaTrash, FaPlus } from "react-icons/fa";
 import SearchableIconPicker from "./SearchableIconPicker";
+import { AuthContext } from "../../AuthContext";
 export default function Impacts() {
   const [loading, setLoading] = useState(false);
   const [impacts, setImpacts] = useState([]);
@@ -16,6 +17,7 @@ export default function Impacts() {
   const api = import.meta.env.VITE_URL;
   const [isAdding, setIsAdding] = useState(false);
   const iconMap = { ...ReactIcons };
+  const { authToken } = useState(AuthContext);
   const iconNames = Object.keys(iconMap).filter((name) =>
     name.startsWith("Fa")
   );
@@ -55,11 +57,15 @@ export default function Impacts() {
   const handleSave = async (impact, index) => {
     try {
       const { _id, title, count, icon } = impact;
-      const res = await axios.patch(`${api}/impacts/edit/${_id}`, {
-        title,
-        count,
-        icon,
-      });
+      const res = await axios.patch(
+        `${api}/impacts/edit/${_id}`,
+        {
+          title,
+          count,
+          icon,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
       }
@@ -70,7 +76,9 @@ export default function Impacts() {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/impacts/del/${_id}`);
+      await axios.delete(`${api}/impacts/del/${_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setImpacts((prev) => prev.filter((i) => i._id !== _id));
     } catch (error) {
       console.error("Error deleting impact:", error);
@@ -79,7 +87,11 @@ export default function Impacts() {
 
   const handleAddImpact = async () => {
     try {
-      const res = await axios.post(`${api}/impacts/create`, newImpact);
+      const res = await axios.post(`${api}/impacts/create`, newImpact, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       if (res.status === 201) {
         setImpacts([...impacts, res.data.data]);
         setNewImpact({ icon: "FaStar", title: "", count: "" });

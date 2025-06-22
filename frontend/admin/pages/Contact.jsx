@@ -69,11 +69,15 @@ export default function Contact() {
   const saveContact = async () => {
     try {
       setLoading(true);
-      const response = await axios.patch(`${api}/contact/edit/${contact._id}`, {
-        mailingAddress: contact.mailingAddress,
-        physicalAddress: contact.physicalAddress,
-        reachUs: contact.reachUs,
-      });
+      const response = await axios.patch(
+        `${api}/contact/edit/${contact._id}`,
+        {
+          mailingAddress: contact.mailingAddress,
+          physicalAddress: contact.physicalAddress,
+          reachUs: contact.reachUs,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
 
       if (response.status === 200) {
         console.log("Contact updated successfully");
