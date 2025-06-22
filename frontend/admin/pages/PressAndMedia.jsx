@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import { FaArrowCircleUp } from "react-icons/fa";
+import { FaArrowCircleUp, FaPen, FaTrash, FaPlus } from "react-icons/fa";
 import Loading from "../components/Loading";
 import axios from "axios";
 import HeroSection from "../components/HeroSection";
 import { format } from "date-fns";
 import GalleryItem from "../components/GalleryItem";
 import InTheNews from "../components/InTheNews";
-import PressReleasesSection from "../components/PressReleasesSection"; // Import PressReleasesSection
+import PressReleasesSection from "../components/PressReleasesSection";
+import { AuthContext } from "../../AuthContext"; 
 
 export default function PressAndMedia() {
   // track viewport width
@@ -136,6 +137,168 @@ export default function PressAndMedia() {
       gallerySection.scrollIntoView({ behavior: "smooth" });
     }
   };
+  const { authToken } = useContext(AuthContext); 
+
+  // Add new state for gallery management
+  const [isAddingGallery, setIsAddingGallery] = useState(false);
+  const [editingGalleryId, setEditingGalleryId] = useState(null);
+  const [newGalleryItem, setNewGalleryItem] = useState({
+    title: "",
+    body: "",
+    type: "Gallery", 
+    video: "",
+    images: [],
+  });
+  const [editedGalleryItem, setEditedGalleryItem] = useState({
+    title: "",
+    body: "",
+    type: "Gallery", 
+    video: "",
+    images: [],
+  });
+
+  // Gallery management functions
+  const handleAddGalleryItem = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("title", newGalleryItem.title);
+      formData.append("body", newGalleryItem.body);
+      
+      // Set the correct type based on selection
+      const mediaType = newGalleryItem.type === "video" ? "Gallery" : "Gallery";
+      formData.append("type", mediaType);
+
+      if (newGalleryItem.type === "video") {
+        formData.append("video", newGalleryItem.video);
+      }
+
+      // Handle multiple images
+      newGalleryItem.images.forEach((image, index) => {
+        formData.append("images", image);
+      });
+
+      const response = await axios.post(`${api}/media/create`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      console.log("New gallery item added:", response.data);
+      setIsAddingGallery(false);
+      setNewGalleryItem({
+        title: "",
+        body: "",
+        type: "Gallery", // Reset to "Gallery"
+        video: "",
+        images: [],
+      });
+
+      // Refresh gallery data
+      const mediaResponse = await axios.get(`${api}/media`);
+      setGallery(mediaResponse.data.gallery);
+    } catch (error) {
+      console.error("Error adding new gallery item:", error);
+      // Log the actual error response for debugging
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      }
+    }
+  };
+
+  const handleEditGalleryItem = (item) => {
+    setEditingGalleryId(item._id);
+    setEditedGalleryItem({
+      title: item.title || "",
+      body: item.body || "",
+      type: item.type || "Gallery",
+      video: item.video || "",
+      images: [],
+    });
+  };
+
+  const handleUpdateGalleryItem = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("title", editedGalleryItem.title);
+      formData.append("body", editedGalleryItem.body);
+      
+      // Set the correct type
+      const mediaType = editedGalleryItem.type === "video" ? "Gallery" : "Gallery";
+      formData.append("type", mediaType);
+
+      if (editedGalleryItem.type === "video") {
+        formData.append("video", editedGalleryItem.video);
+      }
+
+      // Handle new images if any
+      editedGalleryItem.images.forEach((image, index) => {
+        formData.append("images", image);
+      });
+
+      const response = await axios.patch(
+        `${api}/media/edit/${editingGalleryId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log("Gallery item updated:", response.data);
+      setEditingGalleryId(null);
+
+      // Refresh gallery data
+      const mediaResponse = await axios.get(`${api}/media`);
+      setGallery(mediaResponse.data.gallery);
+    } catch (error) {
+      console.error("Error updating gallery item:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      }
+    }
+  };
+
+  const handleDeleteGalleryItem = async (itemId) => {
+    if (window.confirm("Are you sure you want to delete this gallery item?")) {
+      try {
+        await axios.delete(`${api}/media/del/${itemId}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+
+        // Refresh gallery data
+        const mediaResponse = await axios.get(`${api}/media`);
+        setGallery(mediaResponse.data.gallery);
+        console.log("Gallery item deleted successfully");
+      } catch (error) {
+        console.error("Error deleting gallery item:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+        }
+      }
+    }
+  };
+
+  const handleNewGalleryChange = (e) => {
+    const { name, value } = e.target;
+    setNewGalleryItem({ ...newGalleryItem, [name]: value });
+  };
+
+  const handleEditedGalleryChange = (e) => {
+    const { name, value } = e.target;
+    setEditedGalleryItem({ ...editedGalleryItem, [name]: value });
+  };
+
+  const handleNewGalleryImagesChange = (e) => {
+    setNewGalleryItem({ ...newGalleryItem, images: Array.from(e.target.files) });
+  };
+
+  const handleEditedGalleryImagesChange = (e) => {
+    setEditedGalleryItem({ ...editedGalleryItem, images: Array.from(e.target.files) });
+  };
+
   if (loading) return <Loading />;
   return (
     <div>
@@ -183,10 +346,172 @@ export default function PressAndMedia() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
             >
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
-                Photo & Video Library
-              </h2>
+              <div className="flex justify-between items-center mb-12">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-secondary">
+                  Photo & Video Library
+                </h2>
+                <button
+                  onClick={() => setIsAddingGallery(true)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2"
+                >
+                  <FaPlus /> Add Gallery Item
+                </button>
+              </div>
             </motion.div>
+
+            {/* Add Gallery Item Modal */}
+            {isAddingGallery && (
+              <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center p-4">
+                <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-96 overflow-y-auto">
+                  <h3 className="text-xl font-bold mb-4">Add Gallery Item</h3>
+
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    value={newGalleryItem.title}
+                    onChange={handleNewGalleryChange}
+                    className="w-full border rounded-lg p-2 mb-3"
+                  />
+
+                  <textarea
+                    name="body"
+                    placeholder="Description"
+                    value={newGalleryItem.body}
+                    onChange={handleNewGalleryChange}
+                    className="w-full border rounded-lg p-2 mb-3"
+                    rows="3"
+                  />
+
+                  <select
+                    name="type"
+                    value={newGalleryItem.type === "Gallery" ? "gallery" : "video"}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setNewGalleryItem({
+                        ...newGalleryItem,
+                        type: value === "video" ? "video" : "Gallery"
+                      });
+                    }}
+                    className="w-full border rounded-lg p-2 mb-3"
+                  >
+                    <option value="gallery">Photo Gallery</option>
+                    <option value="video">Video</option>
+                  </select>
+
+                  {newGalleryItem.type === "video" ? (
+                    <input
+                      type="text"
+                      name="video"
+                      placeholder="YouTube Video URL"
+                      value={newGalleryItem.video}
+                      onChange={handleNewGalleryChange}
+                      className="w-full border rounded-lg p-2 mb-3"
+                    />
+                  ) : (
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleNewGalleryImagesChange}
+                      className="w-full border rounded-lg p-2 mb-3"
+                    />
+                  )}
+
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={handleAddGalleryItem}
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Add
+                    </button>
+                    <button
+                      onClick={() => setIsAddingGallery(false)}
+                      className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Edit Gallery Item Modal */}
+            {editingGalleryId && (
+              <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center p-4">
+                <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-96 overflow-y-auto">
+                  <h3 className="text-xl font-bold mb-4">Edit Gallery Item</h3>
+
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    value={editedGalleryItem.title}
+                    onChange={handleEditedGalleryChange}
+                    className="w-full border rounded-lg p-2 mb-3"
+                  />
+
+                  <textarea
+                    name="body"
+                    placeholder="Description"
+                    value={editedGalleryItem.body}
+                    onChange={handleEditedGalleryChange}
+                    className="w-full border rounded-lg p-2 mb-3"
+                    rows="3"
+                  />
+
+                  <select
+                    name="type"
+                    value={editedGalleryItem.type === "Gallery" && !editedGalleryItem.video ? "gallery" : "video"}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setEditedGalleryItem({
+                        ...editedGalleryItem,
+                        type: value === "video" ? "video" : "Gallery"
+                      });
+                    }}
+                    className="w-full border rounded-lg p-2 mb-3"
+                  >
+                    <option value="gallery">Photo Gallery</option>
+                    <option value="video">Video</option>
+                  </select>
+
+                  {editedGalleryItem.type === "video" ? (
+                    <input
+                      type="text"
+                      name="video"
+                      placeholder="YouTube Video URL"
+                      value={editedGalleryItem.video}
+                      onChange={handleEditedGalleryChange}
+                      className="w-full border rounded-lg p-2 mb-3"
+                    />
+                  ) : (
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleEditedGalleryImagesChange}
+                      className="w-full border rounded-lg p-2 mb-3"
+                    />
+                  )}
+
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={handleUpdateGalleryItem}
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => setEditingGalleryId(null)}
+                      className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {gallery.length === 0 ? (
               <div className="text-center py-12">
@@ -196,36 +521,56 @@ export default function PressAndMedia() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {currentGalleryItems.map((item) =>
-                    item.images.length > 0 ? (
-                      <GalleryItem item={item} images={item.images} />
-                    ) : (
-                      <motion.div
-                        variants={fadeInUp}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.1 }}
-                        key={item._id}
-                        className="w-full max-w-sm aspect-video rounded-lg overflow-hidden shadow"
-                      >
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          src={`https://www.youtube.com/embed/${getYouTubeId(
-                            item.video
-                          )}?rel=0`}
-                          title="YouTube video"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                        ></iframe>
-                      </motion.div>
-                    )
-                  )}
+                  {currentGalleryItems.map((item) => (
+                    <div key={item._id} className="relative group">
+                      {/* Admin Controls */}
+                      <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => handleEditGalleryItem(item)}
+                            className="p-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 text-xs"
+                          >
+                            <FaPen size={12} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteGalleryItem(item._id)}
+                            className="p-1 bg-red-500 text-white rounded-full hover:bg-red-600 text-xs"
+                          >
+                            <FaTrash size={12} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Gallery Item Content */}
+                      {item.images && item.images.length > 0 ? (
+                        <GalleryItem item={item} images={item.images} />
+                      ) : (
+                        <motion.div
+                          variants={fadeInUp}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true, amount: 0.1 }}
+                          className="w-full max-w-sm aspect-video rounded-lg overflow-hidden shadow"
+                        >
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${getYouTubeId(
+                              item.video
+                            )}?rel=0`}
+                            title="YouTube video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          ></iframe>
+                        </motion.div>
+                      )}
+                    </div>
+                  ))}
                 </div>
 
-                {/* Add Pagination for gallery instead of "View All" button */}
+                {/* Pagination */}
                 {gallery.length > galleryItemsPerPage && (
                   <div className="mt-8">
                     <Pagination
@@ -240,6 +585,7 @@ export default function PressAndMedia() {
           </div>
         </section>
       </main>
+
       <motion.div
         variants={fadeInUp}
         initial="hidden"
