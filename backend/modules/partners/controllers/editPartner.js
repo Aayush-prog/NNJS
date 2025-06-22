@@ -15,14 +15,24 @@ const editPartner = async (req, res) => {
         message: "Partners not found",
       });
     }
-    const updatedPartner = await PartnerModel.findByIdAndUpdate(partnerId, {
-      name,
-      image,
-      type,
-    });
+    let updatedPartner;
+    if (image) {
+      updatedPartner = await PartnerModel.findByIdAndUpdate(partnerId, {
+        name,
+        image,
+        type,
+      });
+    } else {
+      updatedPartner = await PartnerModel.findByIdAndUpdate(partnerId, {
+        name,
+        type,
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Partners updated successfully",
+      data: updatedPartner,
     });
   } catch (error) {
     res.status(400).json({

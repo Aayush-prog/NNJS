@@ -11,6 +11,7 @@ const createPartner = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Partners created successfully",
+      data: newPartner,
     });
   } catch (error) {
     res.status(400).json({
