@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading"; // Assuming you have a Loading component
+import { AuthContext } from "../../AuthContext";
 
 export default function StaffSection(props) {
   const [slidesPerView, setSlidesPerView] = useState(1);
@@ -24,7 +25,7 @@ export default function StaffSection(props) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingStaff, setEditingStaff] = useState(null);
-
+  const { authToken } = useContext(AuthContext);
   const [newStaffMember, setNewStaffMember] = useState({
     name: "",
     designation: "",
@@ -106,6 +107,7 @@ export default function StaffSection(props) {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -133,7 +135,9 @@ export default function StaffSection(props) {
   const handleDelete = async (id) => {
     try {
       setLoading(true);
-      await axios.delete(`${api}/person/del/${id}`);
+      await axios.delete(`${api}/person/del/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setStaffList((prev) => prev.filter((staff) => staff._id !== id));
     } catch (error) {
       console.error("Error deleting staff member:", error);
@@ -158,6 +162,7 @@ export default function StaffSection(props) {
       const res = await axios.post(`${api}/person/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 

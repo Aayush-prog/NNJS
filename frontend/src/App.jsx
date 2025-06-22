@@ -33,6 +33,7 @@ import AdminHospitalDetail from "../admin/components/HospitalDetail";
 import AdminCenterDetail from "../admin/components/CenterDetail";
 import AdminBranchDetail from "../admin/components/BranchDetail";
 import AdminDonate from "../admin/pages/Donate";
+import PrivateRouter from "../PrivateRouter";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -57,23 +58,53 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/admin">
-          <Route index element={<AdminLanding />} />
-          <Route path="/admin/mission" element={<AdminMission />} />
-          <Route path="/admin/donate" element={<AdminDonate />} />
-          <Route path="/admin/contact" element={<AdminContact />} />
-          <Route path="/admin/mission" element={<AdminMission />} />
-          <Route path="/admin/partners" element={<AdminPartners />} />
-          <Route path="/admin/history" element={<AdminHistory />} />
+          <Route index element={<PrivateRouter element={<AdminLanding />} />} />
+          <Route
+            path="/admin/mission"
+            element={<PrivateRouter element={<AdminMission />} />}
+          />
+          <Route
+            path="/admin/donate"
+            element={<PrivateRouter element={<AdminDonate />} />}
+          />
+          <Route
+            path="/admin/contact"
+            element={<PrivateRouter element={<AdminContact />} />}
+          />
+          <Route
+            path="/admin/mission"
+            element={<PrivateRouter element={<AdminMission />} />}
+          />
+          <Route
+            path="/admin/partners"
+            element={<PrivateRouter element={<AdminPartners />} />}
+          />
+          <Route
+            path="/admin/history"
+            element={<PrivateRouter element={<AdminHistory />} />}
+          />
           <Route path="/admin/team" element={<AdminTeam />} />
-          <Route path="/admin/what_we_do" element={<AdminLocations />}>
+          <Route
+            path="/admin/what_we_do"
+            element={<PrivateRouter element={<AdminLocations />} />}
+          >
             <Route path="hospital/:id" element={<AdminHospitalDetail />} />
             <Route path="care/:id" element={<AdminCenterDetail />} />
             <Route path="branch/:id" element={<AdminBranchDetail />} />
           </Route>
 
-          <Route path="/admin/ethical" element={<AdminEthicalReview />} />
-          <Route path="/admin/resources" element={<AdminResources />} />
-          <Route path="/admin/press" element={<AdminPressAndMedia />} />
+          <Route
+            path="/admin/ethical"
+            element={<PrivateRouter element={<AdminEthicalReview />} />}
+          />
+          <Route
+            path="/admin/resources"
+            element={<PrivateRouter element={<AdminResources />} />}
+          />
+          <Route
+            path="/admin/press"
+            element={<PrivateRouter element={<AdminPressAndMedia />} />}
+          />
         </Route>
       </Route>
     )

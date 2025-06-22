@@ -9,13 +9,14 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 
 export default function PastChairpersons() {
   const [chairpersons, setChairpersons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-
+  const { authToken } = useState(AuthContext);
   const [newChairperson, setNewChairperson] = useState({
     name: "",
     designation: "",
@@ -71,6 +72,7 @@ export default function PastChairpersons() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -99,7 +101,9 @@ export default function PastChairpersons() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/person/del/${id}`);
+      await axios.delete(`${api}/person/del/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setChairpersons((prev) => prev.filter((chair) => chair._id !== id));
     } catch (error) {
       console.error("Error deleting chairperson:", error);
@@ -121,6 +125,7 @@ export default function PastChairpersons() {
       const res = await axios.post(`${api}/person/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 

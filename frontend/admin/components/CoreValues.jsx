@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 import {
@@ -9,12 +9,14 @@ import {
   FaTimes,
   FaCamera,
 } from "react-icons/fa";
+import { AuthContext } from "../../AuthContext";
 
 export default function CoreValues() {
   const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const { authToken } = useContext(AuthContext);
   const [newValue, setNewValue] = useState({
     title: "",
     body: "",
@@ -59,7 +61,10 @@ export default function CoreValues() {
         `${api}/values/edit/${editingValue._id}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
       );
 
@@ -80,7 +85,9 @@ export default function CoreValues() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/values/del/${id}`);
+      await axios.delete(`${api}/values/del/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setValues((prev) => prev.filter((v) => v._id !== id));
     } catch (error) {
       console.error("Error deleting value:", error);

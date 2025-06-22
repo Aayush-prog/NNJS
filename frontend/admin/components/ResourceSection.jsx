@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaPen, FaTrash, FaPlus } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
 import { GoDownload } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import Loading from "./Loading";
+import { AuthContext } from "../../AuthContext";
 
 const categories = [
   {
@@ -59,6 +60,7 @@ const ResourcesSection = () => {
     file: null,
     type: "Notice & Reports", // Default type
   });
+  const { authToken } = useContext(AuthContext);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const api = import.meta.env.VITE_URL; // Define api here
@@ -154,6 +156,7 @@ const ResourcesSection = () => {
       const res = await axios.post(`${api}/resource/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
@@ -219,6 +222,7 @@ const ResourcesSection = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -249,7 +253,9 @@ const ResourcesSection = () => {
   const handleDeleteResource = async (resourceId, type) => {
     setLoading(true);
     try {
-      const res = await axios.delete(`${api}/resource/del/${resourceId}`);
+      const res = await axios.delete(`${api}/resource/del/${resourceId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       if (res.status === 200) {
         // Update the appropriate state array based on the deleted resource's type
         fetchResource(); // Refresh all resources

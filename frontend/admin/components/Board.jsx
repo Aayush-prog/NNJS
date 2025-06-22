@@ -10,8 +10,8 @@ import {
   FaCamera,
 } from "react-icons/fa";
 import axios from "axios";
-import Loading from "../components/Loading"; // Ensure Loading component is available
-
+import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 export default function BoardMembers() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [boardMembers, setBoardMembers] = useState([]);
@@ -19,6 +19,7 @@ export default function BoardMembers() {
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingBoardMember, setEditingBoardMember] = useState({});
+  const { authToken } = useState(AuthContext);
 
   const [newBoardMember, setNewBoardMember] = useState({
     name: "",
@@ -87,6 +88,7 @@ export default function BoardMembers() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -115,7 +117,9 @@ export default function BoardMembers() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/person/del/${id}`);
+      await axios.delete(`${api}/person/del/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setBoardMembers((prev) => prev.filter((member) => member._id !== id));
       setCurrentIndex(0); // Reset to the first member after deletion
     } catch (error) {
@@ -138,6 +142,7 @@ export default function BoardMembers() {
       const res = await axios.post(`${api}/person/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
