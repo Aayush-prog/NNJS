@@ -16,15 +16,16 @@ const editValue = async (req, res) => {
         message: "Values not found",
       });
     }
+    let updatedValue;
     if (image) {
       deleteImage(value.image);
-      const updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
+      updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
         title,
         body,
         image,
       });
     } else {
-      const updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
+      updatedValue = await ValueModel.findByIdAndUpdate(valueId, {
         title,
         body,
       });
@@ -32,6 +33,7 @@ const editValue = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Values updated successfully",
+      data: updatedValue,
     });
   } catch (error) {
     res.status(400).json({

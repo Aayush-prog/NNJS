@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const deleteImage = require("../../../handlers/delImage");
 const delValue = async (req, res) => {
   const ValueModel = mongoose.model("Values");
   const { valueId } = req.params;
@@ -11,7 +12,8 @@ const delValue = async (req, res) => {
       });
     }
     const deletedValue = await ValueModel.findByIdAndDelete(valueId);
-    res.satus(201).json({
+    deleteImage(value.image);
+    res.status(200).json({
       status: "success",
       message: "Values deleted successfully",
     });
