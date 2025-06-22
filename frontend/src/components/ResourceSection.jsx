@@ -56,7 +56,7 @@ const ResourcesSection = () => {
         const res = await axios.get(`${api}/resource`);
         console.log(res.data);
         if (res.status === 200) {
-          setNotices(res.data.notices || []); // Initialize to empty array if undefined
+          setNotices(res.data.notice || []);
           setGuidelines(res.data.guidelines || []);
           setMedia(res.data.media || []);
           setPublications(res.data.publications || []);
@@ -175,7 +175,7 @@ const ResourcesSection = () => {
         {activeCategoryData && activeCategoryData.length > 0 ? (
           activeCategoryData.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto md:h-[150px] flex flex-col justify-between"
             >
               <div>
@@ -190,17 +190,27 @@ const ResourcesSection = () => {
                 </p>
               </div>
 
-              <div>
+              {item.link && (
                 <a
-                  href={item.file ? `${api}/files/${item.file}` : item.link}
+                  href={`${item.link}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"
                 >
-                  <Download className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                  Download PDF
+                  Visit Resource
                 </a>
-              </div>
+              )}
+              {item.file && (
+                <a
+                  href={`${api}/files/${item.file}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"
+                >
+                  <GoDownload className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                  Download Resource
+                </a>
+              )}
             </div>
           ))
         ) : (

@@ -146,7 +146,7 @@ const ResourcesSection = () => {
       formData.append("body", newResource.body);
       formData.append("link", newResource.link);
       formData.append("type", newResource.type);
-      formData.append("fileDeleted", fileDeleted);
+
       if (selectedFile) {
         formData.append("file", selectedFile);
       }
@@ -192,9 +192,9 @@ const ResourcesSection = () => {
         title: resourceToEdit.title,
         body: resourceToEdit.body,
         link: resourceToEdit.link,
-        file: resourceToEdit.file || null, // Assuming backend can handle null or filename
-        type: activeGroup, // Set the current group as the type
-        _id: resourceToEdit._id, // Store the ID for updating
+        file: resourceToEdit.file || null,
+        type: activeGroup,
+        _id: resourceToEdit._id,
       });
     }
   };
@@ -208,6 +208,7 @@ const ResourcesSection = () => {
       formData.append("body", newResource.body);
       formData.append("link", newResource.link);
       formData.append("type", newResource.type);
+      formData.append("fileDeleted", fileDeleted);
       if (selectedFile) {
         formData.append("file", selectedFile);
       }
@@ -371,20 +372,27 @@ const ResourcesSection = () => {
                   {item.body}
                 </p>
               </div>
-
-              <div className="mt-auto">
-                {" "}
-                {/* Push download to bottom. removed justify between on parent element*/}
+              {item.link && (
                 <a
-                  href={item.file ? `${api}/files/${item.file}` : item.link}
+                  href={`${item.link}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"
+                >
+                  Visit Resource
+                </a>
+              )}
+              {item.file && (
+                <a
+                  href={`${api}/files/${item.file}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 text-xs md:text-sm font-primary flex items-center hover:underline mt-2 md:mt-4"
                 >
                   <GoDownload className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                  Download PDF
+                  Download Resource
                 </a>
-              </div>
+              )}
             </div>
           ))
         ) : (
@@ -494,6 +502,19 @@ const ResourcesSection = () => {
               className="w-full border mb-2 p-2"
               placeholder="Link"
             />
+            {newResource.file && (
+              <button
+                className="p-3 bg-accent"
+                onClick={() => {
+                  setfileDeleted(true);
+                  newResource.file = null;
+                  console.log("deleted");
+                }}
+              >
+                {" "}
+                Delete file
+              </button>
+            )}
             <input
               type="file"
               name="file"

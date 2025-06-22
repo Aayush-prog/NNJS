@@ -17,27 +17,35 @@ const editResource = async (req, res) => {
       });
     }
     let updatedResource;
+    console.log(fileDeleted);
     if (fileDeleted == "true") {
       deleteFile(resource.file);
+      updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
+        title,
+        body,
+        link,
+        type,
+        file,
+      });
     }
-        if (file) {
-          deleteFile(resource.file);
-          updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
-      title,
-      body,
-      link,
-      type,
-      file,
-    });
-        } else {
-          updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
-      title,
-      body,
-      link,
-      type,
-    });
-        }
-    
+    if (file) {
+      deleteFile(resource.file);
+      updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
+        title,
+        body,
+        link,
+        type,
+        file,
+      });
+    } else {
+      updatedResource = await ResourceModel.findByIdAndUpdate(resourceId, {
+        title,
+        body,
+        link,
+        type,
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Resources updated successfully",
