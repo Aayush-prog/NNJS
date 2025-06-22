@@ -92,9 +92,9 @@ export default function WhatWeDo() {
   };
 
   // Detect if a detail route is active
-  const matchHospital = useMatch("/what_we_do/hospital/:id");
-  const matchCare = useMatch("/what_we_do/care/:id");
-  const matchBranch = useMatch("/what_we_do/branch/:id");
+  const matchHospital = useMatch("/admin/what_we_do/hospital/:id");
+  const matchCare = useMatch("/admin/what_we_do/care/:id");
+  const matchBranch = useMatch("/admin/what_we_do/branch/:id");
 
   return (
     <div className="w-full overflow-x-hidden">
