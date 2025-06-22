@@ -6,7 +6,7 @@ const partnerSchema = new mongoose.Schema(
     image: { type: String, required: true },
     type: {
       type: String,
-      enum: ["Current", "Past"],
+      enum: ["Current", "Past", "Special"],
       required: true,
     },
   },

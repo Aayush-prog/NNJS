@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const deleteImage = require("../../../handlers/delImage");
 const delPartner = async (req, res) => {
   const PartnerModel = mongoose.model("Partners");
-  const {} = req.body;
+
   const { partnerId } = req.params;
   try {
     const partner = await PartnerModel.findById(partnerId);
@@ -12,6 +13,7 @@ const delPartner = async (req, res) => {
       });
     }
     const deletedPartner = await PartnerModel.findByIdAndDelete(partnerId);
+    deleteImage(partner.image);
     res.status(200).json({
       status: "success",
       message: "Partners deleted successfully",
