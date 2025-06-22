@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const deleteFile = require("../../../handlers/delFile");
 const delResource = async (req, res) => {
   const ResourceModel = mongoose.model("Resources");
-  const {} = req.body;
   const { resourceId } = req.params;
   try {
     const resource = await ResourceModel.findById(resourceId);
+  
     if (!resource) {
       return res.status(404).json({
         status: "error",
@@ -12,6 +13,7 @@ const delResource = async (req, res) => {
       });
     }
     const deletedResource = await ResourceModel.findByIdAndDelete(resourceId);
+    deleteFile(resource.file);
     res.status(200).json({
       status: "success",
       message: "Resources deleted successfully",

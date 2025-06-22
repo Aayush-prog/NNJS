@@ -62,12 +62,16 @@ export default function Donate() {
   const saveBankDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.patch(`${api}/bank/edit/${bank._id}`, {
-        accName: bank.accName,
-        accNum: bank.accNum,
-        bank: bank.bank,
-        swiftCode: bank.swiftCode,
-      });
+      const response = await axios.patch(
+        `${api}/bank/edit/${bank._id}`,
+        {
+          accName: bank.accName,
+          accNum: bank.accNum,
+          bank: bank.bank,
+          swiftCode: bank.swiftCode,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
 
       if (response.status === 200) {
         console.log("Bank details updated successfully");

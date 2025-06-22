@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import {
@@ -14,6 +14,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import SubSection from "../components/SubSection";
 import HeroSection from "../components/HeroSection";
+import { AuthContext } from "../../AuthContext";
 
 const faqs = [
   {
@@ -145,7 +146,7 @@ export default function EthicalReview() {
   });
   const [loading, setLoading] = useState(false);
   const api = import.meta.env.VITE_URL;
-
+  const { authToken } = useContext(AuthContext);
   useEffect(() => {
     const fetchCommitments = async () => {
       try {
@@ -178,12 +179,16 @@ export default function EthicalReview() {
   const handleSave = async (obj, index) => {
     try {
       const { _id, title, description, icon, color } = obj;
-      const res = await axios.patch(`${api}/ircObjectives/edit/${_id}`, {
-        title,
-        description,
-        icon,
-        color,
-      });
+      const res = await axios.patch(
+        `${api}/ircObjectives/edit/${_id}`,
+        {
+          title,
+          description,
+          icon,
+          color,
+        },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 200) {
         setEditingIndex(null);
         fetchObjectives(); // Refresh after save
@@ -195,7 +200,9 @@ export default function EthicalReview() {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${api}/ircObjectives/del/${_id}`);
+      await axios.delete(`${api}/ircObjectives/del/${_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
       setObjectives((prev) => prev.filter((o) => o._id !== _id));
       fetchObjectives(); // Refresh after delete
     } catch (error) {
@@ -205,7 +212,11 @@ export default function EthicalReview() {
 
   const handleAddObjective = async () => {
     try {
-      const res = await axios.post(`${api}/ircObjectives/create`, newObjective);
+      const res = await axios.post(
+        `${api}/ircObjectives/create`,
+        newObjective,
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
       if (res.status === 201) {
         //setObjectives([...objectives, res.data.data]);
         setNewObjective({

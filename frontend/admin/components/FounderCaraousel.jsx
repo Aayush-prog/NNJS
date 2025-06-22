@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { AuthContext } from "../../AuthContext";
 
 export default function FoundersCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,7 +19,7 @@ export default function FoundersCarousel() {
   const [founders, setFounders] = useState([]); // Initialize with empty array to avoid undefined issues
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-
+  const { authToken } = useContext(AuthContext);
   const [newFounder, setNewFounder] = useState({
     name: "",
     designation: "",
@@ -88,6 +89,7 @@ export default function FoundersCarousel() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -116,7 +118,11 @@ export default function FoundersCarousel() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/person/del/${id}`);
+      await axios.delete(`${api}/person/del/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       setFounders((prev) => prev.filter((founder) => founder._id !== id));
       setCurrentIndex(0); // Reset to the first founder after deletion
     } catch (error) {
@@ -138,6 +144,7 @@ export default function FoundersCarousel() {
       const res = await axios.post(`${api}/person/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaPen, FaSave, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
+import { AuthContext } from "../../AuthContext";
 
 export default function SubSection({ title, body, image, id }) {
   const api = import.meta.env.VITE_URL;
-
+  const { authToken } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title || "");
   const [imageDeleted, setImageDeleted] = useState(false);
@@ -40,7 +41,10 @@ export default function SubSection({ title, body, image, id }) {
         `${api}/subSection/edit/${id}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
       );
 
