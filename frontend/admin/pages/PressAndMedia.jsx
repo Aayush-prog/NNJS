@@ -315,9 +315,6 @@ export default function PressAndMedia() {
         )}
 
         <InTheNews
-          news={news}
-          setNews={setNews}
-          api={api}
           currentPage={currentPage}
           articlesPerPage={articlesPerPage}
           handlePageChange={(page) => setCurrentPage(page)}

@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const eyeHospitalRouter = express.Router();
 eyeHospitalRouter.get("/", getEyeHospitals);
 eyeHospitalRouter.get("/:eyeHospitalId", getEyeHospitalById);
+eyeHospitalRouter.use(auth);
 eyeHospitalRouter.post("/create", upload, createEyeHospital);
 eyeHospitalRouter.delete("/del/:eyeHospitalId", delEyeHospital);
 eyeHospitalRouter.patch("/edit/:eyeHospitalId", upload, editEyeHospital);

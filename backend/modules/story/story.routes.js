@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const storyRouter = express.Router();
 storyRouter.get("/", getStory);
 storyRouter.get("/:storyId", getStoryById);
+storyRouter.use(auth);
 storyRouter.post("/create", upload, createStory);
 storyRouter.delete("/del/:storyId", delStory);
 storyRouter.patch("/edit/:storyId", upload, editStory);

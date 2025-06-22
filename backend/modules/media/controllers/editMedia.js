@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
+
 const editMedia = async (req, res) => {
   const MediaModel = mongoose.model("Media");
-  const { title, body, link, video, type } = req.body;
+  const { title, body, link, video, type, imageDeleted } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -19,7 +21,10 @@ const editMedia = async (req, res) => {
         message: "Media not found",
       });
     }
-    const updatedMedia = await MediaModel.findByIdAndUpdate(mediaId, {
+     let updatedMedia;
+        if (imageDeleted == "true") {
+          deleteImage(media.image);
+          updatedMedia = await MediaModel.findByIdAndUpdate(mediaId, {
       title,
       body,
       link,
@@ -29,6 +34,31 @@ const editMedia = async (req, res) => {
       video,
       images,
     });
+        }
+        if (image) {
+          deleteImage(media.image);
+          updatedMedia = await MediaModel.findByIdAndUpdate(mediaId, {
+      title,
+      body,
+      link,
+      video,
+      type,
+      image,
+      video,
+      images,
+    });
+        } else {
+         updatedMedia = await MediaModel.findByIdAndUpdate(mediaId, {
+      title,
+      body,
+      link,
+      video,
+      type,
+      image,
+      video,
+      images,
+    });
+        }
     res.status(200).json({
       status: "success",
       message: "Media updated successfully",

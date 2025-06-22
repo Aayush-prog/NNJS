@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const partnersRouter = express.Router();
 partnersRouter.get("/", getPartners);
 partnersRouter.get("/:partnerId", getPartnerById);
+partnersRouter.use(auth);
 partnersRouter.post("/create", upload, createPartner);
 partnersRouter.delete("/del/:partnerId", delPartner);
 partnersRouter.patch("/edit/:partnerId", upload, editPartner);

@@ -6,6 +6,7 @@ const delBank = require("./controllers/delBank");
 const editBank = require("./controllers/editBank");
 const bankRouter = express.Router();
 bankRouter.get("/", getBank);
+bankRouter.use(auth);
 bankRouter.post("/create", createBank);
 bankRouter.delete("/del/:bankId", delBank);
 bankRouter.patch("/edit/:bankId", editBank);

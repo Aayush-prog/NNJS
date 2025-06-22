@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const mediaRouter = express.Router();
 mediaRouter.get("/", getMedia);
 mediaRouter.get("/:mediaId", getMediaById);
+mediaRouter.use(auth);
 mediaRouter.post("/create", upload, createMedia);
 mediaRouter.delete("/del/:mediaId", delMedia);
 mediaRouter.patch("/edit/:mediaId", upload, editMedia);

@@ -68,7 +68,6 @@ const ResourcesSection = () => {
   const fetchResource = async () => {
     setLoading(true);
     try {
-      console.log(api);
       const res = await axios.get(`${api}/resource`);
       console.log(res.data);
       if (res.status === 200) {

@@ -9,6 +9,7 @@ const upload = require("../../middleware/upload");
 const valueRouter = express.Router();
 valueRouter.get("/", getValue);
 valueRouter.get("/:valueId", getValueById);
+valueRouter.use(auth);
 valueRouter.post("/create", upload, createValue);
 valueRouter.delete("/del/:valueId", delValue);
 valueRouter.patch("/edit/:valueId", upload, editValue);
