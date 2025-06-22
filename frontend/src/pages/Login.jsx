@@ -1,31 +1,50 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import login from "../assets/login.webp";
+import loginPic from "../assets/login.webp";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { AuthContext } from "../../AuthContext";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-    general: "",
-  });
+  const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const api = import.meta.env.VITE_URL;
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setErrors({ email: "", password: "", general: "" });
+    setLoading(true);
+    setErrors(null);
 
     if (!email) {
-      setErrors((prev) => ({ ...prev, email: "Email is required." }));
+      setErrors("Email is required.");
+      setLoading(false);
       return;
     }
     if (!password) {
-      setErrors((prev) => ({ ...prev, password: "Password is required." }));
+      setErrors("Password is required.");
+      setLoading(false);
       return;
+    }
+
+    try {
+      const response = await axios.post(`${api}/login`, { email, password });
+      if (response.status === 200) {
+        login(response.data.token, response.data.role, response.data.id);
+        navigate("/admin/");
+      }
+    } catch (err) {
+      const msg = err.response?.data?.msg || "Login failed. Please try again.";
+      setErrors(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,18 +66,11 @@ function Login() {
                 <input
                   type="text"
                   id="email"
-                  className={`border text-sm mt-2 pl-3 w-full h-9 rounded-md focus:outline-none ${
-                    errors.email
-                      ? "border-red-600"
-                      : "border-gray-400 focus:border-blue-500 focus:border-2"
-                  } text-gray-600`}
+                  className="border text-sm mt-2 pl-3 w-full h-9 rounded-md focus:outline-none border-gray-400 focus:border-blue-500 focus:border-2 text-gray-600"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {errors.email && (
-                  <p className="text-red-600 text-xs mt-1">{errors.email}</p>
-                )}
               </div>
 
               {/* Password */}
@@ -70,11 +82,7 @@ function Login() {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="pw"
-                    className={`border text-sm pl-3 pr-10 w-full h-9 rounded-md focus:outline-none ${
-                      errors.password
-                        ? "border-red-600"
-                        : "border-gray-400 focus:border-blue-500 focus:border-2"
-                    } text-gray-600`}
+                    className="border text-sm pl-3 pr-10 w-full h-9 rounded-md focus:outline-none border-gray-400 focus:border-blue-500 focus:border-2 text-gray-600"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -91,22 +99,22 @@ function Login() {
                     )}
                   </button>
                 </div>
-                {errors.password && (
-                  <p className="text-red-600 text-xs mt-1">{errors.password}</p>
-                )}
               </div>
 
-              {/* General Error */}
-              {errors.general && (
-                <p className="text-red-600 text-xs mb-4">{errors.general}</p>
-              )}
+              {/* Error Message */}
+              {errors && <p className="text-red-600 text-xs mt-1">{errors}</p>}
 
-              {/* Submit */}
+              {/* Submit Button */}
               <button
-                className="px-4 py-2 w-full rounded-md mt-10 bg-primary text-white hover:bg-blue-800"
+                className={`px-4 py-2 w-full rounded-md mt-10 text-white ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-primary hover:bg-blue-800"
+                }`}
                 type="submit"
+                disabled={loading}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
           </div>
@@ -114,7 +122,7 @@ function Login() {
           {/* Image Section */}
           <div className="hidden md:block">
             <img
-              src={login}
+              src={loginPic}
               alt="login pic"
               className="w-full h-full object-cover"
             />
