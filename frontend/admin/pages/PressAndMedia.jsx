@@ -73,6 +73,10 @@ export default function PressAndMedia() {
     fetchPage();
   }, [api]);
   const getYouTubeId = (url) => {
+    
+    if (!url || typeof url !== 'string') {
+      return null;
+    }
     const match = url.match(/(?:\?v=|\/embed\/|\.be\/)([\w-]{11})/);
     return match ? match[1] : null;
   };
@@ -324,6 +328,7 @@ export default function PressAndMedia() {
         {/* Press Releases */}
         <PressReleasesSection
           pressReleases={pressReleases}
+          setPressReleases={setPressReleases}
           api={api}
           activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
@@ -541,7 +546,7 @@ export default function PressAndMedia() {
                       {/* Gallery Item Content */}
                       {item.images && item.images.length > 0 ? (
                         <GalleryItem item={item} images={item.images} />
-                      ) : (
+                      ) : item.video ? (
                         <motion.div
                           variants={fadeInUp}
                           initial="hidden"
@@ -562,6 +567,10 @@ export default function PressAndMedia() {
                             className="w-full h-full"
                           ></iframe>
                         </motion.div>
+                      ) : (
+                        <div className="w-full max-w-sm aspect-video rounded-lg bg-gray-200 flex items-center justify-center">
+                          <p className="text-gray-500">No media available</p>
+                        </div>
                       )}
                     </div>
                   ))}
