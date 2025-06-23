@@ -310,7 +310,7 @@ export default function EthicalReview() {
             id={irc.subSection1._id}
           />
         )}
-        <div className="flex flex-col items-center py-10 px-4">
+        <div className="flex flex-col items-center mb-3 px-4 bg-blue-50">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary text-primary mt-10 md:mt-16 mb-6 md:mb-8 text-center px-4">
             IRC's Objectives
           </h2>

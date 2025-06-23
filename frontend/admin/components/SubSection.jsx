@@ -108,7 +108,7 @@ export default function SubSection({ title, body, image, id }) {
         />
       ) : (
         editedBody && (
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl font-primary w-full leading-relaxed sm:w-[80vw] md:w-[70vw] lg:w-[55vw]">
             {editedBody}
           </p>
         )

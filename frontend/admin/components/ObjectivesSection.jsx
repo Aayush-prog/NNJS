@@ -115,7 +115,7 @@ export default function ObjectivesSection() {
 
   return (
     <div className="flex flex-col items-center space-y-8 py-10 px-4 bg-blue-50">
-      <h2 className="text-3xl font-bold font-secondary">
+      <h2 className="text-3xl font-bold font-secondary text-primary">
         Our Strategic Objectives
       </h2>
       <button
@@ -208,7 +208,7 @@ export default function ObjectivesSection() {
           ))}
         </div>
       ) : (
-        <div className="w-full max-w-md border p-4 bg-white text-black rounded-lg">
+        <div className="w-full max-w-md border p-6 bg-white text-black rounded-lg">
           <h3 className="text-xl font-semibold mb-4">Add New Objective</h3>
           <SearchableIconPicker
             selectedIcon={newObjective.icon}

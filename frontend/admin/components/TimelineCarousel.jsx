@@ -144,6 +144,7 @@ const TimelineCarousel = () => {
   if (loading) return <Loading />;
 
   return (
+    <div className="bg-blue-50">
     <div className="py-16 px-4 max-w-7xl mx-auto">
       <h2 className="text-4xl font-secondary font-bold text-center text-primary mb-12">
         Our Journey Through Time
@@ -405,6 +406,7 @@ const TimelineCarousel = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+      </div>
       </div>
     </div>
   );

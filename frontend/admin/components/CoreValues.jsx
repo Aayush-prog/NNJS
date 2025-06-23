@@ -12,7 +12,6 @@ import {
 import { AuthContext } from "../../AuthContext";
 
 export default function CoreValues() {
-  
   const [values, setValues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -140,10 +139,10 @@ export default function CoreValues() {
 
   return (
     <section className="min-h-[80vh] pt-12 bg-blue-50 pb-12 px-6 sm:px-12 mx-auto">
-      <h2 className="text-3xl font-bold text-primary font-secondary text-center mb-4">
+      <h2 className="text-2xl sm:texl-3xl md:text-4xl font-bold text-primary font-secondary text-center mb-4">
         Our Core Values
       </h2>
-      <p className="text-base sm:text-lg mx-auto font-secondary text-center mb-12 leading-relaxed">
+      <p className=" text-sm sm:text-base md:text-lg lg:text-xl mx-auto font-primary text-center mb-12 leading-relaxed">
         These principles guide everything we do at NNJS, shaping our culture and
         driving our success.
       </p>
