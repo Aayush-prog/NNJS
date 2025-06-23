@@ -55,10 +55,14 @@ export default function PressAndMedia() {
           setPage(res.data.data);
           setNews(response.data.news);
           setPressReleases(response.data.press);
-          createdArray = response.data.press.map((release) => {
-            const date = new Date(release.createdAt);
-            return format(date, "yyyy");
-          });
+          createdArray = [
+            ...new Set(
+              response.data.press.map((release) => {
+                const date = new Date(release.createdAt);
+                return format(date, "yyyy");
+              })
+            ),
+          ];
           setYears(createdArray);
           setGallery(response.data.gallery);
           setLoading(false);
@@ -192,7 +196,7 @@ export default function PressAndMedia() {
               viewport={{ once: true, amount: 0.1 }}
             >
               {/* make H2 responsive */}
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 font-secondary">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-12 font-secondary">
                 In the News
               </h2>
             </motion.div>
@@ -410,9 +414,9 @@ export default function PressAndMedia() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {currentGalleryItems.map((item) =>
+                  {currentGalleryItems.map((item, idx) =>
                     item.images.length > 0 ? (
-                      <GalleryItem item={item} images={item.images} />
+                      <GalleryItem key={idx} item={item} images={item.images} />
                     ) : (
                       <motion.div
                         variants={fadeInUp}

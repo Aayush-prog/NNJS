@@ -86,7 +86,7 @@ export default function ObjectivesSection() {
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto font-secondary"
+            className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto font-primary"
           >
             Comprehensive goals to transform eye care and eliminate preventable
             blindness
@@ -104,7 +104,7 @@ export default function ObjectivesSection() {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              className="bg-white rounded-lg sm:rounded-xl p-6 shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="flex items-start gap-3 sm:gap-4">
                 <div
@@ -116,7 +116,7 @@ export default function ObjectivesSection() {
                   {obj.title}
                 </h3>
               </div>
-              <p className="text-sm sm:text-base text-gray-600 pl-12 sm:pl-14 mt-2 font-primary">
+              <p className="text-sm sm:text-base text-gray-600 pl-10 sm:pl-14 font-primary">
                 {obj.body}
               </p>
             </motion.div>

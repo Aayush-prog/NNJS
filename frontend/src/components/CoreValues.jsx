@@ -30,15 +30,15 @@ export default function CoreValues() {
 
   return (
     <section className="min-h-[80vh] pt-12  bg-blue-50 pb-12 px-6 sm:px-12 mx-auto">
-      <h2 className="text-3xl font-bold text-primary font-secondary text-center mb-4">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-secondary text-center mb-4">
         Our Core Values
       </h2>
-      <p className="text-base sm:text-lg mx-auto font-secondary text-center mb-12 leading-relaxed">
+      <p className="text-sm sm:text-base md:text-lg lg:text-xl mx-auto font-primary text-center mb-12 leading-relaxed">
         These principles guide everything we do at NNJS, shaping our culture and
         driving our success.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {values.map((value, index) => (
           <FlipCard key={index} value={value} api={api} />
         ))}
@@ -51,7 +51,7 @@ function FlipCard({ value, api }) {
   return (
     <>
       <div
-        className="relative w-full h-80 perspective"
+        className="relative w-full h-64 sm:h-80 perspective"
         style={{ perspective: "1000px" }}
       >
         <div className="relative w-full h-full transition-transform duration-700 transform-style preserve-3d hover:rotate-y-180 rounded-xl shadow-lg cursor-pointer">
@@ -62,16 +62,16 @@ function FlipCard({ value, api }) {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/40"></div>
-            <h3 className="absolute inset-0 flex items-center justify-center text-white text-3xl font-bold font-secondary drop-shadow-lg px-4 text-center">
+            <h3 className="absolute inset-0 flex items-center justify-center text-white  text-2xl sm:text-3xl md:4xl font-bold font-secondary drop-shadow-lg px-4 text-center">
               {value.title}
             </h3>
           </div>
 
           <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-white rounded-xl p-8 flex flex-col justify-center">
-            <h3 className="text-primary text-3xl font-bold font-secondary mb-6 text-center">
+            <h3 className="text-primary text-2xl sm:text-3xl font-bold font-secondary mb-4 text-center">
               {value.title}
             </h3>
-            <p className="text-gray-700 font-primary leading-relaxed text-base overflow-y-auto max-h-[280px]">
+            <p className="text-gray-700 font-primary leading-relaxed text-sm sm:text-base md:text-md overflow-y-auto max-h-[280px]">
               {value.body}
             </p>
           </div>

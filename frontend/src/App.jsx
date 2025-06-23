@@ -35,6 +35,7 @@ import AdminBranchDetail from "../admin/components/BranchDetail";
 import AdminDonate from "../admin/pages/Donate";
 import PrivateRouter from "../PrivateRouter";
 import Entry from "./pages/Entry";
+import AdminProgram from "../admin/pages/Program";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -106,6 +107,7 @@ function App() {
             path="/admin/press"
             element={<PrivateRouter element={<AdminPressAndMedia />} />}
           />
+          <Route path="/admin/program" element={<AdminProgram />} />
         </Route>
       </Route>
     )

@@ -76,7 +76,7 @@ export default function MissionSection() {
               <h3 className="text-primary text-lg sm:text-xl font-semibold mb-3">
                 {item.title}
               </h3>
-              <p className="text-black text-sm sm:text-base leading-relaxed mb-4">
+              <p className="text-black text-sm sm:text-base md font-primary leading-relaxed mb-4">
                 {item.body}
               </p>
             </motion.div>

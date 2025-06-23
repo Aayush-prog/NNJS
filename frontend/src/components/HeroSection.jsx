@@ -3,7 +3,7 @@ const HeroSection = ({ image, title, body }) => {
   return (
     <div
       loading="lazy"
-      className="relative h-[40vh] sm:h-[50vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+      className="relative h-[40vh] sm:h-[65vh] md:h-[75vh] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{ backgroundImage: `url(${api}/images/${image})` }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
