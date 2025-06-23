@@ -204,7 +204,10 @@ function Entry() {
           {/* Signature Canvas */}
           <div>
             <p className="mb-2 font-semibold">Signature:</p>
-            <div className="overflow-x-auto">
+            <div
+              className="border border-gray-300 rounded-md overflow-hidden"
+              style={{ width: "500px" }}
+            >
               <SignatureCanvas
                 ref={sigCanvas}
                 penColor="black"
