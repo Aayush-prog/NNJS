@@ -7,9 +7,16 @@ function Entry() {
     programName: "",
     name: "",
     designation: "",
+    organization: "",
+    branch: "",
+    gender: "",
+    address: "",
+    email: "",
+    phone: "",
     date: "",
     photo: null,
   });
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const sigCanvas = useRef();
   const api = import.meta.env.VITE_URL;
@@ -20,7 +27,11 @@ function Entry() {
   };
 
   const handlePhoto = (e) => {
-    setForm((prev) => ({ ...prev, photo: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (file) {
+      setForm((prev) => ({ ...prev, photo: file }));
+      setPhotoPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleClearSignature = () => {
@@ -46,9 +57,16 @@ function Entry() {
         programName: "",
         name: "",
         designation: "",
+        organization: "",
+        branch: "",
+        gender: "",
+        address: "",
+        email: "",
+        phone: "",
         date: "",
         photo: null,
       });
+      setPhotoPreview(null);
       sigCanvas.current.clear();
     } catch (error) {
       console.error(error);
@@ -59,24 +77,25 @@ function Entry() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-8 w-full max-w-xl space-y-6"
+        className="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-3xl space-y-6"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Program Entry Form
         </h2>
 
-        <div className="space-y-4">
+        {/* Grouped Inputs - Flex on medium screens */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
             name="programName"
-            placeholder="Program Name"
+            placeholder="Event Title"
             value={form.programName}
             onChange={handleChange}
             required
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="text"
@@ -85,7 +104,7 @@ function Entry() {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="p-3 border rounded-md"
           />
           <input
             type="text"
@@ -94,7 +113,60 @@ function Entry() {
             value={form.designation}
             onChange={handleChange}
             required
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="p-3 border rounded-md"
+          />
+          <input
+            type="text"
+            name="organization"
+            placeholder="Organization"
+            value={form.organization}
+            onChange={handleChange}
+            required
+            className="p-3 border rounded-md"
+          />
+          <input
+            type="text"
+            name="branch"
+            placeholder="Branch"
+            value={form.branch}
+            onChange={handleChange}
+            className="p-3 border rounded-md"
+          />
+          <select
+            name="gender"
+            value={form.gender}
+            onChange={handleChange}
+            required
+            className="p-3 border rounded-md"
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={form.address}
+            onChange={handleChange}
+            className="p-3 border rounded-md"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="p-3 border rounded-md"
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={handleChange}
+            className="p-3 border rounded-md"
           />
           <input
             type="date"
@@ -102,37 +174,54 @@ function Entry() {
             value={form.date}
             onChange={handleChange}
             required
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="p-3 border rounded-md"
           />
+        </div>
+
+        {/* Photo Upload */}
+        <div>
           <input
             type="file"
             accept="image/*"
+            capture="environment"
             onChange={handlePhoto}
             required
-            className="w-full p-3 border rounded-md"
+            className="w-full p-3 border rounded-md mt-2"
           />
+          {photoPreview && (
+            <img
+              src={photoPreview}
+              alt="Preview"
+              className="mt-3 w-full max-h-72 object-contain rounded-md border"
+            />
+          )}
+        </div>
 
-          <div>
-            <p className="mb-2 font-semibold">Signature:</p>
+        {/* Signature Canvas */}
+        <div>
+          <p className="mb-2 font-semibold">Signature:</p>
+          <div className="overflow-x-auto">
             <SignatureCanvas
               ref={sigCanvas}
               penColor="black"
               canvasProps={{
-                width: 400,
+                width: 500,
                 height: 150,
-                className: "border border-gray-300 rounded-md",
+                className:
+                  "border border-gray-300 rounded-md w-full max-w-full",
               }}
             />
-            <button
-              type="button"
-              onClick={handleClearSignature}
-              className="mt-2 text-sm text-red-500 hover:underline"
-            >
-              Clear Signature
-            </button>
           </div>
+          <button
+            type="button"
+            onClick={handleClearSignature}
+            className="mt-2 text-sm text-red-500 hover:underline"
+          >
+            Clear Signature
+          </button>
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}

@@ -13,7 +13,19 @@ const normalizeProgramName = (name) =>
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
 const entry = async (req, res) => {
-  const { programName, name, designation, date } = req.body;
+  const {
+    programName,
+    name,
+    designation,
+    date,
+    organization,
+    branch,
+    gender,
+    address,
+    email,
+    phone,
+  } = req.body;
+
   const photo = req.file;
   const signatureBase64 = req.body.signature.split(";base64,").pop();
   const now = new Date();
@@ -34,10 +46,15 @@ const entry = async (req, res) => {
     sheet = workbook.addWorksheet(todaySheetName);
   }
 
-  // Always reassign column keys
   sheet.columns = [
     { header: "Name", key: "name", width: 20 },
     { header: "Designation", key: "designation", width: 20 },
+    { header: "Organization", key: "organization", width: 20 },
+    { header: "Branch", key: "branch", width: 20 },
+    { header: "Gender", key: "gender", width: 10 },
+    { header: "Address", key: "address", width: 30 },
+    { header: "Email", key: "email", width: 25 },
+    { header: "Phone", key: "phone", width: 15 },
     { header: "Date", key: "date", width: 15 },
     { header: "Time", key: "time", width: 15 },
     { header: "Photo", key: "photo", width: 15 },
@@ -66,6 +83,12 @@ const entry = async (req, res) => {
   const newRow = sheet.addRow({
     name,
     designation,
+    organization,
+    branch,
+    gender,
+    address,
+    email,
+    phone,
     date,
     time,
   });
@@ -76,12 +99,12 @@ const entry = async (req, res) => {
   sheet.getRow(rowIndex).height = photoHeightPx / 1.33;
 
   sheet.addImage(photoId, {
-    tl: { col: 4, row: rowIndex - 1 },
+    tl: { col: 10, row: rowIndex - 1 }, // photo column index
     ext: { width: 100, height: 100 },
   });
 
   sheet.addImage(sigId, {
-    tl: { col: 5, row: rowIndex - 1 },
+    tl: { col: 11, row: rowIndex - 1 }, // signature column index
     ext: { width: 100, height: 50 },
   });
 
