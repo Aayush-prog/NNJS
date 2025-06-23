@@ -89,7 +89,7 @@ const Commitments = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          className="font-secondary sm:text-lg md:text-xl px-2"
+          className="font-primary text-sm sm:text-base md:text-lg lg:text-xl px-2"
         >
           The fundamental principles that guide our work in eye healthcare:
         </motion.p>
@@ -106,13 +106,13 @@ const Commitments = () => {
           <motion.div
             key={index}
             variants={itemVariants}
-            className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 border-t-4 border-primary hover:shadow-lg transition-all"
+            className="bg-white rounded-xl sm:rounded-2xl shadow-md p-6 border-t-4 border-primary hover:shadow-lg transition-all"
           >
             <IconRenderer iconName={item.icon} color={item.color} />
             <h3 className="text-lg sm:text-xl font-bold text-primary font-secondary mb-1 sm:mb-2">
               {item.title}
             </h3>
-            <p className="text-sm sm:text-base text-gray-600">{item.body}</p>
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.body}</p>
           </motion.div>
         ))}
       </motion.div>

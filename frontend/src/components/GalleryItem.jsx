@@ -66,7 +66,7 @@ const GalleryItem = ({ item, images }) => {
             <button
               onClick={handleCloseGallery}
               aria-label="Close gallery"
-              className="absolute top-2 right-2 text-white text-2xl cursor-pointer z-10"
+              className="absolute top-2 right-2 text-accent text-3xl cursor-pointer z-10"
             >
               <IoMdClose />
             </button>

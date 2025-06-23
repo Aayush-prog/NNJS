@@ -64,6 +64,7 @@ const TimelineCarousel = () => {
   if (loading) return <Loading />;
 
   return (
+    <motion.div className="bg-blue-50">
     <motion.div
       variants={containerVariants}
       initial="hidden"
@@ -73,7 +74,7 @@ const TimelineCarousel = () => {
     >
       <motion.h2
         variants={childVariants}
-        className="text-4xl font-secondary font-bold text-center text-primary mb-12"
+        className="text-2xl sm:text-3xl md:text-4xl font-secondary font-bold text-center text-primary mb-12"
       >
         Our Journey Through Time
       </motion.h2>
@@ -167,6 +168,7 @@ const TimelineCarousel = () => {
           ))}
         </Swiper>
       </motion.div>
+    </motion.div>
     </motion.div>
   );
 };

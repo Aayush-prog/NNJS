@@ -211,6 +211,7 @@ export default function EthicalReview() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
+          className="bg-blue-50 py-1 sm:py-3 pb-8"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >

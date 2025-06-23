@@ -4,12 +4,6 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import sailesh from "../assets/sailesh.jpg";
-import sabita from "../assets/sabita.jpg";
-import sailendra from "../assets/sailendra.jpg";
-import ranjan from "../assets/ranjan.jpg";
-import manish from "../assets/manish.jpg";
-import man from "../assets/man.jpeg";
 
 export default function StaffSection(props) {
   const [slidesPerView, setSlidesPerView] = useState(1);
@@ -36,12 +30,6 @@ export default function StaffSection(props) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Create grouped staff arrays based on responsive group size
-  const groupedStaff = [];
-  for (let i = 0; i < person.length; i += groupSize) {
-    groupedStaff.push(person.slice(i, i + groupSize));
-  }
-
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -64,43 +52,42 @@ export default function StaffSection(props) {
           }}
           pagination={{ clickable: true }}
           spaceBetween={20}
-          slidesPerView={slidesPerView}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
           className="pb-10 sm:pb-12"
         >
-          {groupedStaff.map((group, index) => (
-            <SwiperSlide key={index}>
-              <div
-                className={`grid gap-4 sm:gap-6 md:gap-8 grid-cols-1 ${
-                  group.length === 2
-                    ? "sm:grid-cols-2"
-                    : group.length >= 3
-                    ? "md:grid-cols-3"
-                    : ""
-                } mb-6 sm:mb-8 md:mb-12`}
-              >
-                {group.map((staff, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-4 sm:p-6 text-center hover:shadow-lg transition h-auto sm:h-[280px] md:h-[300px] md:w-[350px]"
-                  >
-                    <img
-                      src={`${api}/images/${staff.image}`}
-                      alt={staff.name}
-                      loading="lazy"
-                      className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 object-cover rounded-full mx-auto mb-3 sm:mb-4 border-2 border-gray-300 shadow-sm"
-                    />
-                    <h3 className="text-base sm:text-lg font-bold text-primary font-secondary mb-1">
-                      {staff.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">
-                      {staff.designation}
-                    </p>
-                    <p className="text-xs sm:text-sm text-primary break-words">
-                      {staff.body}
-                    </p>
-                  </div>
-                ))}
-              </div>
+          {person.map((staff, idx) => (
+            <SwiperSlide
+              key={idx}
+              className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-10 sm:p-6 text-center hover:shadow-lg transition h-auto w-full sm:w-[300px] md:w-[350px]"
+            >
+              <img
+                src={`${api}/images/${staff.image}`}
+                alt={staff.name}
+                loading="lazy"
+                className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 object-cover rounded-full mx-auto mb-3 sm:mb-4 border-2 border-gray-300 shadow-sm"
+              />
+              <h3 className="text-base sm:text-lg font-bold text-primary font-secondary mb-1">
+                {staff.name}
+              </h3>
+              <p className="text-xs sm:text-sm font-semibold text-gray-600 mb-1">
+                {staff.designation}
+              </p>
+              <p className="text-xs sm:text-sm text-primary break-words">
+                {staff.body}
+              </p>
             </SwiperSlide>
           ))}
         </Swiper>

@@ -46,7 +46,7 @@ export default function SubSection({ title, body, image }) {
       {body && (
         <motion.p
           variants={childVariants}
-          className="text-sm sm:text-base md:text-lg lg:text-xl font-bold font-primary w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]"
+          className="text-sm sm:text-base md:text-lg lg:text-xl font-primary leading-relaxed w-full sm:w-[80vw] md:w-[70vw] lg:w-[55vw]"
         >
           {body}
         </motion.p>

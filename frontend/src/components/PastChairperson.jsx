@@ -11,7 +11,7 @@ export default function PastChairpersons(props) {
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-secondary text-primary mb-2 sm:mb-3 md:mb-4">
         Past Chairpersons
       </h2>
-      <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 font-primary">
+      <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 font-primary leading-relaxed">
         The vision and legacy of our past chairpersons have shaped Nepal Netra
         Jyoti Sangh into a leading force for eye care in Nepal. We honor their
         dedication and contributions.
@@ -38,7 +38,7 @@ export default function PastChairpersons(props) {
             <p className="text-xs sm:text-sm font-primary text-gray-500 mb-2 sm:mb-3 md:mb-4">
               {chair.duration}
             </p>
-            <p className="text-xs sm:text-sm md:text-base text-gray-700 font-primary leading-relaxed">
+            <p className="text-sm md:text-base text-gray-700 font-primary leading-relaxed">
               {chair.body}
             </p>
           </div>

@@ -73,14 +73,14 @@ export default function SpecificObjectives() {
           <motion.h2
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-3xl sm:text-4xl font-bold text-primary mb-3 sm:mb-4 font-secondary"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4 font-secondary"
           >
             Specific Objectives Timeline
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-lg max-w-3xl mx-auto font-secondary"
+            className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto font-primary"
           >
             Our roadmap for eliminating preventable blindness and improving eye
             care services
