@@ -23,25 +23,28 @@ export default function Footer() {
               </h2>
               <ul aria-labelledby="quick-links-heading" className="space-y-1">
                 <li>
-                  <a href="/" aria-label="Go to Home page">
+                  <a href="/admin/" aria-label="Go to Home page">
                     Home
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/who-are-we"
+                    href="/admin/who-are-we"
                     aria-label="Learn more about Who We Are"
                   >
                     Who Are We
                   </a>
                 </li>
                 <li>
-                  <a href="/resources" aria-label="Access our Resources">
+                  <a href="/admin/resources" aria-label="Access our Resources">
                     Resources
                   </a>
                 </li>
                 <li>
-                  <a href="/press-media" aria-label="View Press and Media">
+                  <a
+                    href="/admin/press-media"
+                    aria-label="View Press and Media"
+                  >
                     Press & Media
                   </a>
                 </li>
@@ -107,7 +110,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="/register-online" aria-label="Register Online">
+                  <a href="/admin/program" aria-label="Register Online">
                     Register Online
                   </a>
                 </li>
