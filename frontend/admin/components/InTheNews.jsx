@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaPen, FaTrash, FaPlus } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import Pagination from "./Pagination";
 import Loading from "../components/Loading";
 import axios from "axios";
+import { AuthContext } from "../../AuthContext";
 
 const InTheNews = ({
   currentPage,
@@ -33,27 +34,20 @@ const InTheNews = ({
   const [editingArticleId, setEditingArticleId] = useState(null);
   const [news, setNews] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [editingMediaId, setEditingMediaId] = useState(null);
   const [newArticle, setNewArticle] = useState({
     title: "",
     body: "",
+    link: "",
     image: null,
     type: "News",
   });
-  const [imageDeleted, setimageDeleted] = useState(false);
+  const [imageDeleted, setImageDeleted] = useState(false);
   const api = import.meta.env.VITE_URL;
+  const { authToken } = useContext(AuthContext);
 
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
-
-  {
-    loading && (
-      <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
-        <Loading />
-      </div>
-    );
-  }
 
   const handleInputChange = (e) => {
     setNewArticle({ ...newArticle, [e.target.name]: e.target.value });
@@ -70,14 +64,13 @@ const InTheNews = ({
       const res = await axios.get(`${api}/media`);
       if (res.status === 200) {
         setNews(res.data.news || []);
-        setLoading(false);
       } else {
-        console.error("Error fetching page: Status code", res.status);
-        setLoading(false); // Ensure loading is set to false even on error
+        console.error("Error fetching news: Status code", res.status);
       }
     } catch (error) {
-      console.error("Error fetching page:", error);
-      setLoading(false); // Ensure loading is set to false even on error
+      console.error("Error fetching news:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,6 +84,7 @@ const InTheNews = ({
       const formData = new FormData();
       formData.append("title", newArticle.title);
       formData.append("body", newArticle.body);
+      formData.append("link", newArticle.link);
       formData.append("type", newArticle.type);
 
       if (selectedImage) {
@@ -100,6 +94,7 @@ const InTheNews = ({
       const res = await axios.post(`${api}/media/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
@@ -108,6 +103,7 @@ const InTheNews = ({
         setNewArticle({
           title: "",
           body: "",
+          link: "",
           image: null,
           type: "News",
         });
@@ -124,16 +120,19 @@ const InTheNews = ({
   };
 
   const handleEditArticle = (mediaId) => {
-    setEditingArticleId(mediaId); // FIXED
+    setEditingArticleId(mediaId);
     const mediaToEdit = news.find((media) => media._id === mediaId);
     if (mediaToEdit) {
       setNewArticle({
-        title: mediaToEdit.title,
-        body: mediaToEdit.body,
+        title: mediaToEdit.title || "",
+        body: mediaToEdit.body || "",
+        link: mediaToEdit.link || "",
         image: mediaToEdit.image || null,
         type: "News",
         _id: mediaToEdit._id,
       });
+      setSelectedImage(null);
+      setImageDeleted(false);
     }
   };
 
@@ -143,11 +142,12 @@ const InTheNews = ({
       const formData = new FormData();
       formData.append("title", newArticle.title);
       formData.append("body", newArticle.body);
+      formData.append("link", newArticle.link);
       formData.append("type", newArticle.type);
       formData.append("imageDeleted", imageDeleted);
 
       if (selectedImage) {
-        formData.append("image", selectedImage); // FIXED
+        formData.append("image", selectedImage);
       }
 
       const res = await axios.patch(
@@ -156,6 +156,7 @@ const InTheNews = ({
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
@@ -165,11 +166,13 @@ const InTheNews = ({
         setNewArticle({
           title: "",
           body: "",
+          link: "",
           image: null,
           type: "News",
         });
         setSelectedImage(null);
         setEditingArticleId(null);
+        setImageDeleted(false);
       } else {
         console.error("Error updating media:", res.status);
       }
@@ -181,18 +184,22 @@ const InTheNews = ({
   };
 
   const handleDeleteArticle = async (mediaId) => {
-    setLoading(true);
-    try {
-      const res = await axios.delete(`${api}/media/del/${mediaId}`);
-      if (res.status === 200) {
-        await fetchNews();
-      } else {
-        console.error("Error deleting news:", res.status);
+    if (window.confirm("Are you sure you want to delete this article?")) {
+      setLoading(true);
+      try {
+        const res = await axios.delete(`${api}/media/del/${mediaId}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+        if (res.status === 200) {
+          await fetchNews();
+        } else {
+          console.error("Error deleting news:", res.status);
+        }
+      } catch (error) {
+        console.error("Error deleting news:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error deleting news:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -231,7 +238,7 @@ const InTheNews = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
               {currentArticles.map((article) => (
                 <motion.div
                   key={article._id}
@@ -255,11 +262,13 @@ const InTheNews = ({
                       <FaTrash className="h-4 w-4" />
                     </button>
                   </div>
-                  <img
-                    src={`${api}/images/${article.image}`}
-                    alt={article.title}
-                    className="w-full h-40 sm:h-48 object-cover"
-                  />
+                  {article.image && (
+                    <img
+                      src={`${api}/images/${article.image}`}
+                      alt={article.title}
+                      className="w-full h-40 sm:h-48 object-cover"
+                    />
+                  )}
                   <div className="p-4 sm:p-6">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 font-secondary">
                       {article.title}
@@ -271,12 +280,16 @@ const InTheNews = ({
                     <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 font-primary">
                       "{truncateText(article.body)}"
                     </p>
-                    <a
-                      href={article.link}
-                      className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base font-primary"
-                    >
-                      Read More <span className="ml-1 font-primary">→</span>
-                    </a>
+                    {article.link && (
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary font-medium hover:text-accent transition-colors duration-300 inline-flex items-center text-sm sm:text-base font-primary"
+                      >
+                        Read More <span className="ml-1 font-primary">→</span>
+                      </a>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -297,11 +310,8 @@ const InTheNews = ({
 
       {/* Add Article Modal */}
       {isAdding && (
-        <div
-          className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
-        >
-          <div className="bg-white p-6 rounded-xl shadow-md text-center relative w-full max-w-md">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white p-6 rounded-xl shadow-md text-center relative w-full max-w-md max-h-96 overflow-y-auto">
             <button
               onClick={() => setIsAdding(false)}
               className="absolute top-2 right-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-full"
@@ -314,86 +324,113 @@ const InTheNews = ({
               name="title"
               value={newArticle.title}
               onChange={handleInputChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
               placeholder="Title"
             />
             <textarea
               name="body"
               value={newArticle.body}
               onChange={handleInputChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
               placeholder="Body"
+              rows="3"
+            />
+            <input
+              type="text"
+              name="link"
+              value={newArticle.link}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg p-2 mb-3"
+              placeholder="Article Link (optional)"
             />
             <input
               type="file"
               name="image"
               onChange={handleImageChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
+              accept="image/*"
             />
-            <button
-              onClick={handleAddArticle}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2"
-            >
-              <FaPlus /> Add Article
-            </button>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={handleAddArticle}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => setIsAdding(false)}
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Edit Article Modal */}
       {editingArticleId && (
-        <div
-          className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }} //  Slightly Darker Overlay
-        >
-          <div className="bg-white p-6 rounded-xl shadow-md text-center relative w-full max-w-md">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white p-6 rounded-xl shadow-md text-center relative w-full max-w-md max-h-96 overflow-y-auto">
             <button
-              onClick={() => setEditingArticleId(null)}
+              onClick={() => {
+                setEditingArticleId(null);
+                setImageDeleted(false);
+              }}
               className="absolute top-2 right-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-full"
             >
               <RxCross2 className="inline-block h-5 w-5" />
             </button>
-            <h3 className="text-xl font-semibold mb-4">Edit News</h3>
+            <h3 className="text-xl font-semibold mb-4">Edit Article</h3>
             <input
               type="text"
               name="title"
               value={newArticle.title}
               onChange={handleInputChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
               placeholder="Title"
             />
             <textarea
               name="body"
               value={newArticle.body}
               onChange={handleInputChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
               placeholder="Body"
+              rows="3"
             />
-            {newArticle.image && (
-              <button
-                className="p-3 bg-accent"
-                onClick={() => {
-                  setimageDeleted(true);
-                  newArticle.image = null;
-                  console.log("deleted");
-                }}
-              >
-                {" "}
-                Delete file
-              </button>
-            )}
+            <input
+              type="text"
+              name="link"
+              value={newArticle.link}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg p-2 mb-3"
+              placeholder="Article Link (optional)"
+            />
+          
             <input
               type="file"
               name="image"
               onChange={handleImageChange}
-              className="w-full border mb-2 p-2"
+              className="w-full border rounded-lg p-2 mb-3"
+              accept="image/*"
             />
-            <button
-              onClick={handleUpdateArticle}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2"
-            >
-              <FaPen /> Update Resource
-            </button>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={handleUpdateArticle}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Update
+              </button>
+              <button
+                onClick={() => {
+                  setEditingArticleId(null);
+                  setImageDeleted(false);
+                }}
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
