@@ -1,10 +1,13 @@
 import React from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
-
+import { AuthContext } from "../../AuthContext";
 export default function DonateButton() {
   const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
   const handleClick = () => {
-    navigate("/donate");
+    logout();
+    navigate("/");
   };
   return (
     <button
@@ -12,7 +15,7 @@ export default function DonateButton() {
     font-bold text-l text-white hover:bg-support hover:text-primary"
       onClick={handleClick}
     >
-      Donate Now
+      Logout
     </button>
   );
 }
