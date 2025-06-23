@@ -28,6 +28,7 @@ const valueRouter = require("./modules/value/values.routes.js");
 const ircObjectiveRouter = require("./modules/ircObjectives/ircObjectives.routes.js");
 const login = require("./handlers/login.js");
 const { forgotPassword, resetPassword } = require("./handlers/forgotPass.js");
+const programRouter = require("./modules/programEntry/program.routes.js");
 // Models
 require("./models/bankModel");
 require("./models/mediaModel.js");
@@ -69,6 +70,7 @@ mongoose
 app.post("/login", login);
 app.post("/forgotPass", forgotPassword);
 app.post("/resetPass/:token", resetPassword);
+app.use("/program", programRouter);
 app.use("/bank", bankRouter);
 app.use("/media", mediaRouter);
 app.use("/branches", branchesRouter);

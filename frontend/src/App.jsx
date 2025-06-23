@@ -34,6 +34,7 @@ import AdminCenterDetail from "../admin/components/CenterDetail";
 import AdminBranchDetail from "../admin/components/BranchDetail";
 import AdminDonate from "../admin/pages/Donate";
 import PrivateRouter from "../PrivateRouter";
+import Entry from "./pages/Entry";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -56,7 +57,7 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/press" element={<PressAndMedia />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/program" element={<Entry />} />
         <Route path="/admin">
           <Route index element={<PrivateRouter element={<AdminLanding />} />} />
           <Route
