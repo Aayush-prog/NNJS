@@ -10,7 +10,8 @@ import { format } from "date-fns";
 import GalleryItem from "../components/GalleryItem";
 import InTheNews from "../components/InTheNews";
 import PressReleasesSection from "../components/PressReleasesSection";
-import { AuthContext } from "../../AuthContext"; 
+import { AuthContext } from "../../AuthContext";
+import Pagination from "../components/Pagination";
 
 export default function PressAndMedia() {
   // track viewport width
@@ -73,8 +74,7 @@ export default function PressAndMedia() {
     fetchPage();
   }, [api]);
   const getYouTubeId = (url) => {
-    
-    if (!url || typeof url !== 'string') {
+    if (!url || typeof url !== "string") {
       return null;
     }
     const match = url.match(/(?:\?v=|\/embed\/|\.be\/)([\w-]{11})/);
@@ -141,7 +141,7 @@ export default function PressAndMedia() {
       gallerySection.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const { authToken } = useContext(AuthContext); 
+  const { authToken } = useContext(AuthContext);
 
   // Add new state for gallery management
   const [isAddingGallery, setIsAddingGallery] = useState(false);
@@ -149,14 +149,14 @@ export default function PressAndMedia() {
   const [newGalleryItem, setNewGalleryItem] = useState({
     title: "",
     body: "",
-    type: "Gallery", 
+    type: "Gallery",
     video: "",
     images: [],
   });
   const [editedGalleryItem, setEditedGalleryItem] = useState({
     title: "",
     body: "",
-    type: "Gallery", 
+    type: "Gallery",
     video: "",
     images: [],
   });
@@ -167,7 +167,7 @@ export default function PressAndMedia() {
       const formData = new FormData();
       formData.append("title", newGalleryItem.title);
       formData.append("body", newGalleryItem.body);
-      
+
       // Set the correct type based on selection
       const mediaType = newGalleryItem.type === "video" ? "Gallery" : "Gallery";
       formData.append("type", mediaType);
@@ -226,9 +226,10 @@ export default function PressAndMedia() {
       const formData = new FormData();
       formData.append("title", editedGalleryItem.title);
       formData.append("body", editedGalleryItem.body);
-      
+
       // Set the correct type
-      const mediaType = editedGalleryItem.type === "video" ? "Gallery" : "Gallery";
+      const mediaType =
+        editedGalleryItem.type === "video" ? "Gallery" : "Gallery";
       formData.append("type", mediaType);
 
       if (editedGalleryItem.type === "video") {
@@ -296,11 +297,17 @@ export default function PressAndMedia() {
   };
 
   const handleNewGalleryImagesChange = (e) => {
-    setNewGalleryItem({ ...newGalleryItem, images: Array.from(e.target.files) });
+    setNewGalleryItem({
+      ...newGalleryItem,
+      images: Array.from(e.target.files),
+    });
   };
 
   const handleEditedGalleryImagesChange = (e) => {
-    setEditedGalleryItem({ ...editedGalleryItem, images: Array.from(e.target.files) });
+    setEditedGalleryItem({
+      ...editedGalleryItem,
+      images: Array.from(e.target.files),
+    });
   };
 
   if (loading) return <Loading />;
@@ -387,12 +394,14 @@ export default function PressAndMedia() {
 
                   <select
                     name="type"
-                    value={newGalleryItem.type === "Gallery" ? "gallery" : "video"}
+                    value={
+                      newGalleryItem.type === "Gallery" ? "gallery" : "video"
+                    }
                     onChange={(e) => {
                       const value = e.target.value;
                       setNewGalleryItem({
                         ...newGalleryItem,
-                        type: value === "video" ? "video" : "Gallery"
+                        type: value === "video" ? "video" : "Gallery",
                       });
                     }}
                     className="w-full border rounded-lg p-2 mb-3"
@@ -464,12 +473,17 @@ export default function PressAndMedia() {
 
                   <select
                     name="type"
-                    value={editedGalleryItem.type === "Gallery" && !editedGalleryItem.video ? "gallery" : "video"}
+                    value={
+                      editedGalleryItem.type === "Gallery" &&
+                      !editedGalleryItem.video
+                        ? "gallery"
+                        : "video"
+                    }
                     onChange={(e) => {
                       const value = e.target.value;
                       setEditedGalleryItem({
                         ...editedGalleryItem,
-                        type: value === "video" ? "video" : "Gallery"
+                        type: value === "video" ? "video" : "Gallery",
                       });
                     }}
                     className="w-full border rounded-lg p-2 mb-3"
