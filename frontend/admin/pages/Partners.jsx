@@ -89,7 +89,11 @@ export default function Partners() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/partners/del/${id}`);
+      await axios.delete(`${api}/partners/del/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       fetchPartners(); // refetch after delete
     } catch (err) {
       console.error("Error deleting partner", err);

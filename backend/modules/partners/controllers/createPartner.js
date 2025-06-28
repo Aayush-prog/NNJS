@@ -7,7 +7,7 @@ const createPartner = async (req, res) => {
     ? path.basename(req.files.image[0].path)
     : null;
   try {
-    const newPartner = await PartnerModel.create({ name, image, type });
+    const newPartner = await PartnerModel.create({ name, image, type, link });
     res.status(201).json({
       status: "success",
       message: "Partners created successfully",
