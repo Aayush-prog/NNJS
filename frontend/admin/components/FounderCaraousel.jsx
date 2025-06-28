@@ -151,7 +151,13 @@ export default function FoundersCarousel() {
       if (res.status === 201) {
         setFounders((prevFounders) => [...prevFounders, res.data.data]); // Append the new founder to the list
         setIsAdding(false);
-        setNewFounder({ name: "", designation: "", body: "", image: null });
+        setNewFounder({
+          name: "",
+          designation: "",
+          body: "",
+          image: null,
+          type: "Founder",
+        });
         fetchFounders(); // Re-fetch founders to update the list
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -19,8 +19,8 @@ export default function BoardMembers() {
   const [isAdding, setIsAdding] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingBoardMember, setEditingBoardMember] = useState({});
-  const { authToken } = useState(AuthContext);
-
+  const { authToken } = useContext(AuthContext);
+  console.log(authToken);
   const [newBoardMember, setNewBoardMember] = useState({
     name: "",
     designation: "",
@@ -152,7 +152,13 @@ export default function BoardMembers() {
           res.data.data,
         ]);
         setIsAdding(false);
-        setNewBoardMember({ name: "", designation: "", body: "", image: null });
+        setNewBoardMember({
+          name: "",
+          designation: "",
+          body: "",
+          image: null,
+          type: "Board",
+        });
         fetchBoardMembers(); // Re-fetch
       }
     } catch (error) {
