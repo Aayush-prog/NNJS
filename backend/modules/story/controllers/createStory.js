@@ -11,6 +11,7 @@ const createStory = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Story created successfully",
+      data: newStory,
     });
   } catch (error) {
     res.status(400).json({

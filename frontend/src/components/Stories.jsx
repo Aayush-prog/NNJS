@@ -72,28 +72,37 @@ export default function LandingPage() {
         Success Stories
       </motion.h2>
 
-      {storiesData?.map((story, i) => (
-        <motion.section
-          key={i}
-          variants={childVariants}
-          className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8 w-3/4"
-        >
-          <div className="md:w-1/2 flex justify-center">
-            <img
-              src={`${api}/images/${story.image}`}
-              loading="lazy"
-              alt={story.author}
-              className="rounded-full w-40 h-40 object-cover shadow-lg"
-            />
-          </div>
-          <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
-            <blockquote className="italic font-semibold text-lg">
-              {story.text}
-            </blockquote>
-            <cite className="block mt-4 text-gray-500">— {story.author}</cite>
-          </div>
-        </motion.section>
-      ))}
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={30}
+        slidesPerView={1}
+        className="w-full md:w-3/4"
+      >
+        {storiesData?.map((story, i) => (
+          <SwiperSlide key={i}>
+            <section className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8">
+              <div className="md:w-1/2 flex justify-center">
+                <img
+                  src={`${api}/images/${story.image}`}
+                  loading="lazy"
+                  alt={story.author}
+                  className="rounded-full w-40 h-40 object-cover shadow-lg"
+                />
+              </div>
+              <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
+                <blockquote className="italic font-semibold text-lg">
+                  {story.text}
+                </blockquote>
+                <cite className="block mt-4 text-gray-500">
+                  — {story.author}
+                </cite>
+              </div>
+            </section>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </motion.div>
   );
 }
