@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { AiOutlineClose } from "react-icons/ai";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -8,9 +9,10 @@ import "swiper/css/pagination";
 export default function StaffSection(props) {
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [groupSize, setGroupSize] = useState(1);
+  const [selectedStaff, setSelectedStaff] = useState(null);
   const person = props.person;
   const api = import.meta.env.VITE_URL;
-  // Adjust slides based on screen size
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
@@ -25,7 +27,7 @@ export default function StaffSection(props) {
       }
     };
 
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -52,26 +54,23 @@ export default function StaffSection(props) {
           }}
           pagination={{ clickable: true }}
           spaceBetween={20}
+          slidesPerView={slidesPerView}
+          slidesPerGroup={groupSize}
           breakpoints={{
-            0: {
-              slidesPerView: 1,
-            },
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
           }}
           className="pb-10 sm:pb-12"
         >
           {person.map((staff, idx) => (
             <SwiperSlide
               key={idx}
-              className="bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-10 sm:p-6 text-center hover:shadow-lg transition h-auto w-full sm:w-[300px] md:w-[350px]"
+              className={`bg-white border border-gray-200 shadow-md rounded-lg p-4 mb-10 sm:p-6 text-center hover:shadow-lg transition h-auto w-full sm:w-[300px] md:w-[350px] ${
+                staff.body ? "cursor-pointer" : ""
+              }`}
+              onClick={() => staff.body && setSelectedStaff(staff)}
             >
               <img
                 src={`${api}/images/${staff.image}`}
@@ -86,7 +85,7 @@ export default function StaffSection(props) {
                 {staff.designation}
               </p>
               <p className="text-xs sm:text-sm text-primary break-words">
-                {staff.body}
+                {staff.email}
               </p>
             </SwiperSlide>
           ))}
@@ -131,6 +130,31 @@ export default function StaffSection(props) {
           </svg>
         </div>
       </div>
+
+      {/* Modal Popup */}
+      {selectedStaff && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white max-w-md w-full rounded-lg shadow-lg relative p-6 text-left">
+            <button
+              onClick={() => setSelectedStaff(null)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+              aria-label="Close"
+            >
+              <AiOutlineClose size={24} />
+            </button>
+            <h3 className="text-lg sm:text-xl font-bold text-primary font-secondary mb-2">
+              {selectedStaff.name}
+            </h3>
+            <p className="text-sm font-semibold text-gray-600 mb-1">
+              {selectedStaff.designation}
+            </p>
+            <p className="text-sm text-primary mb-3">{selectedStaff.email}</p>
+            <div className="text-sm text-gray-700 whitespace-pre-line">
+              {selectedStaff.body}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

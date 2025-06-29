@@ -31,6 +31,7 @@ export default function StaffSection(props) {
     designation: "",
     body: "",
     image: null,
+    email: "",
     type: "Staff", // Set type to "Staff" for new staff members
   });
 
@@ -95,7 +96,7 @@ export default function StaffSection(props) {
       formData.append("name", staff.name);
       formData.append("designation", staff.designation);
       formData.append("body", staff.body);
-
+      formData.append("email", staff.email);
       if (staff.newImage) {
         formData.append("image", staff.newImage);
       }
@@ -154,7 +155,7 @@ export default function StaffSection(props) {
       formData.append("designation", newStaffMember.designation);
       formData.append("body", newStaffMember.body);
       formData.append("type", newStaffMember.type); // Ensure the type is sent
-
+      formData.append("email", newStaffMember.email);
       if (newStaffMember.image) {
         formData.append("image", newStaffMember.image);
       }
@@ -172,6 +173,7 @@ export default function StaffSection(props) {
         setNewStaffMember({
           name: "",
           designation: "",
+          email: "",
           body: "",
           image: null,
           type: "Staff",
@@ -248,6 +250,27 @@ export default function StaffSection(props) {
                 setNewStaffMember({
                   ...newStaffMember,
                   designation: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Email:
+            </label>
+            <input
+              type="text"
+              id="email"
+              placeholder="EMail"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={newStaffMember.email}
+              onChange={(e) =>
+                setNewStaffMember({
+                  ...newStaffMember,
+                  email: e.target.value,
                 })
               }
             />
@@ -386,8 +409,22 @@ export default function StaffSection(props) {
                           }}
                           className="w-full text-xs sm:text-sm font-semibold text-gray-600 mb-1 text-center"
                         />
+                        <input
+                          type="text"
+                          value={staff.email}
+                          onChange={(e) => {
+                            setStaffList((prevStaffList) =>
+                              prevStaffList.map((s) =>
+                                s._id === staff._id
+                                  ? { ...s, email: e.target.value }
+                                  : s
+                              )
+                            );
+                          }}
+                          className="w-full text-xs sm:text-sm font-semibold text-gray-600 mb-1 text-center"
+                        />
                         <textarea
-                          value={staff.body}
+                          value={staff.body ? staff.body : "put body here"}
                           onChange={(e) => {
                             setStaffList((prevStaffList) =>
                               prevStaffList.map((s) =>
@@ -433,7 +470,7 @@ export default function StaffSection(props) {
                           {staff.designation}
                         </p>
                         <p className="text-xs sm:text-sm text-primary break-words">
-                          {staff.body}
+                          {staff.email}
                         </p>
                         <div className="flex justify-center mt-2">
                           <button

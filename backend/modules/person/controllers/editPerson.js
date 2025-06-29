@@ -3,7 +3,7 @@ const path = require("path");
 const deleteImage = require("../../../handlers/delImage");
 const editPerson = async (req, res) => {
   const PersonModel = mongoose.model("Person");
-  const { name, designation, body, duration, type } = req.body;
+  const { name, designation, body, duration, email, type } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -26,6 +26,7 @@ const editPerson = async (req, res) => {
         duration,
         image,
         type,
+        email,
       });
     } else {
       updatedPerson = await PersonModel.findByIdAndUpdate(personId, {
@@ -34,6 +35,7 @@ const editPerson = async (req, res) => {
         body,
         duration,
         type,
+        email,
       });
     }
 

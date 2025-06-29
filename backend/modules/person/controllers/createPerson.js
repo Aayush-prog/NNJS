@@ -3,7 +3,7 @@ const path = require("path");
 const createPerson = async (req, res) => {
   const Person = mongoose.model("Person");
   console.log(req.body);
-  const { name, designation, body, duration, type } = req.body;
+  const { name, designation, body, duration, type, email } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -15,6 +15,7 @@ const createPerson = async (req, res) => {
       duration,
       image,
       type,
+      email,
     });
     res.status(201).json({
       status: "success",
