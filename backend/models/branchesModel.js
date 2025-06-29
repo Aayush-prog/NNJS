@@ -5,7 +5,7 @@ const branchSchema = new mongoose.Schema(
     phone: { type: String },
     president: { type: String },
     district: { type: String },
-    image: { type: String },
+    image: { type: String, default: "1749965337091.jpg" },
     committee: { type: String },
   },
   { timestamps: true }
