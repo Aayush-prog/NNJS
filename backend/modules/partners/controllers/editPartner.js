@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const editPartner = async (req, res) => {
   const PartnerModel = mongoose.model("Partners");
-  const { name, type } = req.body;
+  const { name, type, link } = req.body;
   const image = req.files?.image?.[0]
     ? path.basename(req.files.image[0].path)
     : null;
@@ -21,11 +21,13 @@ const editPartner = async (req, res) => {
         name,
         image,
         type,
+        link,
       });
     } else {
       updatedPartner = await PartnerModel.findByIdAndUpdate(partnerId, {
         name,
         type,
+        link,
       });
     }
 

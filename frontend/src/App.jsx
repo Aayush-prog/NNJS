@@ -85,7 +85,10 @@ function App() {
             path="/admin/history"
             element={<PrivateRouter element={<AdminHistory />} />}
           />
-          <Route path="/admin/team" element={<AdminTeam />} />
+          <Route
+            path="/admin/team"
+            element={<PrivateRouter element={<AdminTeam />} />}
+          />
           <Route
             path="/admin/what_we_do"
             element={<PrivateRouter element={<AdminLocations />} />}

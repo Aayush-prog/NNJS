@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Loading from "./Loading";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 export default function LandingPage() {
   const [loading, setLoading] = useState(false);
   const [storiesData, setStoriesData] = useState(null);
@@ -68,28 +72,37 @@ export default function LandingPage() {
         Success Stories
       </motion.h2>
 
-      {storiesData?.map((story, i) => (
-        <motion.section
-          key={i}
-          variants={childVariants}
-          className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8 w-3/4"
-        >
-          <div className="md:w-1/2 flex justify-center">
-            <img
-              src={`${api}/images/${story.image}`}
-              loading="lazy"
-              alt={story.author}
-              className="rounded-full w-40 h-40 object-cover shadow-lg"
-            />
-          </div>
-          <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
-            <blockquote className="italic font-semibold text-lg">
-              {story.text}
-            </blockquote>
-            <cite className="block mt-4 text-gray-500">— {story.author}</cite>
-          </div>
-        </motion.section>
-      ))}
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={30}
+        slidesPerView={1}
+        className="w-full md:w-3/4"
+      >
+        {storiesData?.map((story, i) => (
+          <SwiperSlide key={i}>
+            <section className="flex flex-col md:flex-row items-center bg-grey rounded-md shadow p-8">
+              <div className="md:w-1/2 flex justify-center">
+                <img
+                  src={`${api}/images/${story.image}`}
+                  loading="lazy"
+                  alt={story.author}
+                  className="rounded-full w-40 h-40 object-cover shadow-lg"
+                />
+              </div>
+              <div className="md:ml-8 mt-6 md:mt-0 text-center md:text-left">
+                <blockquote className="italic font-semibold text-lg">
+                  {story.text}
+                </blockquote>
+                <cite className="block mt-4 text-gray-500">
+                  — {story.author}
+                </cite>
+              </div>
+            </section>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </motion.div>
   );
 }

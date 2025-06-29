@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
+const deleteImage = require("../../../handlers/delImage");
 const editStory = async (req, res) => {
   const StoryModel = mongoose.model("Story");
   const { author, text } = req.body;
@@ -15,14 +16,24 @@ const editStory = async (req, res) => {
         message: "Story not found",
       });
     }
-    const updatedStory = await StoryModel.findByIdAndUpdate(storyId, {
-      author,
-      text,
-      image,
-    });
-    res.satus(201).json({
+    let updatedStory;
+    if (image) {
+      deleteImage(story.image);
+      updatedStory = await StoryModel.findByIdAndUpdate(storyId, {
+        author,
+        text,
+        image,
+      });
+    } else {
+      updatedStory = await StoryModel.findByIdAndUpdate(storyId, {
+        author,
+        text,
+      });
+    }
+    res.status(200).json({
       status: "success",
       message: "Story updated successfully",
+      data: updatedStory,
     });
   } catch (error) {
     res.status(400).json({

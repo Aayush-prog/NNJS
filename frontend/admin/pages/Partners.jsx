@@ -21,6 +21,7 @@ export default function Partners() {
     name: "",
     image: null,
     type: "Current",
+    link: "",
   });
   const [editingPartner, setEditingPartner] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -42,6 +43,7 @@ export default function Partners() {
     }
   };
   const { authToken } = useContext(AuthContext);
+  console.log(authToken);
   useEffect(() => {
     fetchPartners();
   }, [api]);
@@ -68,6 +70,7 @@ export default function Partners() {
       formData.append("name", newPartner.name);
       formData.append("type", newPartner.type);
       formData.append("image", newPartner.image);
+      formData.append("link", newPartner.link);
 
       await axios.post(`${api}/partners/create`, formData, {
         headers: {
@@ -86,7 +89,11 @@ export default function Partners() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${api}/partners/del/${id}`);
+      await axios.delete(`${api}/partners/del/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       fetchPartners(); // refetch after delete
     } catch (err) {
       console.error("Error deleting partner", err);
@@ -98,6 +105,7 @@ export default function Partners() {
       const formData = new FormData();
       formData.append("name", editingPartner.name);
       formData.append("type", editingPartner.type);
+      formData.append("link", editingPartner.link);
       if (editingPartner.newImage) {
         formData.append("image", editingPartner.newImage);
       }
@@ -105,7 +113,12 @@ export default function Partners() {
       await axios.patch(
         `${api}/partners/edit/${editingPartner._id}`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
       );
 
       setEditingPartner(null);
@@ -163,6 +176,13 @@ export default function Partners() {
               type="file"
               onChange={(e) => handleChange("image", e.target.files[0])}
               className="w-full mb-4"
+            />
+            <input
+              type="text"
+              placeholder="Link"
+              value={newPartner.link}
+              onChange={(e) => handleChange("link", e.target.value)}
+              className="w-full mb-4 border p-2 rounded"
             />
             <button
               onClick={handleAdd}
@@ -224,6 +244,14 @@ export default function Partners() {
                             handleEditChange("newImage", e.target.files[0])
                           }
                           className="mb-2"
+                        />
+                        <input
+                          type="text"
+                          value={editingPartner.link}
+                          onChange={(e) =>
+                            handleEditChange("link", e.target.value)
+                          }
+                          className="mb-2 w-full border p-2 rounded"
                         />
                         <div className="flex gap-2 mt-2">
                           <button
