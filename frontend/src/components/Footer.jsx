@@ -102,7 +102,7 @@ export default function Footer() {
               </h2>
               <ul aria-labelledby="employee-heading" className="space-y-1">
                 <li>
-                  <a href="/attendance" aria-label="Access Attendance system">
+                  <a href="https://nnjs.eattendance.com.np/" aria-label="Access Attendance system">
                     Attendance
                   </a>
                 </li>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Download, FileText } from "lucide-react";
+import {FileText } from "lucide-react";
 import axios from "axios";
 import Loading from "./Loading";
+import { GoDownload } from "react-icons/go";
 
 const categories = [
   {
@@ -176,16 +177,16 @@ const ResourcesSection = () => {
           activeCategoryData.map((item) => (
             <div
               key={item._id}
-              className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto md:h-[150px] flex flex-col justify-between"
+              className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-autoflex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-1 md:gap-2 mb-2">
                   <FileText className="w-5 h-5 md:w-7 md:h-7 text-blue-500 flex-shrink-0" />
-                  <h3 className="text-base md:text-lg font-semibold text-primary font-secondary line-clamp-1">
+                  <h3 className="text-base md:text-lg font-semibold text-primary font-secondary ">
                     {item.title}
                   </h3>
                 </div>
-                <p className="text-xs md:text-sm text-gray-600 font-primary line-clamp-2 md:line-clamp-3 leading-relaxed">
+                <p className="text-xs md:text-sm text-gray-600 font-primary  leading-relaxed">
                   {item.body}
                 </p>
               </div>
