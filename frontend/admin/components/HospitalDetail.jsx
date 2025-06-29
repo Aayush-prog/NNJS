@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import axios from "axios";
 import { FaPen } from "react-icons/fa";
+import { AuthContext } from "../../AuthContext";
 
 export default function HospitalDetail() {
+  const { authToken } = useContext(AuthContext);
   // disable background scrolling
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -247,7 +249,9 @@ export default function HospitalDetail() {
         `${api}/eyeHospitals/edit/${id}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+           'Authorization': `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data" },
         }
       );
       console.log("Hospital updated:", response.data);

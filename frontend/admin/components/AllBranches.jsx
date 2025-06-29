@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SortSelect from "./Sort";
 import Pagination from "./Pagination";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaPlus, FaPen,FaTrash } from "react-icons/fa";
+import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
+import { AuthContext } from "../../AuthContext";
 
 // Define the fadeInUp animation variant
 const fadeInUp = {
@@ -40,11 +41,33 @@ const sortByProperty = (array, property, direction = "asc") => {
   });
 };
 
-export default function NNJSCombinedList({ hospitals, centers, presidents }) {
-  // Hospital/Eye Center search and sort
+const hospitalSortOptions = [
+  { value: "title", label: "Name" },
+  { value: "address", label: "Address" },
+  { value: "phone", label: "Phone" },
+  { value: "email", label: "Email" }
+];
+
+const centerSortOptions = [
+  { value: "title", label: "Title" },
+  { value: "district", label: "District" },
+  { value: "contactPerson", label: "Contact Person" },
+  { value: "contactNum", label: "Contact Number" }
+];
+
+const presidentSortOptions = [
+  { value: "district", label: "District" },
+  { value: "president", label: "President" },
+  { value: "committee", label: "Committee" },
+  { value: "phone", label: "Phone" }
+];
+
+export default function NNJSCombinedList({ hospitals = [], centers = [], presidents = [], onDataUpdate }) {
+  const { authToken } = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const api = import.meta.env.VITE_URL;
+  
   // Replace keywords with category filter
   const [activeCategory, setActiveCategory] = useState("all"); // "all", "hospitals", "centers", "presidents"
 
@@ -61,99 +84,28 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
   const [presidentPage, setPresidentPage] = useState(1);
 
   const itemsPerPage = 3;
+  useEffect(() => {
+    const fetchHospital = async () => {
+      setLoading(true);
+      try {
+        console.log(api);
+        const res = await axios.get(`${api}/eyeHospitals`);
+        console.log(res.data);
+        if (res.status === 200) {
+          setHospital(res.data.data);
+          setLoading(false);
+        } else {
+          console.error("Error fetching page: Status code", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching page:", error);
+      }
+    };
 
-  // Search and filter logic
-  const searchKeywords = search
-    .toLowerCase()
-    .split(" ")
-    .filter((kw) => kw.trim() !== "");
+    fetchHospital();
+  }, [api]);
 
-  // Hospital filtering and sorting
-  const filteredHospitals = hospitals.filter((h) =>
-    searchKeywords.every(
-      (kw) =>
-        (h.title && h.title.toLowerCase().includes(kw)) ||
-        (h.address && h.address.toLowerCase().includes(kw)) ||
-        (h.phone && h.phone.toLowerCase().includes(kw)) ||
-        (h.email && h.email.toLowerCase().includes(kw)) ||
-        (h.website && h.website.toLowerCase().includes(kw))
-    )
-  );
-
-  const sortedHospitals = sortByProperty(
-    filteredHospitals,
-    hospitalSortBy,
-    hospitalSortDirection
-  );
-  const hospitalTotalPages = Math.ceil(sortedHospitals.length / itemsPerPage);
-  const paginatedHospitals = sortedHospitals.slice(
-    (hospitalPage - 1) * itemsPerPage,
-    hospitalPage * itemsPerPage
-  );
-
-  // Centers filtering and sorting
-  const filteredCenters = centers.filter((c) =>
-    searchKeywords.every(
-      (kw) =>
-        (c.title && c.title.toLowerCase().includes(kw)) ||
-        (c.district && c.district.toLowerCase().includes(kw)) ||
-        (c.contactPerson && c.contactPerson.toLowerCase().includes(kw)) ||
-        (c.contactNum && c.contactNum.toLowerCase().includes(kw))
-    )
-  );
-
-  const sortedCenters = sortByProperty(
-    filteredCenters,
-    centerSortBy,
-    centerSortDirection
-  );
-  const centerTotalPages = Math.ceil(sortedCenters.length / itemsPerPage);
-  const paginatedCenters = sortedCenters.slice(
-    (centerPage - 1) * itemsPerPage,
-    centerPage * itemsPerPage
-  );
-
-  // Presidents filtering and sorting
-  const filteredPresidents = presidents.filter((p) =>
-    searchKeywords.every(
-      (kw) =>
-        (p.district && p.district.toLowerCase().includes(kw)) ||
-        (p.president && p.president.toLowerCase().includes(kw)) ||
-        (p.committee && p.committee.toLowerCase().includes(kw)) ||
-        (p.phone && p.phone.toLowerCase().includes(kw)) ||
-        (p.contactPerson && p.contactPerson.toLowerCase().includes(kw))
-    )
-  );
-
-  const sortedPresidents = sortByProperty(
-    filteredPresidents,
-    presidentSortBy,
-    presidentSortDirection
-  );
-  const presidentTotalPages = Math.ceil(sortedPresidents.length / itemsPerPage);
-  const paginatedPresidents = sortedPresidents.slice(
-    (presidentPage - 1) * itemsPerPage,
-    presidentPage * itemsPerPage
-  );
-
-  // Sort options for each category
-  const hospitalSortOptions = [
-    { label: "Title", value: "title" },
-    { label: "Address", value: "address" },
-  ];
-
-  const centerSortOptions = [
-    { label: "Title", value: "title" },
-    { label: "District", value: "district" },
-    { label: "Contact Person", value: "contactPerson" },
-  ];
-
-  const presidentSortOptions = [
-    { label: "District", value: "district" },
-    { label: "President", value: "president" },
-    { label: "Committee", value: "committee" },
-  ];
-
+  // State for adding/editing
   const [isAddingHospital, setIsAddingHospital] = useState(false);
   const [newHospital, setNewHospital] = useState({
     title: "",
@@ -216,14 +168,21 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
     image: null,
   });
 
-  const handleNewHospitalChange = (e) => {
-    setNewHospital({ ...newHospital, [e.target.name]: e.target.value });
-  };
+  // useEffect for managing body scroll (like GalleryItem)
+  useEffect(() => {
+    if (editingHospitalId || editingCenterId || editingPresidentId) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
 
-  const handleNewHospitalImageChange = (e) => {
-    setNewHospital({ ...newHospital, image: e.target.files[0] });
-  };
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [editingHospitalId, editingCenterId, editingPresidentId]);
 
+  // Hospital handlers with proper data refreshing
   const handleAddHospital = async () => {
     try {
       const formData = new FormData();
@@ -238,10 +197,20 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
       }
 
       const response = await axios.post(`${api}/eyeHospitals/create`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data" 
+        },
       });
 
       console.log("New hospital added:", response.data);
+      
+      // Refresh data after successful addition
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Reset form and close modal
       setIsAddingHospital(false);
       setNewHospital({
         title: "",
@@ -252,43 +221,9 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         website: "",
         image: null,
       });
-      window.location.reload();
     } catch (error) {
       console.error("Error adding new hospital:", error);
     }
-  };
-    useEffect(() => {
-    if (editingHospitalId || editingCenterId || editingPresidentId) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    // Cleanup function to restore scrolling when component unmounts
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [editingHospitalId, editingCenterId, editingPresidentId]);
-
-  const handleEditHospital = (hospital) => {
-    setEditingHospitalId(hospital._id);
-    setEditedHospital({
-      title: hospital.title,
-      body: hospital.body,
-      address: hospital.address,
-      phone: hospital.phone,
-      email: hospital.email,
-      website: hospital.website,
-      image: hospital.image || null,
-    });
-  };
-
-  const handleEditedHospitalChange = (e) => {
-    setEditedHospital({ ...editedHospital, [e.target.name]: e.target.value });
-  };
-
-  const handleEditedHospitalImageChange = (e) => {
-    setEditedHospital({ ...editedHospital, image: e.target.files[0] });
   };
 
   const handleUpdateHospital = async () => {
@@ -308,40 +243,54 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         `${api}/eyeHospitals/edit/${editingHospitalId}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+            'Authorization': `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data" 
+          },
         }
       );
       console.log("Hospital updated:", response.data);
+      
+      // Refresh data after successful update
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Close modal
       setEditingHospitalId(null);
-      window.location.reload();
     } catch (error) {
       console.error("Error updating hospital data:", error);
     }
   };
 
   const handleDeleteHospital = async (hospitalId) => {
+    if (!confirm("Are you sure you want to delete this hospital?")) {
+      return;
+    }
+
     try {
-      const response = await axios.delete(`${api}/eyeHospitals/del/${hospitalId}`);
+      const response = await axios.delete(`${api}/eyeHospitals/del/${hospitalId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
       console.log("Hospital deleted:", response.data);
-      window.location.reload();
+      
+      // Refresh data after successful deletion
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
     } catch (error) {
       console.error("Error deleting hospital:", error);
     }
   };
 
-  const handleNewCenterChange = (e) => {
-    setNewCenter({ ...newCenter, [e.target.name]: e.target.value });
-  };
-
-  const handleNewCenterImageChange = (e) => {
-    setNewCenter({ ...newCenter, image: e.target.files[0] });
-  };
-
+  // Center handlers with proper data refreshing
   const handleAddCenter = async () => {
     try {
       const formData = new FormData();
       formData.append("title", newCenter.title);
-      formData.append("body", newCenter.body || ""); // Add body field
+      formData.append("body", newCenter.body || "");
       formData.append("district", newCenter.district);
       formData.append("contactPerson", newCenter.contactPerson);
       formData.append("contactNum", newCenter.contactNum);
@@ -350,10 +299,20 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
       }
 
       const response = await axios.post(`${api}/eyeCareCenters/create`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          'Authorization': `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data" 
+        },
       });
 
       console.log("New center added:", response.data);
+      
+      // Refresh data after successful addition
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Reset form and close modal
       setIsAddingCenter(false);
       setNewCenter({
         title: "",
@@ -363,30 +322,9 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         contactNum: "",
         image: null,
       });
-      window.location.reload();
     } catch (error) {
       console.error("Error adding new center:", error);
     }
-  };
-
-  const handleEditCenter = (center) => {
-    setEditingCenterId(center._id);
-    setEditedCenter({
-      title: center.title,
-      body: center.body || "",
-      district: center.district,
-      contactPerson: center.contactPerson,
-      contactNum: center.contactNum,
-      image: center.image || null,
-    });
-  };
-
-  const handleEditedCenterChange = (e) => {
-    setEditedCenter({ ...editedCenter, [e.target.name]: e.target.value });
-  };
-
-  const handleEditedCenterImageChange = (e) => {
-    setEditedCenter({ ...editedCenter, image: e.target.files[0] });
   };
 
   const handleUpdateCenter = async () => {
@@ -405,35 +343,49 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         `${api}/eyeCareCenters/edit/${editingCenterId}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+            'Authorization': `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data" 
+          },
         }
       );
       console.log("Center updated:", response.data);
+      
+      // Refresh data after successful update
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Close modal
       setEditingCenterId(null);
-      window.location.reload();
     } catch (error) {
       console.error("Error updating center:", error);
     }
   };
 
   const handleDeleteCenter = async (centerId) => {
+    if (!confirm("Are you sure you want to delete this center?")) {
+      return;
+    }
+
     try {
-      const response = await axios.delete(`${api}/eyeCareCenters/del/${centerId}`);
+      const response = await axios.delete(`${api}/eyeCareCenters/del/${centerId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
       console.log("Center deleted:", response.data);
-      window.location.reload();
+      
+      // Refresh data after successful deletion
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
     } catch (error) {
       console.error("Error deleting center:", error);
     }
   };
 
-  const handleNewPresidentChange = (e) => {
-    setNewPresident({ ...newPresident, [e.target.name]: e.target.value });
-  };
-
-  const handleNewPresidentImageChange = (e) => {
-    setNewPresident({ ...newPresident, image: e.target.files[0] });
-  };
-
+  // President handlers with proper data refreshing
   const handleAddPresident = async () => {
     try {
       const formData = new FormData();
@@ -447,10 +399,20 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
       }
 
       const response = await axios.post(`${api}/branches/create`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data" 
+        },
       });
 
       console.log("New branch added:", response.data);
+      
+      // Refresh data after successful addition
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Reset form and close modal
       setIsAddingPresident(false);
       setNewPresident({
         district: "",
@@ -460,30 +422,9 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         contactPerson: "",
         image: null,
       });
-      window.location.reload();
     } catch (error) {
       console.error("Error adding new branch:", error);
     }
-  };
-
-  const handleEditPresident = (president) => {
-    setEditingPresidentId(president._id);
-    setEditedPresident({
-      district: president.district,
-      president: president.president,
-      committee: president.committee,
-      phone: president.phone,
-      contactPerson: president.contactPerson,
-      image: president.image || null,
-    });
-  };
-
-  const handleEditedPresidentChange = (e) => {
-    setEditedPresident({ ...editedPresident, [e.target.name]: e.target.value });
-  };
-
-  const handleEditedPresidentImageChange = (e) => {
-    setEditedPresident({ ...editedPresident, image: e.target.files[0] });
   };
 
   const handleUpdatePresident = async () => {
@@ -502,26 +443,224 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
         `${api}/branches/edit/${editingPresidentId}`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+            'Authorization': `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data" 
+          },
         }
       );
       console.log("Branch updated:", response.data);
+      
+      // Refresh data after successful update
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
+      
+      // Close modal
       setEditingPresidentId(null);
-      window.location.reload();
     } catch (error) {
       console.error("Error updating branch:", error);
     }
   };
 
   const handleDeletePresident = async (presidentId) => {
+    if (!confirm("Are you sure you want to delete this branch?")) {
+      return;
+    }
+
     try {
-      const response = await axios.delete(`${api}/branches/del/${presidentId}`);
+      const response = await axios.delete(`${api}/branches/del/${presidentId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
       console.log("Branch deleted:", response.data);
-      window.location.reload();
+      
+      // Refresh data after successful deletion
+      if (onDataUpdate) {
+        await onDataUpdate();
+      }
     } catch (error) {
       console.error("Error deleting branch:", error);
     }
   };
+
+  // Add missing handler functions
+  const handleNewHospitalChange = (e) => {
+    const { name, value } = e.target;
+    setNewHospital(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleNewHospitalImageChange = (e) => {
+    setNewHospital(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditedHospitalChange = (e) => {
+    const { name, value } = e.target;
+    setEditedHospital(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleEditedHospitalImageChange = (e) => {
+    setEditedHospital(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditHospital = (hospital) => {
+    setEditedHospital({
+      title: hospital.title || "",
+      body: hospital.body || "",
+      address: hospital.address || "",
+      phone: hospital.phone || "",
+      email: hospital.email || "",
+      website: hospital.website || "",
+      image: hospital.image || null,
+    });
+    setEditingHospitalId(hospital._id);
+  };
+
+  const handleNewCenterChange = (e) => {
+    const { name, value } = e.target;
+    setNewCenter(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleNewCenterImageChange = (e) => {
+    setNewCenter(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditedCenterChange = (e) => {
+    const { name, value } = e.target;
+    setEditedCenter(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleEditedCenterImageChange = (e) => {
+    setEditedCenter(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditCenter = (center) => {
+    setEditedCenter({
+      title: center.title || "",
+      body: center.body || "",
+      district: center.district || "",
+      contactPerson: center.contactPerson || "",
+      contactNum: center.contactNum || "",
+      image: center.image || null,
+    });
+    setEditingCenterId(center._id);
+  };
+
+  const handleNewPresidentChange = (e) => {
+    const { name, value } = e.target;
+    setNewPresident(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleNewPresidentImageChange = (e) => {
+    setNewPresident(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditedPresidentChange = (e) => {
+    const { name, value } = e.target;
+    setEditedPresident(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleEditedPresidentImageChange = (e) => {
+    setEditedPresident(prev => ({
+      ...prev,
+      image: e.target.files[0]
+    }));
+  };
+
+  const handleEditPresident = (president) => {
+    setEditedPresident({
+      district: president.district || "",
+      president: president.president || "",
+      committee: president.committee || "",
+      phone: president.phone || "",
+      contactPerson: president.contactPerson || "",
+      image: president.image || null,
+    });
+    setEditingPresidentId(president._id);
+  };
+
+  // Add filtering and pagination logic
+  const filteredHospitals = hospitals.filter((h) =>
+    search === "" ||
+    h.title?.toLowerCase().includes(search.toLowerCase()) ||
+    h.address?.toLowerCase().includes(search.toLowerCase()) ||
+    h.phone?.toLowerCase().includes(search.toLowerCase()) ||
+    h.email?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredCenters = centers.filter((c) =>
+    search === "" ||
+    c.title?.toLowerCase().includes(search.toLowerCase()) ||
+    c.district?.toLowerCase().includes(search.toLowerCase()) ||
+    c.contactPerson?.toLowerCase().includes(search.toLowerCase()) ||
+    c.contactNum?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredPresidents = presidents.filter((p) =>
+    search === "" ||
+    p.district?.toLowerCase().includes(search.toLowerCase()) ||
+    p.president?.toLowerCase().includes(search.toLowerCase()) ||
+    p.committee?.toLowerCase().includes(search.toLowerCase()) ||
+    p.phone?.toLowerCase().includes(search.toLowerCase()) ||
+    p.contactPerson?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const sortedHospitals = sortByProperty(filteredHospitals, hospitalSortBy, hospitalSortDirection);
+  const sortedCenters = sortByProperty(filteredCenters, centerSortBy, centerSortDirection);
+  const sortedPresidents = sortByProperty(filteredPresidents, presidentSortBy, presidentSortDirection);
+
+  const hospitalTotalPages = Math.ceil(sortedHospitals.length / itemsPerPage);
+  const centerTotalPages = Math.ceil(sortedCenters.length / itemsPerPage);
+  const presidentTotalPages = Math.ceil(sortedPresidents.length / itemsPerPage);
+
+  const paginatedHospitals = sortedHospitals.slice(
+    (hospitalPage - 1) * itemsPerPage,
+    hospitalPage * itemsPerPage
+  );
+
+  const paginatedCenters = sortedCenters.slice(
+    (centerPage - 1) * itemsPerPage,
+    centerPage * itemsPerPage
+  );
+
+  const paginatedPresidents = sortedPresidents.slice(
+    (presidentPage - 1) * itemsPerPage,
+    presidentPage * itemsPerPage
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 font-primary">
@@ -759,17 +898,15 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
           )}
 
           {editingHospitalId && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-150 max-w-100 overflow-y-auto">
-                <div className="flex item-center justify-between mb-4">
-                
-                <h3 className="text-xl font-bold mb-4">Edit Hospital</h3>
-
-                <button
+            <div className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto m-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">Edit Hospital</h3>
+                  <button
                     onClick={() => setEditingHospitalId(null)}
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded right-0"
+                    className="text-gray-500 hover:text-gray-700 text-xl"
                   >
-                    Cancel
+                    ×
                   </button>
                 </div>
                 <input
@@ -781,12 +918,12 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   className="w-full border rounded-lg p-2 mb-2"
                 />
                 <textarea
-                  type="text"
                   name="body"
                   placeholder="Body"
                   value={editedHospital.body}
                   onChange={handleEditedHospitalChange}
                   className="w-full border rounded-lg p-2 mb-2"
+                  rows="3"
                 />
                 <input
                   type="text"
@@ -824,16 +961,21 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   type="file"
                   name="image"
                   onChange={handleEditedHospitalImageChange}
-                  className="w-full border rounded-lg p-2 mb-2"
+                  className="w-full border rounded-lg p-2 mb-4"
                 />
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setEditingHospitalId(null)}
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Cancel
+                  </button>
                   <button
                     onClick={handleUpdateHospital}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                   >
                     Update
                   </button>
-                  
                 </div>
               </div>
             </div>
@@ -913,9 +1055,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (confirm("Are you sure you want to delete this hospital?")) {
-                        handleDeleteHospital(h._id);
-                      }
+                      handleDeleteHospital(h._id);
                     }}
                     className="absolute top-2 left-2 p-2 bg-red-200 rounded-full hover:bg-red-300"
                   >
@@ -1019,9 +1159,17 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
           )}
 
           {editingCenterId && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-96 overflow-y-auto">
-                <h3 className="text-xl font-bold mb-4">Edit Eye Care Center</h3>
+            <div className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto m-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">Edit Eye Care Center</h3>
+                  <button
+                    onClick={() => setEditingCenterId(null)}
+                    className="text-gray-500 hover:text-gray-700 text-xl"
+                  >
+                    ×
+                  </button>
+                </div>
                 <input
                   type="text"
                   name="title"
@@ -1066,20 +1214,20 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   type="file"
                   name="image"
                   onChange={handleEditedCenterImageChange}
-                  className="w-full border rounded-lg p-2 mb-2"
+                  className="w-full border rounded-lg p-2 mb-4"
                 />
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleUpdateCenter}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-                  >
-                    Update
-                  </button>
+                <div className="flex justify-end gap-2">
                   <button
                     onClick={() => setEditingCenterId(null)}
                     className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                   >
                     Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdateCenter}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Update
                   </button>
                 </div>
               </div>
@@ -1109,9 +1257,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (confirm("Are you sure you want to delete this center?")) {
-                        handleDeleteCenter(center._id);
-                      }
+                      handleDeleteCenter(center._id);
                     }}
                     className="absolute top-2 left-2 p-2 bg-red-200 rounded-full hover:bg-red-300"
                   >
@@ -1232,9 +1378,17 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
           )}
 
           {editingPresidentId && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-96 overflow-y-auto">
-                <h3 className="text-xl font-bold mb-4">Edit Branch</h3>
+            <div className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto m-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">Edit Branch</h3>
+                  <button
+                    onClick={() => setEditingPresidentId(null)}
+                    className="text-gray-500 hover:text-gray-700 text-xl"
+                  >
+                    ×
+                  </button>
+                </div>
                 <input
                   type="text"
                   name="district"
@@ -1279,20 +1433,20 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   type="file"
                   name="image"
                   onChange={handleEditedPresidentImageChange}
-                  className="w-full border rounded-lg p-2 mb-2"
+                  className="w-full border rounded-lg p-2 mb-4"
                 />
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleUpdatePresident}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-                  >
-                    Update
-                  </button>
+                <div className="flex justify-end gap-2">
                   <button
                     onClick={() => setEditingPresidentId(null)}
                     className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                   >
                     Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdatePresident}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Update
                   </button>
                 </div>
               </div>
@@ -1325,9 +1479,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (confirm("Are you sure you want to delete this branch?")) {
-                        handleDeletePresident(president._id);
-                      }
+                      handleDeletePresident(president._id);
                     }}
                     className="absolute top-2 left-2 p-2 bg-red-200 rounded-full hover:bg-red-300"
                   >
