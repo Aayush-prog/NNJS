@@ -13,40 +13,38 @@ import axios from "axios";
 import HeroSection from "../components/HeroSection.jsx";
 import SubSection from "../components/SubSection.jsx";
 export default function WhatWeDo() {
-
   const [selectedLists, setSelectedLists] = useState(["hospital"]);
   const [showButton, setShowButton] = useState(false);
   const [ecc, setEcc] = useState();
   const [branches, setBranches] = useState();
   const [hospitals, setHospitals] = useState();
   const [whatWeDo, setWhatWeDo] = useState();
-  const [isAdding,setIsAdding]=useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const api = import.meta.env.VITE_URL;
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const fetchPage = async () => {
-      setLoading(true);
-      try {
-        console.log(api);
-        const res = await axios.get(`${api}/pages/whatWeDo`);
-        const res1 = await axios.get(`${api}/branches/`);
-        const res2 = await axios.get(`${api}/eyeCareCenters/`);
-        const res3 = await axios.get(`${api}/eyeHospitals/`);
-        console.log(res.data);
-        if (res.status === 200) {
-          setWhatWeDo(res.data.data);
-          setEcc(res2.data.data);
-          setBranches(res1.data.data);
-          setHospitals(res3.data.data);
-          setLoading(false);
-        } else {
-          console.error("Error fetching page: Status code", res.status);
-        }
-      } catch (error) {
-        console.error("Error fetching page:", error);
+  const fetchPage = async () => {
+    setLoading(true);
+    try {
+      console.log(api);
+      const res = await axios.get(`${api}/pages/whatWeDo`);
+      const res1 = await axios.get(`${api}/branches/`);
+      const res2 = await axios.get(`${api}/eyeCareCenters/`);
+      const res3 = await axios.get(`${api}/eyeHospitals/`);
+      console.log(res.data);
+      if (res.status === 200) {
+        setWhatWeDo(res.data.data);
+        setEcc(res2.data.data);
+        setBranches(res1.data.data);
+        setHospitals(res3.data.data);
+        setLoading(false);
+      } else {
+        console.error("Error fetching page: Status code", res.status);
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching page:", error);
+    }
+  };
+  useEffect(() => {
     fetchPage();
   }, [api]);
   useEffect(() => {
@@ -132,6 +130,7 @@ export default function WhatWeDo() {
             hospitals={hospitals}
             centers={ecc}
             presidents={branches}
+            onDataUpdate={fetchPage}
           />
         </div>
       )}

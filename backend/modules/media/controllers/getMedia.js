@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 const getMedias = async (req, res) => {
   const MediaModel = mongoose.model("Media");
   try {
-    const news = await MediaModel.find({ type: "News" });
-    const press = await MediaModel.find({ type: "Press Releases" });
-    const gallery = await MediaModel.find({ type: "Gallery" });
+    const news = await MediaModel.find({ type: "News" }).sort({
+      createdAt: -1,
+    });
+    const press = await MediaModel.find({ type: "Press Releases" }).sort({
+      createdAt: -1,
+    });
+    const gallery = await MediaModel.find({ type: "Gallery" }).sort({
+      createdAt: -1,
+    });
     res.status(200).json({
       status: "success",
       message: "Media found successfully",

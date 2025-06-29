@@ -45,29 +45,34 @@ const hospitalSortOptions = [
   { value: "title", label: "Name" },
   { value: "address", label: "Address" },
   { value: "phone", label: "Phone" },
-  { value: "email", label: "Email" }
+  { value: "email", label: "Email" },
 ];
 
 const centerSortOptions = [
   { value: "title", label: "Title" },
   { value: "district", label: "District" },
   { value: "contactPerson", label: "Contact Person" },
-  { value: "contactNum", label: "Contact Number" }
+  { value: "contactNum", label: "Contact Number" },
 ];
 
 const presidentSortOptions = [
   { value: "district", label: "District" },
   { value: "president", label: "President" },
   { value: "committee", label: "Committee" },
-  { value: "phone", label: "Phone" }
+  { value: "phone", label: "Phone" },
 ];
 
-export default function NNJSCombinedList({ hospitals = [], centers = [], presidents = [], onDataUpdate }) {
+export default function NNJSCombinedList({
+  hospitals = [],
+  centers = [],
+  presidents = [],
+  onDataUpdate,
+}) {
   const { authToken } = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const api = import.meta.env.VITE_URL;
-  
+
   // Replace keywords with category filter
   const [activeCategory, setActiveCategory] = useState("all"); // "all", "hospitals", "centers", "presidents"
 
@@ -116,7 +121,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
     website: "",
     image: null,
   });
-  
+
   const [editingHospitalId, setEditingHospitalId] = useState(null);
   const [editedHospital, setEditedHospital] = useState({
     title: "",
@@ -196,20 +201,24 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
         formData.append("image", newHospital.image);
       }
 
-      const response = await axios.post(`${api}/eyeHospitals/create`, formData, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data" 
-        },
-      });
+      const response = await axios.post(
+        `${api}/eyeHospitals/create`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("New hospital added:", response.data);
-      
+
       // Refresh data after successful addition
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Reset form and close modal
       setIsAddingHospital(false);
       setNewHospital({
@@ -235,7 +244,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
       formData.append("phone", editedHospital.phone);
       formData.append("email", editedHospital.email);
       formData.append("website", editedHospital.website);
-      if (editedHospital.image && typeof editedHospital.image === 'object') {
+      if (editedHospital.image && typeof editedHospital.image === "object") {
         formData.append("image", editedHospital.image);
       }
 
@@ -243,19 +252,19 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
         `${api}/eyeHospitals/edit/${editingHospitalId}`,
         formData,
         {
-          headers: { 
-            'Authorization': `Bearer ${authToken}`,
-            "Content-Type": "multipart/form-data" 
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log("Hospital updated:", response.data);
-      
+
       // Refresh data after successful update
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Close modal
       setEditingHospitalId(null);
     } catch (error) {
@@ -269,13 +278,16 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
     }
 
     try {
-      const response = await axios.delete(`${api}/eyeHospitals/del/${hospitalId}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
+      const response = await axios.delete(
+        `${api}/eyeHospitals/del/${hospitalId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-      });
+      );
       console.log("Hospital deleted:", response.data);
-      
+
       // Refresh data after successful deletion
       if (onDataUpdate) {
         await onDataUpdate();
@@ -298,20 +310,24 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
         formData.append("image", newCenter.image);
       }
 
-      const response = await axios.post(`${api}/eyeCareCenters/create`, formData, {
-        headers: { 
-          'Authorization': `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data" 
-        },
-      });
+      const response = await axios.post(
+        `${api}/eyeCareCenters/create`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("New center added:", response.data);
-      
+
       // Refresh data after successful addition
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Reset form and close modal
       setIsAddingCenter(false);
       setNewCenter({
@@ -335,7 +351,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
       formData.append("district", editedCenter.district);
       formData.append("contactPerson", editedCenter.contactPerson);
       formData.append("contactNum", editedCenter.contactNum);
-      if (editedCenter.image && typeof editedCenter.image === 'object') {
+      if (editedCenter.image && typeof editedCenter.image === "object") {
         formData.append("image", editedCenter.image);
       }
 
@@ -343,19 +359,19 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
         `${api}/eyeCareCenters/edit/${editingCenterId}`,
         formData,
         {
-          headers: { 
-            'Authorization': `Bearer ${authToken}`,
-            "Content-Type": "multipart/form-data" 
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log("Center updated:", response.data);
-      
+
       // Refresh data after successful update
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Close modal
       setEditingCenterId(null);
     } catch (error) {
@@ -369,13 +385,16 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
     }
 
     try {
-      const response = await axios.delete(`${api}/eyeCareCenters/del/${centerId}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
+      const response = await axios.delete(
+        `${api}/eyeCareCenters/del/${centerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-      });
+      );
       console.log("Center deleted:", response.data);
-      
+
       // Refresh data after successful deletion
       if (onDataUpdate) {
         await onDataUpdate();
@@ -400,18 +419,16 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
 
       const response = await axios.post(`${api}/branches/create`, formData, {
         headers: {
-          'Authorization': `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data" 
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
         },
       });
 
-      console.log("New branch added:", response.data);
-      
       // Refresh data after successful addition
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Reset form and close modal
       setIsAddingPresident(false);
       setNewPresident({
@@ -435,7 +452,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
       formData.append("committee", editedPresident.committee);
       formData.append("phone", editedPresident.phone);
       formData.append("contactPerson", editedPresident.contactPerson);
-      if (editedPresident.image && typeof editedPresident.image === 'object') {
+      if (editedPresident.image && typeof editedPresident.image === "object") {
         formData.append("image", editedPresident.image);
       }
 
@@ -443,19 +460,19 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
         `${api}/branches/edit/${editingPresidentId}`,
         formData,
         {
-          headers: { 
-            'Authorization': `Bearer ${authToken}`,
-            "Content-Type": "multipart/form-data" 
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log("Branch updated:", response.data);
-      
+
       // Refresh data after successful update
       if (onDataUpdate) {
         await onDataUpdate();
       }
-      
+
       // Close modal
       setEditingPresidentId(null);
     } catch (error) {
@@ -469,13 +486,16 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
     }
 
     try {
-      const response = await axios.delete(`${api}/branches/del/${presidentId}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
+      const response = await axios.delete(
+        `${api}/branches/del/${presidentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
-      });
+      );
       console.log("Branch deleted:", response.data);
-      
+
       // Refresh data after successful deletion
       if (onDataUpdate) {
         await onDataUpdate();
@@ -488,31 +508,31 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
   // Add missing handler functions
   const handleNewHospitalChange = (e) => {
     const { name, value } = e.target;
-    setNewHospital(prev => ({
+    setNewHospital((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleNewHospitalImageChange = (e) => {
-    setNewHospital(prev => ({
+    setNewHospital((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
   const handleEditedHospitalChange = (e) => {
     const { name, value } = e.target;
-    setEditedHospital(prev => ({
+    setEditedHospital((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleEditedHospitalImageChange = (e) => {
-    setEditedHospital(prev => ({
+    setEditedHospital((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
@@ -531,31 +551,31 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
 
   const handleNewCenterChange = (e) => {
     const { name, value } = e.target;
-    setNewCenter(prev => ({
+    setNewCenter((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleNewCenterImageChange = (e) => {
-    setNewCenter(prev => ({
+    setNewCenter((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
   const handleEditedCenterChange = (e) => {
     const { name, value } = e.target;
-    setEditedCenter(prev => ({
+    setEditedCenter((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleEditedCenterImageChange = (e) => {
-    setEditedCenter(prev => ({
+    setEditedCenter((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
@@ -573,31 +593,31 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
 
   const handleNewPresidentChange = (e) => {
     const { name, value } = e.target;
-    setNewPresident(prev => ({
+    setNewPresident((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleNewPresidentImageChange = (e) => {
-    setNewPresident(prev => ({
+    setNewPresident((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
   const handleEditedPresidentChange = (e) => {
     const { name, value } = e.target;
-    setEditedPresident(prev => ({
+    setEditedPresident((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleEditedPresidentImageChange = (e) => {
-    setEditedPresident(prev => ({
+    setEditedPresident((prev) => ({
       ...prev,
-      image: e.target.files[0]
+      image: e.target.files[0],
     }));
   };
 
@@ -614,34 +634,49 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
   };
 
   // Add filtering and pagination logic
-  const filteredHospitals = hospitals.filter((h) =>
-    search === "" ||
-    h.title?.toLowerCase().includes(search.toLowerCase()) ||
-    h.address?.toLowerCase().includes(search.toLowerCase()) ||
-    h.phone?.toLowerCase().includes(search.toLowerCase()) ||
-    h.email?.toLowerCase().includes(search.toLowerCase())
+  const filteredHospitals = hospitals.filter(
+    (h) =>
+      search === "" ||
+      h.title?.toLowerCase().includes(search.toLowerCase()) ||
+      h.address?.toLowerCase().includes(search.toLowerCase()) ||
+      h.phone?.toLowerCase().includes(search.toLowerCase()) ||
+      h.email?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredCenters = centers.filter((c) =>
-    search === "" ||
-    c.title?.toLowerCase().includes(search.toLowerCase()) ||
-    c.district?.toLowerCase().includes(search.toLowerCase()) ||
-    c.contactPerson?.toLowerCase().includes(search.toLowerCase()) ||
-    c.contactNum?.toLowerCase().includes(search.toLowerCase())
+  const filteredCenters = centers.filter(
+    (c) =>
+      search === "" ||
+      c.title?.toLowerCase().includes(search.toLowerCase()) ||
+      c.district?.toLowerCase().includes(search.toLowerCase()) ||
+      c.contactPerson?.toLowerCase().includes(search.toLowerCase()) ||
+      c.contactNum?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredPresidents = presidents.filter((p) =>
-    search === "" ||
-    p.district?.toLowerCase().includes(search.toLowerCase()) ||
-    p.president?.toLowerCase().includes(search.toLowerCase()) ||
-    p.committee?.toLowerCase().includes(search.toLowerCase()) ||
-    p.phone?.toLowerCase().includes(search.toLowerCase()) ||
-    p.contactPerson?.toLowerCase().includes(search.toLowerCase())
+  const filteredPresidents = presidents.filter(
+    (p) =>
+      search === "" ||
+      p.district?.toLowerCase().includes(search.toLowerCase()) ||
+      p.president?.toLowerCase().includes(search.toLowerCase()) ||
+      p.committee?.toLowerCase().includes(search.toLowerCase()) ||
+      p.phone?.toLowerCase().includes(search.toLowerCase()) ||
+      p.contactPerson?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const sortedHospitals = sortByProperty(filteredHospitals, hospitalSortBy, hospitalSortDirection);
-  const sortedCenters = sortByProperty(filteredCenters, centerSortBy, centerSortDirection);
-  const sortedPresidents = sortByProperty(filteredPresidents, presidentSortBy, presidentSortDirection);
+  const sortedHospitals = sortByProperty(
+    filteredHospitals,
+    hospitalSortBy,
+    hospitalSortDirection
+  );
+  const sortedCenters = sortByProperty(
+    filteredCenters,
+    centerSortBy,
+    centerSortDirection
+  );
+  const sortedPresidents = sortByProperty(
+    filteredPresidents,
+    presidentSortBy,
+    presidentSortDirection
+  );
 
   const hospitalTotalPages = Math.ceil(sortedHospitals.length / itemsPerPage);
   const centerTotalPages = Math.ceil(sortedCenters.length / itemsPerPage);
@@ -1042,7 +1077,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
                       </a>
                     )}
                   </div>
-                  
+
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent card click
@@ -1059,7 +1094,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
                     }}
                     className="absolute top-2 left-2 p-2 bg-red-200 rounded-full hover:bg-red-300"
                   >
-                    <FaTrash/>
+                    <FaTrash />
                   </button>
                 </motion.div>
               ))
@@ -1096,7 +1131,9 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
 
           {isAddingCenter && (
             <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h3 className="text-xl font-bold mb-4">Add New Eye Care Center</h3>
+              <h3 className="text-xl font-bold mb-4">
+                Add New Eye Care Center
+              </h3>
               <input
                 type="text"
                 name="title"
@@ -1261,7 +1298,7 @@ export default function NNJSCombinedList({ hospitals = [], centers = [], preside
                     }}
                     className="absolute top-2 left-2 p-2 bg-red-200 rounded-full hover:bg-red-300"
                   >
-                    <FaTrash/>
+                    <FaTrash />
                   </button>
                   <h2 className="text-xl font-bold text-blue-900 font-secondary">
                     {center.title}
