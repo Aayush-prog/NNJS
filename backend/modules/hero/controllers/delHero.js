@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const delHero = async (req, res) => {
   const HeroModel = mongoose.model("Hero");
-  const {} = req.body;
   const { heroId } = req.params;
   try {
     const hero = await HeroModel.findById(heroId);
@@ -12,7 +11,7 @@ const delHero = async (req, res) => {
       });
     }
     const delHero = await HeroModel.findByIdAndDelete(heroId);
-    res.satus(201).json({
+    res.status(200).json({
       status: "success",
       message: "Hero deleted successfully",
     });
