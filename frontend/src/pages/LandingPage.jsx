@@ -10,6 +10,7 @@ import Stories from "../components/Stories";
 import SubSection from "../components/SubSection";
 import axios from "axios";
 import Loading from "../components/Loading";
+import HospitalSlider from "../components/HospitalSlider";
 export default function LandingPage() {
   const [showButton, setShowButton] = useState(false);
   const [landing, setLanding] = useState(null);
@@ -81,7 +82,9 @@ export default function LandingPage() {
               body={landing.subSection2.body}
             />
           )}
+          <HospitalSlider/>
           <Impacts />
+          
           <Stories />
         </main>
       )}
