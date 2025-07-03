@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {FileText } from "lucide-react";
+import { FaRegFileLines } from "react-icons/fa6";
+import { GoDownload } from "react-icons/go";
 import axios from "axios";
 import Loading from "./Loading";
-import { GoDownload } from "react-icons/go";
 
 const categories = [
   {
@@ -181,7 +181,7 @@ const ResourcesSection = () => {
             >
               <div>
                 <div className="flex items-center gap-1 md:gap-2 mb-2">
-                  <FileText className="w-5 h-5 md:w-7 md:h-7 text-blue-500 flex-shrink-0" />
+                  <FaRegFileLines className="w-5 h-5 md:w-7 md:h-7 text-blue-500 flex-shrink-0" />
                   <h3 className="text-base md:text-lg font-semibold text-primary font-secondary ">
                     {item.title}
                   </h3>

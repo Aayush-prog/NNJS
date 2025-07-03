@@ -16,21 +16,24 @@ const editHero = async (req, res) => {
         message: "Hero not found",
       });
     }
+    let updatedHero;
     if (image != null) {
       delImage(hero.image);
-      const updatedHero = await HeroModel.findByIdAndUpdate(heroId, {
+      updatedHero = await HeroModel.findByIdAndUpdate(heroId, {
         title,
         image,
         body,
       });
+    } else {
+      updatedHero = await HeroModel.findByIdAndUpdate(heroId, {
+        title,
+        body,
+      });
     }
-    const updatedHero = await HeroModel.findByIdAndUpdate(heroId, {
-      title,
-      body,
-    });
     res.status(200).json({
       status: "success",
       message: "Hero updated successfully",
+      data: updatedHero,
     });
   } catch (error) {
     res.status(400).json({

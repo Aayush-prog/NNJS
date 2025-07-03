@@ -346,7 +346,7 @@ const ResourcesSection = () => {
           activeCategoryData.map((item) => (
             <div
               key={item._id}
-              className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto md:h-[200px] flex flex-col"
+              className="bg-white shadow-md md:shadow-lg rounded-xl p-4 md:p-5 hover:shadow-xl transition h-auto flex flex-col"
             >
               <div className="flex justify-end gap-2">
                 {" "}
