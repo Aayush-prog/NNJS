@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from "react";
-import partnerImage from "../assets/partners.png";
 import { motion } from "framer-motion";
 import { FaArrowCircleUp } from "react-icons/fa";
 import LogoSlider from "../components/LogoSlider";
