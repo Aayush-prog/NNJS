@@ -4,7 +4,7 @@ import Logo from "../assets/LOGO.png";
 import DonateButton from "./DonateButton";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-
+import flagWave from "../assets/flag.webm";
 const dropdownVariants = {
   initial: { opacity: 0, y: -10 },
   animate: {
@@ -79,6 +79,9 @@ export default function Nav() {
                 National Society for Comprehensive Eye Care
               </p>
             </div>
+            {/* <video width="150px" muted loop autoPlay>
+              <source src={flagWave} type="video/webm" />
+            </video> */}
           </Link>
 
           <div className="flex items-center gap-4">
