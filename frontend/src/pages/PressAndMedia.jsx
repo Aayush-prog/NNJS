@@ -20,6 +20,9 @@ export default function PressAndMedia() {
   const [releaseCurrentPage, setReleaseCurrentPage] = useState(1);
   const [galleryCurrentPage, setGalleryCurrentPage] = useState(1);
 
+  // Add this state
+  const [galleryFilter, setGalleryFilter] = useState("photo");
+
   // update width on resize
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -145,14 +148,23 @@ export default function PressAndMedia() {
     }
   };
 
-  // Calculate pagination for gallery
+  // Calculate pagination for gallery (apply filter first)
+  const filteredGallery =
+    galleryFilter === "all"
+      ? gallery
+      : galleryFilter === "photo"
+      ? gallery.filter((item) => item.images && item.images.length > 0)
+      : gallery.filter((item) => item.video);
+
   const indexOfLastGalleryItem = galleryCurrentPage * galleryItemsPerPage;
   const indexOfFirstGalleryItem = indexOfLastGalleryItem - galleryItemsPerPage;
-  const currentGalleryItems = gallery.slice(
+  const currentGalleryItems = filteredGallery.slice(
     indexOfFirstGalleryItem,
     indexOfLastGalleryItem
   );
-  const totalGalleryPages = Math.ceil(gallery.length / galleryItemsPerPage);
+  const totalGalleryPages = Math.ceil(
+    filteredGallery.length / galleryItemsPerPage
+  );
 
   // Handle page change for gallery
   const handleGalleryPageChange = (pageNumber) => {
@@ -276,7 +288,7 @@ export default function PressAndMedia() {
               </h2>
             </motion.div>
 
-            {/* Filter controls */}
+            {/* Filter controls for Press Releases */}
             <motion.div
               className="flex justify-center mb-8 overflow-x-auto py-2"
               variants={fadeInUp}
@@ -290,11 +302,15 @@ export default function PressAndMedia() {
                     setActiveFilter("all");
                     setReleaseCurrentPage(1);
                   }}
-                  className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary rounded-l-lg border ${
+                  className={[
+                    "px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary rounded-l-lg",
+                    "border",
                     activeFilter === "all"
-                      ? "bg-primary text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-100"
-                  }`}
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                 >
                   All
                 </button>
@@ -305,13 +321,16 @@ export default function PressAndMedia() {
                       setActiveFilter(year);
                       setReleaseCurrentPage(1);
                     }}
-                    className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary border-t border-b border-r ${
-                      index === AVAILABLE_YEARS.length - 1 ? "rounded-r-lg" : ""
-                    } ${
+                    className={[
+                      "px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary",
+                      index === AVAILABLE_YEARS.length - 1 ? "rounded-r-lg" : "",
+                      "border",
                       activeFilter === year
-                        ? "bg-primary text-white"
-                        : "bg-white text-gray-700 hover:bg-gray-100"
-                    }`}
+                        ? "bg-primary text-white border-primary"
+                        : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   >
                     {year}
                   </button>
@@ -405,24 +424,87 @@ export default function PressAndMedia() {
               </h2>
             </motion.div>
 
-            {gallery.length === 0 ? (
+            {/* Gallery filter controls */}
+            <motion.div
+              className="flex justify-center mb-8 overflow-x-auto py-2"
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <div className="inline-flex rounded-md shadow-sm">
+                <button
+                  onClick={() => {
+                    setGalleryFilter("all");
+                    setGalleryCurrentPage(1);
+                  }}
+                  className={[
+                    "px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary rounded-l-lg",
+                    "border",
+                    galleryFilter === "all"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => {
+                    setGalleryFilter("photo");
+                    setGalleryCurrentPage(1);
+                  }}
+                  className={[
+                    "px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary",
+                    "border",
+                    galleryFilter === "photo"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  Photos
+                </button>
+                <button
+                  onClick={() => {
+                    setGalleryFilter("video");
+                    setGalleryCurrentPage(1);
+                  }}
+                  className={[
+                    "px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium font-secondary rounded-r-lg",
+                    "border",
+                    galleryFilter === "video"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  Videos
+                </button>
+              </div>
+            </motion.div>
+
+            {filteredGallery.length === 0 ? (
               <div className="text-center py-12">
                 <div className="animate-pulse w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <p className="text-gray-500">Loading gallery...</p>
+                <p className="text-gray-500">No items found.</p>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {currentGalleryItems.map((item, idx) =>
-                    item.images.length > 0 ? (
+                    item.images.length > 0 && galleryFilter !== "video" ? (
                       <GalleryItem key={idx} item={item} images={item.images} />
-                    ) : (
+                    ) : item.video && galleryFilter !== "photo" ? (
                       <motion.div
+                        key={item._id}
                         variants={fadeInUp}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.1 }}
-                        key={item._id}
                         className="w-full max-w-sm aspect-video rounded-lg overflow-hidden shadow"
                       >
                         <iframe
@@ -438,17 +520,27 @@ export default function PressAndMedia() {
                           className="w-full h-full"
                         ></iframe>
                       </motion.div>
-                    )
+                    ) : null
                   )}
                 </div>
 
-                {/* Add Pagination for gallery instead of "View All" button */}
-                {gallery.length > galleryItemsPerPage && (
+                {/* Pagination */}
+                {filteredGallery.length > galleryItemsPerPage && (
                   <div className="mt-8">
                     <Pagination
                       currentPage={galleryCurrentPage}
                       totalPages={totalGalleryPages}
-                      onPageChange={handleGalleryPageChange}
+                      onPageChange={(page) => {
+                        setGalleryCurrentPage(page);
+                        const gallerySection = document.getElementById(
+                          "gallery-section"
+                        );
+                        if (gallerySection) {
+                          gallerySection.scrollIntoView({
+                            behavior: "smooth",
+                          });
+                        }
+                      }}
                     />
                   </div>
                 )}
@@ -457,14 +549,7 @@ export default function PressAndMedia() {
           </div>
         </section>
       </main>
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <Footer />
-      </motion.div>
+      <Footer />
 
       {showButton && (
         <button

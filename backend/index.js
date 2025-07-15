@@ -29,6 +29,7 @@ const ircObjectiveRouter = require("./modules/ircObjectives/ircObjectives.routes
 const login = require("./handlers/login.js");
 const { forgotPassword, resetPassword } = require("./handlers/forgotPass.js");
 const programRouter = require("./modules/programEntry/program.routes.js");
+const sendMail = require("./handlers/sendMail.js");
 // Models
 require("./models/bankModel");
 require("./models/mediaModel.js");
@@ -71,6 +72,7 @@ mongoose
 app.post("/login", login);
 app.post("/forgotPass", forgotPassword);
 app.post("/resetPass/:token", resetPassword);
+app.post("/sendMail", sendMail);
 app.use("/program", programRouter);
 app.use("/bank", bankRouter);
 app.use("/media", mediaRouter);

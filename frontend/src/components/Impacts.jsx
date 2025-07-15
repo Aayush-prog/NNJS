@@ -74,19 +74,74 @@ export default function Impacts() {
       >
         Our Impacts
       </motion.h2>
+      
+      <div className="w-full space-y-6">
+        {/* Till Now section above first two cards */}
+        <motion.p 
+          variants={childVariants}
+          className="text-center text-lg font-semibold"
+        >
+          Till Now
+        </motion.p>
+        
+        {/* First two impact cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+          {impacts?.slice(0, 2).map((impact, i) => (
+            <motion.div
+              key={i}
+              variants={childVariants}
+              className="text-center font-bold font-secondary text-xl"
+            >
+              <IconRenderer iconName={impact.icon} />
+              <h1>{impact.count}</h1>
+              <h2>{impact.title}</h2>
+            </motion.div>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 w-full">
-        {impacts?.map((impact, i) => (
-          <motion.div
-            key={i}
-            variants={childVariants}
-            className="text-center font-bold font-secondary text-xl"
-          >
-            <IconRenderer iconName={impact.icon} />
-            <h1>{impact.count}</h1>
-            <h2>{impact.title}</h2>
-          </motion.div>
-        ))}
+        {/* In current year section above next two cards */}
+        {impacts?.length > 2 && (
+          <>
+            <motion.p 
+              variants={childVariants}
+              className="text-center text-lg font-semibold pt-4"
+            >
+              In {new Date().getFullYear()-1}
+            </motion.p>
+            
+            {/* Next two impact cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+              {impacts?.slice(2, 4).map((impact, i) => (
+                <motion.div
+                  key={i + 2}
+                  variants={childVariants}
+                  className="text-center font-bold font-secondary text-xl"
+                >
+                  <IconRenderer iconName={impact.icon} />
+                  <h1>{impact.count}</h1>
+                  <h2>{impact.title}</h2>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Any remaining cards */}
+        {impacts?.length > 4 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 pt-4">
+            {impacts?.slice(4).map((impact, i) => (
+              <motion.div
+                key={i + 4}
+                variants={childVariants}
+                className="text-center font-bold font-secondary text-xl"
+              >
+                <IconRenderer iconName={impact.icon} />
+                <h1>{impact.count}</h1>
+                <h2>{impact.title}</h2>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

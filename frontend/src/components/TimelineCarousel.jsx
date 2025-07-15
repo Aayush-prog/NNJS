@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Mousewheel, Navigation } from "swiper/modules";
+import timelineImage from "../assets/abc.png"; 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";

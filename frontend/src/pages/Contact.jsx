@@ -13,6 +13,13 @@ export default function Contact() {
   const [contact, setContact] = useState(null);
   const [page, setPage] = useState();
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState(""); // To track form submission status
   const api = import.meta.env.VITE_URL;
 
   useEffect(() => {
@@ -22,7 +29,6 @@ export default function Contact() {
         const response = await axios.get(`${api}/pages/contact`);
         const res = await axios.get(`${api}/contact/`);
         if (res.status === 200) {
-          console.log(res.data.data);
           setPage(response.data.data);
           setContact(res.data.data);
           setLoading(false);
@@ -69,6 +75,31 @@ export default function Contact() {
     },
   };
 
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus("Sending...");
+
+    try {
+      const response = await axios.post(`${api}/sendMail`, formData);
+      if (response.status === 200) {
+        setFormStatus("Message sent successfully!");
+        setFormData({ name: "", email: "", phone: "", message: "" }); // Clear form
+      } else {
+        setFormStatus("Error sending message. Please try again.");
+      }
+    } catch (error) {
+      setFormStatus("Error sending message. Please try again.");
+      console.error("Error submitting form:", error);
+    }
+  };
+
   if (loading) return <Loading />;
 
   return (
@@ -100,27 +131,48 @@ export default function Contact() {
               <div className="border-2 border-accent w-[100px]"></div>
             </div>
 
-            <form className="flex flex-col w-full space-y-4 md:space-y-5">
+            <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4 md:space-y-5">
               <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
                 className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Name"
               />
               <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Email"
               />
               <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
                 className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Phone"
               />
-              <input
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
                 className="border-b-2 bg-transparent text-white focus:outline-none focus:border-b-accent p-2"
                 placeholder="Message"
-              />
-              <button className="bg-accent p-2 rounded-sm mt-8 font-bold hover:bg-opacity-90 transition-colors">
+              ></textarea>
+              <button
+                type="submit"
+                className="bg-accent p-2 rounded-sm mt-8 font-bold hover:bg-opacity-90 transition-colors"
+              >
                 Submit
               </button>
             </form>
+            {formStatus && (
+              <p className="mt-4 text-white">{formStatus}</p>
+            )}
           </div>
 
           {/* Right Info Section */}
@@ -131,7 +183,7 @@ export default function Contact() {
               </p>
 
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.8064616406664!2d85.3115335749225!3d27.69237602615263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19b2b6d87343%3A0x2d6c2814b031114b!2sNepal%20Netra%20Jyoti%20Sangh%2C%20Tripureshwor!5e0!3m2!1sen!2snp!4v1748617431017!5m2!1sen!2snp"
+                src="https://www.google.com/maps/embed?pb=..."
                 width="100%"
                 height="180"
                 style={{ border: 0 }}
@@ -187,7 +239,7 @@ export default function Contact() {
                 <FaYoutube />
               </a>
               <a
-                href="https://www.google.com/maps/contrib/105016702714475758470/place/ChIJQ3PYtrIZ6zkRSxExsBQobC0/@27.692357,85.314105,15z?entry=ttu&g_ep=EgoyMDI1MDYwNC4wIKXMDSoASAFQAw%3D%3D"
+                href="https://www.google.com/maps/contrib/..."
                 className="hover:text-accent transition-colors"
                 aria-label="Map"
               >

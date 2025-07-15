@@ -8,6 +8,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import HeroSection from "../components/HeroSection";
 import SubSection from "../components/SubSection";
+
 export default function History() {
   const [showButton, setShowButton] = useState(false);
   const [history, setHistory] = useState();

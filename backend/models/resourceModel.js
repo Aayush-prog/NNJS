@@ -11,7 +11,7 @@ const resourceSchema = new mongoose.Schema({
       "Guidelines & Protocols",
       "Media & Bulletins",
       "Publications",
-      "CMEs & Conference",
+      "Awards",
       "RAAB Survey",
     ],
     required: true,

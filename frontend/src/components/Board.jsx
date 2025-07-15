@@ -62,7 +62,7 @@ export default function BoardMembers(props) {
             src={`${api}/images/${person[currentIndex].image}`}
             alt={person[currentIndex].name}
             loading="lazy"
-            className="w-full sm:w-48 md:w-64 lg:w-72 h-64 sm:h-auto object-cover object-top"
+            className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full object-cover mx-auto sm:mx-0 sm:translate-y-6 sm:translate-x-5 mt-4"
           />
           <div className="p-4 sm:p-8 md:p-12">
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1 sm:mb-2 font-secondary">

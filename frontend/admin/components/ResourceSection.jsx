@@ -29,9 +29,9 @@ const categories = [
     stateKey: "publications",
   },
   {
-    group: "CMEs & Conference",
-    includes: ["CMEs & Conference"],
-    stateKey: "cmes",
+    group: "Awar",
+    includes: ["Awards"],
+    stateKey: "awards",
   },
   {
     group: "RAAB Survey",
@@ -47,7 +47,7 @@ const ResourcesSection = () => {
   const [guidelines, setGuidelines] = useState([]);
   const [media, setMedia] = useState([]);
   const [publications, setPublications] = useState([]);
-  const [cmes, setCMEs] = useState([]);
+  const [awards, setAwards] = useState([]);
   const [raab, setRAAB] = useState([]);
   const [fileDeleted, setfileDeleted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,7 +75,7 @@ const ResourcesSection = () => {
         setGuidelines(res.data.guidelines || []);
         setMedia(res.data.media || []);
         setPublications(res.data.publications || []);
-        setCMEs(res.data.cmes || []);
+        setAwards(res.data.awards || []);
         setRAAB(res.data.raab || []);
         setLoading(false);
       } else {
@@ -108,8 +108,8 @@ const ResourcesSection = () => {
         return media;
       case "publications":
         return publications;
-      case "cmes":
-        return cmes;
+      case "awards":
+        return awards;
       case "raab":
         return raab;
       default:
