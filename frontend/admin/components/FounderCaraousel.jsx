@@ -334,8 +334,8 @@ export default function FoundersCarousel() {
                   }
                   loading="lazy"
                   alt={founders[currentIndex]?.name}
-                  className="w-full sm:w-48 md:w-64 lg:w-72 h-64 sm:h-auto object-cover object-top"
-                  style={{ height: "100%" }} // Set height to 100%
+                  className="aspect-square w-36 sm:w-44 md:w-48 lg:w-56 rounded-full object-cover mx-auto sm:mx-0 sm:translate-y-12 sm:translate-x-5 mt-4"
+                  //style={{ height: "100%" }} 
                 />
                 {editingIndex === currentIndex && (
                   <label

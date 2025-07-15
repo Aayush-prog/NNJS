@@ -62,7 +62,7 @@ export default function FoundersCarousel(props) {
   src={`${api}/images/${person[currentIndex].image}`}
   loading="lazy"
   alt={person[currentIndex].name}
-  className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full object-cover mx-auto sm:mx-0 sm:translate-y-6 sm:translate-x-5 mt-4"
+  className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full object-cover mx-auto sm:mx-0 sm:translate-y-6 sm:translate-x-5 mt-4"
 />
 
 

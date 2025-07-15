@@ -29,7 +29,7 @@ const categories = [
     stateKey: "publications",
   },
   {
-    group: "Awar",
+    group: "Awards",
     includes: ["Awards"],
     stateKey: "awards",
   },
