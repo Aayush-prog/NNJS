@@ -1,8 +1,4 @@
 import { useState } from "react";
-import chet from "../assets/chet.png";
-import shyam from "../assets/shyam.jpg";
-import chakra from "../assets/chakra.jpg";
-import sagar from "../assets/sagar.jpg";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function BoardMembers(props) {

@@ -1,7 +1,4 @@
 import React from "react";
-import gen from "../assets/gen.jpg";
-import ram from "../assets/R.P.png";
-import tirtha from "../assets/tirtha.jpg";
 
 export default function PastChairpersons(props) {
   const person = props.person;

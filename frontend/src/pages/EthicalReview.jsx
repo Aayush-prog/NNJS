@@ -8,6 +8,8 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import SubSection from "../components/SubSection";
 import HeroSection from "../components/HeroSection";
+import Proposal from "../assets/IRC NNJS Proposal Submitting Format.doc";
+import Full from "../assets/IRCNNJS Full Report Submittig Format.doc";
 const faqs = [
   {
     question: "Who can apply for ethical approval, and how is it submitted?",
@@ -19,7 +21,16 @@ const faqs = [
           form with all required documents to irc@nnjs.org.np.
         </p>
         <a
-          href="#"
+          href={Proposal}
+          className="inline-block mt-3 text-blue-600 underline hover:text-blue-800 font-medium"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          IRCNNJS Proposal Submitting Format
+        </a>
+        <div></div>
+        <a
+          href={Full}
           className="inline-block mt-3 text-blue-600 underline hover:text-blue-800 font-medium"
           target="_blank"
           rel="noopener noreferrer"
