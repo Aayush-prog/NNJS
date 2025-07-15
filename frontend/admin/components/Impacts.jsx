@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as ReactIcons from "react-icons/fa";
 import axios from "axios";
 import Loading from "./Loading";
 import { FaPen, FaSave, FaArrowLeft, FaTrash, FaPlus } from "react-icons/fa";
 import SearchableIconPicker from "./SearchableIconPicker";
 import { AuthContext } from "../../AuthContext";
+
 export default function Impacts() {
   const [loading, setLoading] = useState(false);
   const [impacts, setImpacts] = useState([]);
@@ -17,7 +18,7 @@ export default function Impacts() {
   const api = import.meta.env.VITE_URL;
   const [isAdding, setIsAdding] = useState(false);
   const iconMap = { ...ReactIcons };
-  const { authToken } = useState(AuthContext);
+  const { authToken } = useContext(AuthContext); // Changed from useState to useContext
   const iconNames = Object.keys(iconMap).filter((name) =>
     name.startsWith("Fa")
   );

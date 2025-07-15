@@ -94,7 +94,7 @@ export default function HospitalDetail() {
             </a>
           </div>
         )}
-        <p>{hospital.body}</p>
+        <p className="whitespace-pre-wrap">{hospital.body}</p>
       </div>
     </div>
   );
