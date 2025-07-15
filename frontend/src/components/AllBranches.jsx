@@ -363,6 +363,7 @@ export default function NNJSCombinedList({ hospitals, centers, presidents }) {
                         }
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={e => e.stopPropagation()}
                       >
                         Visit Website <span className="ml-1">→</span>
                       </a>
